@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Save the Date | Partner 1 & Partner 2</title>
+    <title>Save the Date | Alina & Ben</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <style>
         :root {
-            --cream: #faf8f5;
-            --sage: #8b9a7d;
-            --sage-light: #d4dccf;
+            --cream: #fdf9f3;
+            --peach: #ffb088;
+            --coral: #ff6b6b;
+            --sage: #7eb09b;
+            --lavender: #b8a9c9;
             --charcoal: #2d2d2d;
             --warm-gray: #6b6b6b;
         }
@@ -27,11 +31,62 @@
         }
 
         body {
-            font-family: 'Jost', sans-serif;
+            font-family: 'Outfit', sans-serif;
             font-weight: 300;
             background-color: var(--cream);
             color: var(--charcoal);
             line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Floating shapes background */
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.15;
+        }
+
+        .shape-1 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, var(--peach), var(--coral));
+            top: -100px;
+            right: -100px;
+        }
+
+        .shape-2 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, var(--sage), var(--lavender));
+            bottom: 20%;
+            left: -100px;
+        }
+
+        .shape-3 {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, var(--lavender), var(--peach));
+            top: 40%;
+            right: 5%;
+        }
+
+        .shape-4 {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, var(--coral), var(--sage));
+            bottom: 10%;
+            right: 20%;
         }
 
         /* Navigation */
@@ -43,9 +98,10 @@
             display: flex;
             justify-content: center;
             gap: 3rem;
-            background: var(--cream);
+            background: rgba(253, 249, 243, 0.9);
+            backdrop-filter: blur(10px);
             z-index: 100;
-            border-bottom: 1px solid var(--sage-light);
+            transform: translateY(-100%);
         }
 
         nav a {
@@ -55,10 +111,26 @@
             letter-spacing: 0.15em;
             text-transform: uppercase;
             transition: color 0.3s ease;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--coral), var(--peach));
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
         }
 
         nav a:hover {
-            color: var(--sage);
+            color: var(--coral);
         }
 
         /* Sections */
@@ -69,6 +141,7 @@
             justify-content: center;
             align-items: center;
             padding: 6rem 2rem;
+            position: relative;
         }
 
         /* Hero */
@@ -77,55 +150,145 @@
             position: relative;
         }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 300px;
-            height: 300px;
-            border: 1px solid var(--sage-light);
-            border-radius: 50%;
-            opacity: 0.5;
-        }
-
         .save-the-date {
-            font-size: 0.8rem;
-            letter-spacing: 0.3em;
+            font-size: 0.9rem;
+            letter-spacing: 0.4em;
             text-transform: uppercase;
-            color: var(--sage);
+            color: var(--coral);
             margin-bottom: 2rem;
+            opacity: 0;
         }
 
         .names {
-            font-family: 'Cormorant Garamond', serif;
-            font-weight: 300;
-            font-size: clamp(3rem, 10vw, 6rem);
+            font-family: 'Playfair Display', serif;
+            font-weight: 400;
+            font-size: clamp(3.5rem, 12vw, 8rem);
             line-height: 1.1;
             margin-bottom: 0.5rem;
+            opacity: 0;
+        }
+
+        .name-1, .name-2 {
+            display: block;
+            background: linear-gradient(135deg, var(--charcoal) 0%, var(--warm-gray) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .ampersand {
+            font-family: 'Playfair Display', serif;
             font-style: italic;
-            color: var(--sage);
+            background: linear-gradient(135deg, var(--coral), var(--peach));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             display: block;
-            font-size: 0.5em;
-            margin: 0.3em 0;
+            font-size: 0.4em;
+            margin: 0.2em 0;
         }
 
         .date {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            font-weight: 300;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-weight: 400;
             margin-top: 2rem;
             letter-spacing: 0.05em;
+            opacity: 0;
         }
 
         .location-teaser {
             margin-top: 1rem;
             color: var(--warm-gray);
-            font-size: 0.95rem;
+            font-size: 1.1rem;
+            opacity: 0;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--warm-gray);
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            opacity: 0;
+        }
+
+        .scroll-arrow {
+            width: 20px;
+            height: 30px;
+            border: 2px solid var(--warm-gray);
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .scroll-arrow::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 8px;
+            background: var(--coral);
+            border-radius: 2px;
+            animation: scrollBounce 1.5s ease-in-out infinite;
+        }
+
+        @keyframes scrollBounce {
+            0%, 100% { top: 6px; opacity: 1; }
+            50% { top: 14px; opacity: 0.5; }
+        }
+
+        /* Countdown */
+        .countdown-section {
+            background: linear-gradient(135deg, var(--charcoal) 0%, #1a1a1a 100%);
+            color: var(--cream);
+        }
+
+        .countdown-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 3rem;
+            opacity: 0.8;
+        }
+
+        .countdown {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .countdown-item {
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .countdown-number {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 500;
+            background: linear-gradient(135deg, var(--peach), var(--coral));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .countdown-label {
+            font-size: 0.8rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            opacity: 0.6;
+            margin-top: 0.5rem;
         }
 
         /* Details Section */
@@ -134,166 +297,312 @@
         }
 
         .section-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.5rem;
-            font-weight: 300;
-            margin-bottom: 3rem;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 400;
+            margin-bottom: 4rem;
             text-align: center;
+            position: relative;
+        }
+
+        .section-title span {
+            background: linear-gradient(135deg, var(--coral), var(--peach));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .details-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 3rem;
-            max-width: 900px;
+            max-width: 1000px;
             width: 100%;
         }
 
         .detail-card {
             text-align: center;
-            padding: 2rem;
+            padding: 3rem 2rem;
+            background: var(--cream);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .detail-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--coral), var(--peach), var(--sage));
+        }
+
+        .detail-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .detail-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
         }
 
         .detail-card h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.4rem;
-            font-weight: 400;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 500;
             margin-bottom: 1rem;
-            color: var(--sage);
+            color: var(--charcoal);
         }
 
         .detail-card p {
             color: var(--warm-gray);
-            font-size: 0.95rem;
+            font-size: 1rem;
+            line-height: 1.8;
         }
 
         /* Travel Section */
         .travel {
-            max-width: 800px;
-            margin: 0 auto;
+            position: relative;
         }
 
-        .travel-info {
+        .travel-grid {
             display: grid;
-            gap: 2.5rem;
-            max-width: 600px;
+            gap: 2rem;
+            max-width: 900px;
+            width: 100%;
         }
 
-        .travel-item h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.3rem;
-            font-weight: 400;
+        .travel-item {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: 2rem;
+            align-items: start;
+            padding: 2rem;
+            background: white;
+            border-radius: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .travel-item:hover {
+            transform: translateX(10px);
+        }
+
+        .travel-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--sage), var(--lavender));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .travel-content h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 500;
             margin-bottom: 0.75rem;
         }
 
-        .travel-item p {
+        .travel-content p {
             color: var(--warm-gray);
-            font-size: 0.95rem;
+            font-size: 1rem;
         }
 
-        .travel-item a {
-            color: var(--sage);
+        .travel-content a {
+            color: var(--coral);
             text-decoration: none;
-            border-bottom: 1px solid var(--sage-light);
-            transition: border-color 0.3s ease;
+            font-weight: 400;
+            position: relative;
         }
 
-        .travel-item a:hover {
-            border-color: var(--sage);
+        .travel-content a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--coral);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .travel-content a:hover::after {
+            transform: scaleX(1);
+        }
+
+        /* Map Section */
+        .map-section {
+            background: white;
+            padding: 4rem 2rem;
+        }
+
+        .map-container {
+            max-width: 900px;
+            width: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
         }
 
         /* RSVP Section */
         .rsvp {
-            background: var(--charcoal);
-            color: var(--cream);
+            background: linear-gradient(135deg, var(--coral) 0%, var(--peach) 50%, var(--lavender) 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rsvp::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            animation: shimmer 15s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .rsvp .section-title {
-            color: var(--cream);
+            color: white;
+        }
+
+        .rsvp .section-title span {
+            -webkit-text-fill-color: white;
         }
 
         .rsvp-text {
             text-align: center;
             max-width: 500px;
-            margin-bottom: 2.5rem;
-            color: rgba(250, 248, 245, 0.8);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
         }
 
         .rsvp-button {
             display: inline-block;
-            padding: 1rem 3rem;
-            border: 1px solid var(--sage-light);
-            color: var(--cream);
+            padding: 1.2rem 4rem;
+            background: white;
+            color: var(--coral);
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
+            font-weight: 500;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            transition: all 0.3s ease;
+            border-radius: 50px;
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
         .rsvp-button:hover {
-            background: var(--sage);
-            border-color: var(--sage);
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
         }
 
         .rsvp-deadline {
             margin-top: 2rem;
-            font-size: 0.85rem;
-            color: rgba(250, 248, 245, 0.6);
+            font-size: 0.9rem;
+            opacity: 0.8;
+            position: relative;
+            z-index: 1;
         }
 
         /* Footer */
         footer {
             text-align: center;
-            padding: 3rem;
+            padding: 4rem 2rem;
             background: var(--charcoal);
-            color: rgba(250, 248, 245, 0.5);
-            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
         }
 
-        /* Animations */
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .footer-names {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 1rem;
         }
 
-        .hero > * {
-            animation: fadeUp 1s ease forwards;
+        .hearts {
+            font-size: 1.5rem;
+            margin: 1rem 0;
+            animation: pulse 2s ease-in-out infinite;
         }
 
-        .hero .save-the-date { animation-delay: 0.2s; opacity: 0; }
-        .hero .names { animation-delay: 0.4s; opacity: 0; }
-        .hero .date { animation-delay: 0.6s; opacity: 0; }
-        .hero .location-teaser { animation-delay: 0.8s; opacity: 0; }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
 
         /* Mobile */
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             nav {
                 padding: 1rem;
                 gap: 1.5rem;
             }
 
             nav a {
-                font-size: 0.75rem;
+                font-size: 0.7rem;
+                letter-spacing: 0.1em;
             }
 
             section {
                 padding: 5rem 1.5rem;
             }
 
-            .details-grid {
-                gap: 1.5rem;
+            .countdown {
+                gap: 1rem;
+            }
+
+            .countdown-item {
+                min-width: 70px;
+            }
+
+            .travel-item {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .travel-icon {
+                margin: 0 auto;
+            }
+
+            .detail-card {
+                padding: 2rem 1.5rem;
             }
         }
     </style>
 </head>
 <body>
+    <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+    </div>
+
     <nav>
         <a href="#home">Home</a>
         <a href="#details">Details</a>
@@ -304,18 +613,45 @@
     <section id="home" class="hero">
         <p class="save-the-date">Save the Date</p>
         <h1 class="names">
-            Partner 1
+            <span class="name-1">Alina</span>
             <span class="ampersand">&</span>
-            Partner 2
+            <span class="name-2">Ben</span>
         </h1>
-        <p class="date">15th June 2026</p>
-        <p class="location-teaser">Brisbane, Australia</p>
+        <p class="date">Saturday, 29th August 2026</p>
+        <p class="location-teaser">Great Keppel Island, Australia</p>
+        <div class="scroll-hint">
+            <div class="scroll-arrow"></div>
+            <span>Scroll</span>
+        </div>
+    </section>
+
+    <section class="countdown-section">
+        <p class="countdown-title">Counting down to forever</p>
+        <div class="countdown">
+            <div class="countdown-item">
+                <div class="countdown-number" id="days">---</div>
+                <div class="countdown-label">Days</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="hours">--</div>
+                <div class="countdown-label">Hours</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="minutes">--</div>
+                <div class="countdown-label">Minutes</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="seconds">--</div>
+                <div class="countdown-label">Seconds</div>
+            </div>
+        </div>
     </section>
 
     <section id="details" class="details">
-        <h2 class="section-title">The Details</h2>
+        <h2 class="section-title">The <span>Details</span></h2>
         <div class="details-grid">
             <div class="detail-card">
+                <div class="detail-icon">💒</div>
                 <h3>Ceremony</h3>
                 <p>3:00 PM<br>
                 Venue Name<br>
@@ -323,6 +659,7 @@
                 Brisbane QLD 4000</p>
             </div>
             <div class="detail-card">
+                <div class="detail-icon">🥂</div>
                 <h3>Reception</h3>
                 <p>5:30 PM<br>
                 Reception Venue<br>
@@ -330,40 +667,218 @@
                 Brisbane QLD 4000</p>
             </div>
             <div class="detail-card">
+                <div class="detail-icon">👔</div>
                 <h3>Dress Code</h3>
                 <p>Semi-formal<br>
-                Garden party attire</p>
+                Garden party vibes<br>
+                Wear something you can dance in!</p>
             </div>
         </div>
     </section>
 
     <section id="travel" class="travel">
-        <h2 class="section-title">Getting There</h2>
-        <div class="travel-info">
+        <h2 class="section-title">Getting <span>There</span></h2>
+        <div class="travel-grid">
             <div class="travel-item">
-                <h3>By Air</h3>
-                <p>Brisbane Airport (BNE) is the nearest airport, approximately 20 minutes from the venue. Direct flights available from most Australian capitals and many international destinations.</p>
+                <div class="travel-icon">✈️</div>
+                <div class="travel-content">
+                    <h3>By Air</h3>
+                    <p>Brisbane Airport (BNE) is approximately 20 minutes from the venue. Direct flights available from most Australian capitals and many international destinations.</p>
+                </div>
             </div>
             <div class="travel-item">
-                <h3>Accommodation</h3>
-                <p>We've arranged a room block at <a href="#">Hotel Name</a> with a discounted rate. Use code WEDDING2026 when booking. Other nearby options include Hotel B and Hotel C.</p>
+                <div class="travel-icon">🏨</div>
+                <div class="travel-content">
+                    <h3>Where to Stay</h3>
+                    <p>We've arranged a room block at <a href="#">Hotel Name</a> with a special rate. Use code <strong>WEDDING2026</strong> when booking. Other nearby options include Hotel B and Hotel C.</p>
+                </div>
             </div>
             <div class="travel-item">
-                <h3>Getting Around</h3>
-                <p>Uber and taxis are readily available. The venue has parking available for those hiring cars. We'll also arrange a shuttle from Hotel Name.</p>
+                <div class="travel-icon">🚗</div>
+                <div class="travel-content">
+                    <h3>Getting Around</h3>
+                    <p>Uber and taxis are readily available. The venue has parking for those hiring cars. We'll arrange a shuttle from Hotel Name for those who want to enjoy the open bar worry-free!</p>
+                </div>
             </div>
         </div>
     </section>
 
+    <section class="map-section">
+        <div class="map-container">
+            <!-- Replace with your actual venue coordinates -->
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d113579.76176036871!2d153.0235087!3d-27.4710107!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b91579aac93d233%3A0x402a35af3deaf40!2sBrisbane%20QLD!5e0!3m2!1sen!2sau!4v1234567890" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+    </section>
+
     <section id="rsvp" class="rsvp">
-        <h2 class="section-title">RSVP</h2>
-        <p class="rsvp-text">We'd be delighted to celebrate with you. Please let us know if you can make it.</p>
-        <a href="https://forms.google.com/your-form-link" class="rsvp-button">Respond Here</a>
+        <h2 class="section-title">Join <span>Us</span></h2>
+        <p class="rsvp-text">We'd absolutely love to celebrate with you. Let us know you're coming so we can save you a seat (and a drink)!</p>
+        <a href="https://forms.google.com/your-form-link" class="rsvp-button">RSVP Now</a>
         <p class="rsvp-deadline">Kindly respond by 1st April 2026</p>
     </section>
 
     <footer>
-        <p>We can't wait to celebrate with you</p>
+        <p class="footer-names">Alina & Ben</p>
+        <p class="hearts">💕</p>
+        <p>We can't wait to celebrate with you!</p>
     </footer>
+
+    <script>
+        // Register GSAP plugins
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Initial hero animations
+        const heroTl = gsap.timeline({ delay: 0.3 });
+        heroTl
+            .to('.save-the-date', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' })
+            .from('.name-1', { opacity: 0, x: -100, duration: 1, ease: 'power3.out' }, '-=0.4')
+            .from('.ampersand', { opacity: 0, scale: 0, rotation: -180, duration: 0.8, ease: 'back.out(1.7)' }, '-=0.6')
+            .from('.name-2', { opacity: 0, x: 100, duration: 1, ease: 'power3.out' }, '-=0.6')
+            .to('.date', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.4')
+            .to('.location-teaser', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.4')
+            .to('.scroll-hint', { opacity: 1, duration: 0.8 }, '-=0.2');
+
+        // Nav animation
+        gsap.to('nav', {
+            y: 0,
+            duration: 0.6,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: '.countdown-section',
+                start: 'top 80%',
+                toggleActions: 'play none none reverse'
+            }
+        });
+
+        // Floating shapes parallax
+        document.querySelectorAll('.shape').forEach((shape, i) => {
+            gsap.to(shape, {
+                y: (i + 1) * -100,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: 'body',
+                    start: 'top top',
+                    end: 'bottom bottom',
+                    scrub: 1
+                }
+            });
+        });
+
+        // Countdown section
+        gsap.from('.countdown-item', {
+            y: 80,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.15,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: '.countdown-section',
+                start: 'top 70%'
+            }
+        });
+
+        // Details cards
+        gsap.from('.detail-card', {
+            y: 100,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: '.details-grid',
+                start: 'top 75%'
+            }
+        });
+
+        // Section titles
+        document.querySelectorAll('.section-title').forEach(title => {
+            gsap.from(title, {
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: title,
+                    start: 'top 80%'
+                }
+            });
+        });
+
+        // Travel items
+        gsap.from('.travel-item', {
+            x: -100,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: '.travel-grid',
+                start: 'top 70%'
+            }
+        });
+
+        // Map container
+        gsap.from('.map-container', {
+            scale: 0.8,
+            opacity: 0,
+            duration: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: '.map-section',
+                start: 'top 70%'
+            }
+        });
+
+        // RSVP section
+        gsap.from('.rsvp-text', {
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: '.rsvp',
+                start: 'top 60%'
+            }
+        });
+
+        gsap.from('.rsvp-button', {
+            scale: 0,
+            duration: 0.8,
+            ease: 'back.out(1.7)',
+            scrollTrigger: {
+                trigger: '.rsvp',
+                start: 'top 50%'
+            }
+        });
+
+        // Countdown timer
+        function updateCountdown() {
+            const weddingDate = new Date('August 29, 2026 15:00:00').getTime();
+            const now = new Date().getTime();
+            const diff = weddingDate - now;
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.querySelector(link.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
 </body>
 </html>
