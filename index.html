@@ -144,7 +144,222 @@
             position: relative;
         }
 
-        /* Hero */
+        /* Envelope Section */
+        .envelope-section {
+            min-height: 300vh;
+            position: relative;
+            background: linear-gradient(180deg, var(--cream) 0%, #f5ebe0 100%);
+        }
+
+        .envelope-container {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            perspective: 1200px;
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            width: min(420px, 85vw);
+            height: min(420px, 85vw);
+        }
+
+        /* The folded paper - square that becomes a triangle when folded */
+        .folded-paper {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+        }
+
+        /* The back/base of the paper (visible when unfolded) */
+        .paper-base {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #f8f4ef 0%, #f0e8df 100%);
+            transform: rotate(45deg);
+            box-shadow: 0 25px 80px rgba(0,0,0,0.12);
+        }
+
+        /* The triangular fold (top half folded down) */
+        .paper-fold {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-origin: center center;
+            transform-style: preserve-3d;
+            z-index: 10;
+        }
+
+        .paper-fold-front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #e8ddd4 0%, #ddd0c4 100%);
+            clip-path: polygon(50% 0%, 0% 50%, 50% 100%, 100% 50%);
+            backface-visibility: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .paper-fold-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f5ebe0 0%, #efe3d6 100%);
+            clip-path: polygon(50% 0%, 0% 50%, 50% 100%, 100% 50%);
+            transform: rotateY(180deg);
+            backface-visibility: hidden;
+        }
+
+        /* Wax seal */
+        .wax-seal {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 20;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #ff8a80 0%, var(--coral) 50%, #c0392b 100%);
+            box-shadow:
+                0 4px 15px rgba(192, 57, 43, 0.4),
+                inset 0 2px 4px rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wax-seal::before {
+            content: 'A & B';
+            font-family: 'Playfair Display', serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.9);
+            letter-spacing: 0.05em;
+        }
+
+        /* The card inside */
+        .invitation-card {
+            position: absolute;
+            width: 75%;
+            height: 75%;
+            left: 12.5%;
+            top: 12.5%;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            z-index: 5;
+            opacity: 0;
+        }
+
+        .invitation-card .save-the-date-text {
+            font-size: 0.75rem;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--coral);
+            margin-bottom: 1rem;
+        }
+
+        .invitation-card .card-names {
+            font-family: 'Playfair Display', serif;
+            font-weight: 400;
+            font-size: clamp(1.8rem, 7vw, 3rem);
+            line-height: 1.2;
+            color: var(--charcoal);
+        }
+
+        .invitation-card .card-ampersand {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: var(--coral);
+            font-size: 0.5em;
+            display: block;
+            margin: 0.1em 0;
+        }
+
+        .invitation-card .card-date {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(0.9rem, 2.5vw, 1.3rem);
+            font-weight: 400;
+            margin-top: 1.5rem;
+            color: var(--charcoal);
+        }
+
+        .invitation-card .card-location {
+            margin-top: 0.5rem;
+            color: var(--warm-gray);
+            font-size: 0.85rem;
+        }
+
+        /* Decorative elements on the card */
+        .card-decoration {
+            position: absolute;
+            width: 80%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--peach), var(--coral), var(--peach), transparent);
+            opacity: 0.6;
+        }
+
+        .card-decoration.top {
+            top: 15px;
+        }
+
+        .card-decoration.bottom {
+            bottom: 15px;
+        }
+
+        /* Scroll hint for envelope */
+        .envelope-scroll-hint {
+            position: absolute;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--warm-gray);
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .envelope-scroll-hint .scroll-arrow {
+            width: 20px;
+            height: 30px;
+            border: 2px solid var(--warm-gray);
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .envelope-scroll-hint .scroll-arrow::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 8px;
+            background: var(--coral);
+            border-radius: 2px;
+            animation: scrollBounce 1.5s ease-in-out infinite;
+        }
+
+        /* Hero - now inside envelope card */
         .hero {
             text-align: center;
             position: relative;
@@ -437,6 +652,449 @@
             transform: scaleX(1);
         }
 
+        /* Guest Origins Map */
+        .guest-map-section {
+            background: var(--cream);
+            padding: 6rem 2rem;
+        }
+
+        .guest-map-container {
+            max-width: 1000px;
+            width: 100%;
+            position: relative;
+        }
+
+        .guest-map-subtitle {
+            text-align: center;
+            color: var(--warm-gray);
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            font-style: italic;
+        }
+
+        .world-map-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 50%;
+            background: linear-gradient(180deg, rgba(126, 176, 155, 0.1) 0%, rgba(184, 169, 201, 0.1) 100%);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .world-map-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .world-map-svg path {
+            fill: var(--sage);
+            opacity: 0.3;
+            stroke: var(--cream);
+            stroke-width: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        .guest-dot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: linear-gradient(135deg, var(--coral), var(--peach));
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.2);
+            animation: dotPulse 2s ease-in-out infinite;
+        }
+
+        .guest-dot::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 24px;
+            height: 24px;
+            background: rgba(255, 107, 107, 0.15);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: dotRipple 2s ease-out infinite;
+        }
+
+        @keyframes dotPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.2); }
+        }
+
+        @keyframes dotRipple {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.4; }
+            100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+        }
+
+        /* Stagger the animations */
+        .guest-dot:nth-child(2) { animation-delay: 0.3s; }
+        .guest-dot:nth-child(2)::before { animation-delay: 0.3s; }
+        .guest-dot:nth-child(3) { animation-delay: 0.6s; }
+        .guest-dot:nth-child(3)::before { animation-delay: 0.6s; }
+        .guest-dot:nth-child(4) { animation-delay: 0.9s; }
+        .guest-dot:nth-child(4)::before { animation-delay: 0.9s; }
+        .guest-dot:nth-child(5) { animation-delay: 1.2s; }
+        .guest-dot:nth-child(5)::before { animation-delay: 1.2s; }
+        .guest-dot:nth-child(6) { animation-delay: 1.5s; }
+        .guest-dot:nth-child(6)::before { animation-delay: 1.5s; }
+        .guest-dot:nth-child(7) { animation-delay: 0.2s; }
+        .guest-dot:nth-child(7)::before { animation-delay: 0.2s; }
+        .guest-dot:nth-child(8) { animation-delay: 0.8s; }
+        .guest-dot:nth-child(8)::before { animation-delay: 0.8s; }
+
+        /* Destination marker (Great Keppel Island) */
+        .destination-marker {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, var(--lavender), var(--sage));
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 0 6px rgba(126, 176, 155, 0.3);
+            z-index: 10;
+        }
+
+        .destination-marker::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Beach Scene Section */
+        .beach-scene-section {
+            min-height: 80vh;
+            background: linear-gradient(180deg, var(--cream) 0%, #e8f4f8 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 4rem 2rem;
+        }
+
+        .beach-scene-container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            height: 500px;
+        }
+
+        .beach-scene {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.15);
+        }
+
+        /* Sky gradient */
+        .sky {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: linear-gradient(180deg,
+                #87ceeb 0%,
+                #ffd89b 40%,
+                #ffb088 70%,
+                #ff6b6b 100%);
+        }
+
+        /* Sun */
+        .sun {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, #fff5cc 0%, #ffd700 50%, #ff8c00 100%);
+            border-radius: 50%;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 60px 20px rgba(255, 200, 100, 0.5);
+        }
+
+        /* Clouds */
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50px;
+        }
+
+        .cloud-1 {
+            width: 120px;
+            height: 40px;
+            top: 10%;
+            left: 10%;
+        }
+
+        .cloud-1::before {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            top: -30px;
+            left: 20px;
+        }
+
+        .cloud-1::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            top: -20px;
+            left: 60px;
+        }
+
+        .cloud-2 {
+            width: 100px;
+            height: 35px;
+            top: 8%;
+            right: 15%;
+        }
+
+        .cloud-2::before {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            top: -25px;
+            left: 15px;
+        }
+
+        .cloud-3 {
+            width: 80px;
+            height: 30px;
+            top: 20%;
+            right: 30%;
+        }
+
+        /* Ocean */
+        .ocean {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 45%;
+            background: linear-gradient(180deg,
+                #4db8d3 0%,
+                #2d8eb0 30%,
+                #1a5f7a 100%);
+            overflow: hidden;
+        }
+
+        /* Waves */
+        .wave {
+            position: absolute;
+            width: 200%;
+            height: 100px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath fill='%23ffffff' fill-opacity='0.3' d='M0,60 C150,120 350,0 500,60 C650,120 850,0 1000,60 C1150,120 1200,80 1200,80 L1200,120 L0,120 Z'/%3E%3C/svg%3E");
+            background-size: 600px 100px;
+        }
+
+        .wave-1 {
+            top: -20px;
+            animation: waveMove 8s linear infinite;
+        }
+
+        .wave-2 {
+            top: 0px;
+            opacity: 0.5;
+            animation: waveMove 10s linear infinite reverse;
+        }
+
+        .wave-3 {
+            top: 20px;
+            opacity: 0.3;
+            animation: waveMove 12s linear infinite;
+        }
+
+        @keyframes waveMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Island */
+        .island {
+            position: absolute;
+            bottom: 38%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            height: 100px;
+        }
+
+        .island-body {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 350px;
+            height: 60px;
+            background: linear-gradient(180deg, #7eb09b 0%, #5a9a7a 100%);
+            border-radius: 50% 50% 20% 20% / 100% 100% 20% 20%;
+        }
+
+        .island-body::before {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: -20px;
+            width: 390px;
+            height: 30px;
+            background: #f5deb3;
+            border-radius: 50%;
+        }
+
+        /* Palm Trees */
+        .palm-tree {
+            position: absolute;
+            bottom: 40px;
+        }
+
+        .palm-trunk {
+            width: 12px;
+            height: 80px;
+            background: linear-gradient(90deg, #8b4513 0%, #a0522d 50%, #8b4513 100%);
+            border-radius: 6px;
+            transform-origin: bottom center;
+        }
+
+        .palm-leaves {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .palm-leaf {
+            position: absolute;
+            width: 60px;
+            height: 15px;
+            background: linear-gradient(90deg, #228b22 0%, #32cd32 50%, #228b22 100%);
+            border-radius: 50% 50% 0 0;
+            transform-origin: left center;
+        }
+
+        .palm-leaf:nth-child(1) { transform: rotate(-60deg) translateX(-10px); }
+        .palm-leaf:nth-child(2) { transform: rotate(-30deg) translateX(-10px); }
+        .palm-leaf:nth-child(3) { transform: rotate(0deg) translateX(-10px); }
+        .palm-leaf:nth-child(4) { transform: rotate(30deg) translateX(-10px); }
+        .palm-leaf:nth-child(5) { transform: rotate(60deg) translateX(-10px); }
+
+        .palm-tree-1 {
+            left: 30%;
+        }
+
+        .palm-tree-1 .palm-trunk {
+            height: 90px;
+            transform: rotate(-5deg);
+        }
+
+        .palm-tree-2 {
+            left: 55%;
+        }
+
+        .palm-tree-2 .palm-trunk {
+            height: 70px;
+            transform: rotate(8deg);
+        }
+
+        .palm-tree-3 {
+            left: 42%;
+        }
+
+        .palm-tree-3 .palm-trunk {
+            height: 100px;
+        }
+
+        /* Birds */
+        .bird {
+            position: absolute;
+            font-size: 1.5rem;
+            color: #333;
+            opacity: 0.6;
+        }
+
+        .bird-1 { top: 25%; left: 20%; }
+        .bird-2 { top: 18%; left: 75%; }
+        .bird-3 { top: 30%; right: 20%; }
+
+        /* Beach reflection shimmer */
+        .water-shimmer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(255,255,255,0.1) 50%,
+                transparent 100%);
+            animation: shimmerWater 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmerWater {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+
+        /* Section text */
+        .beach-scene-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .beach-scene-subtitle {
+            text-align: center;
+            color: var(--warm-gray);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        /* Boat */
+        .boat {
+            position: absolute;
+            bottom: 52%;
+            left: 20%;
+            width: 50px;
+            height: 20px;
+        }
+
+        .boat-hull {
+            width: 50px;
+            height: 15px;
+            background: #8b4513;
+            border-radius: 0 0 50% 50%;
+        }
+
+        .boat-sail {
+            position: absolute;
+            bottom: 10px;
+            left: 20px;
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 15px solid white;
+            border-bottom: 40px solid transparent;
+            border-top: 0;
+        }
+
         /* Map Section */
         .map-section {
             background: white;
@@ -610,18 +1268,127 @@
         <a href="#rsvp">RSVP</a>
     </nav>
 
-    <section id="home" class="hero">
-        <p class="save-the-date">Save the Date</p>
-        <h1 class="names">
-            <span class="name-1">Alina</span>
-            <span class="ampersand">&</span>
-            <span class="name-2">Ben</span>
-        </h1>
-        <p class="date">Saturday, 29th August 2026</p>
-        <p class="location-teaser">Great Keppel Island, Australia</p>
-        <div class="scroll-hint">
-            <div class="scroll-arrow"></div>
-            <span>Scroll</span>
+    <!-- Envelope Opening Section -->
+    <section id="home" class="envelope-section">
+        <div class="envelope-container">
+            <div class="envelope-wrapper">
+                <div class="folded-paper">
+                    <!-- The base/back of the paper (diamond shape) -->
+                    <div class="paper-base"></div>
+
+                    <!-- The invitation card (hidden initially, revealed after unfold) -->
+                    <div class="invitation-card">
+                        <div class="card-decoration top"></div>
+                        <p class="save-the-date-text">Save the Date</p>
+                        <h1 class="card-names">
+                            Alina
+                            <span class="card-ampersand">&</span>
+                            Ben
+                        </h1>
+                        <p class="card-date">Saturday, 29th August 2026</p>
+                        <p class="card-location">Great Keppel Island, Australia</p>
+                        <div class="card-decoration bottom"></div>
+                    </div>
+
+                    <!-- The folded part (diamond that unfolds) -->
+                    <div class="paper-fold">
+                        <div class="paper-fold-front"></div>
+                        <div class="paper-fold-back"></div>
+                    </div>
+
+                    <!-- Wax seal -->
+                    <div class="wax-seal"></div>
+                </div>
+            </div>
+
+            <!-- Scroll hint -->
+            <div class="envelope-scroll-hint">
+                <div class="scroll-arrow"></div>
+                <span>Scroll to open</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="beach-scene-section">
+        <h2 class="section-title beach-scene-title">Our <span>Island</span> Paradise</h2>
+        <p class="beach-scene-subtitle">Where the turquoise waters meet golden sands</p>
+        <div class="beach-scene-container">
+            <div class="beach-scene">
+                <!-- Sky -->
+                <div class="sky"></div>
+
+                <!-- Sun -->
+                <div class="sun"></div>
+
+                <!-- Clouds -->
+                <div class="cloud cloud-1"></div>
+                <div class="cloud cloud-2"></div>
+                <div class="cloud cloud-3"></div>
+
+                <!-- Birds -->
+                <svg class="bird bird-1" width="30" height="15" viewBox="0 0 30 15">
+                    <path d="M0,7 Q7,0 15,7 Q23,0 30,7" stroke="currentColor" fill="none" stroke-width="2"/>
+                </svg>
+                <svg class="bird bird-2" width="25" height="12" viewBox="0 0 30 15">
+                    <path d="M0,7 Q7,0 15,7 Q23,0 30,7" stroke="currentColor" fill="none" stroke-width="2"/>
+                </svg>
+                <svg class="bird bird-3" width="20" height="10" viewBox="0 0 30 15">
+                    <path d="M0,7 Q7,0 15,7 Q23,0 30,7" stroke="currentColor" fill="none" stroke-width="2"/>
+                </svg>
+
+                <!-- Ocean -->
+                <div class="ocean">
+                    <div class="wave wave-1"></div>
+                    <div class="wave wave-2"></div>
+                    <div class="wave wave-3"></div>
+                    <div class="water-shimmer"></div>
+                </div>
+
+                <!-- Boat -->
+                <div class="boat">
+                    <div class="boat-hull"></div>
+                    <div class="boat-sail"></div>
+                </div>
+
+                <!-- Island with palm trees -->
+                <div class="island">
+                    <div class="island-body"></div>
+
+                    <!-- Palm trees -->
+                    <div class="palm-tree palm-tree-1">
+                        <div class="palm-trunk"></div>
+                        <div class="palm-leaves">
+                            <div class="palm-leaf"></div>
+                            <div class="palm-leaf"></div>
+                            <div class="palm-leaf"></div>
+                            <div class="palm-leaf"></div>
+                            <div class="palm-leaf"></div>
+                        </div>
+                    </div>
+
+                    <div class="palm-tree palm-tree-2">
+                        <div class="palm-trunk"></div>
+                        <div class="palm-leaves">
+                            <div class="palm-leaf"></div>
+                            <div class="palm-leaf"></div>
+                            <div class="palm-leaf"></div>
+                            <div class="palm-leaf"></div>
+                            <div class="palm-leaf"></div>
+                        </div>
+                    </div>
+
+                    <div class="palm-tree palm-tree-3">
+                        <div class="palm-trunk"></div>
+                        <div class="palm-leaves">
+                            <div class="palm-leaf"></div>
+                            <div class="palm-leaf"></div>
+                            <div class="palm-leaf"></div>
+                            <div class="palm-leaf"></div>
+                            <div class="palm-leaf"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -703,6 +1470,56 @@
         </div>
     </section>
 
+    <section class="guest-map-section">
+        <h2 class="section-title">Coming From <span>Everywhere</span></h2>
+        <div class="guest-map-container">
+            <p class="guest-map-subtitle">Our loved ones are traveling from around the world to celebrate with us</p>
+            <div class="world-map-wrapper">
+                <!-- Simplified artistic world map SVG -->
+                <svg class="world-map-svg" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid slice">
+                    <!-- Stylized continents -->
+                    <!-- North America -->
+                    <path d="M 50 120 Q 80 100 120 110 Q 160 90 200 100 Q 240 85 280 95 Q 300 100 290 130 Q 285 160 270 180 Q 250 200 220 210 Q 180 220 150 230 Q 120 240 100 220 Q 80 200 70 170 Q 55 140 50 120 Z"/>
+                    <!-- South America -->
+                    <path d="M 180 280 Q 200 260 220 270 Q 240 280 250 310 Q 260 350 250 390 Q 240 420 220 440 Q 200 450 180 430 Q 165 400 170 360 Q 175 320 180 280 Z"/>
+                    <!-- Europe -->
+                    <path d="M 440 100 Q 470 90 500 95 Q 530 100 550 110 Q 560 130 550 150 Q 530 160 500 155 Q 470 150 450 140 Q 435 125 440 100 Z"/>
+                    <!-- Africa -->
+                    <path d="M 460 180 Q 490 170 520 180 Q 550 200 560 240 Q 565 280 550 320 Q 530 360 500 370 Q 470 365 450 340 Q 440 300 445 260 Q 450 220 460 180 Z"/>
+                    <!-- Asia -->
+                    <path d="M 560 80 Q 620 60 700 70 Q 780 80 840 100 Q 880 130 870 170 Q 850 200 800 210 Q 740 220 680 200 Q 620 180 580 150 Q 550 120 560 80 Z"/>
+                    <!-- Southeast Asia / Indonesia -->
+                    <path d="M 720 240 Q 750 230 780 240 Q 810 250 830 270 Q 820 290 790 295 Q 760 290 740 275 Q 720 260 720 240 Z"/>
+                    <!-- Australia -->
+                    <path d="M 780 340 Q 820 320 870 330 Q 920 350 930 390 Q 925 430 890 450 Q 850 460 810 445 Q 775 420 770 380 Q 770 355 780 340 Z"/>
+                    <!-- New Zealand -->
+                    <path d="M 940 420 Q 955 410 965 420 Q 970 440 960 460 Q 945 470 935 455 Q 930 435 940 420 Z"/>
+                </svg>
+
+                <!-- Guest origin dots (placeholder locations) -->
+                <!-- London, UK -->
+                <div class="guest-dot" style="left: 47%; top: 25%;"></div>
+                <!-- New York, USA -->
+                <div class="guest-dot" style="left: 25%; top: 32%;"></div>
+                <!-- Los Angeles, USA -->
+                <div class="guest-dot" style="left: 12%; top: 38%;"></div>
+                <!-- Tokyo, Japan -->
+                <div class="guest-dot" style="left: 82%; top: 35%;"></div>
+                <!-- Sydney, Australia -->
+                <div class="guest-dot" style="left: 88%; top: 78%;"></div>
+                <!-- Berlin, Germany -->
+                <div class="guest-dot" style="left: 51%; top: 27%;"></div>
+                <!-- Singapore -->
+                <div class="guest-dot" style="left: 75%; top: 55%;"></div>
+                <!-- Cape Town, South Africa -->
+                <div class="guest-dot" style="left: 52%; top: 72%;"></div>
+
+                <!-- Destination marker - Great Keppel Island, Australia -->
+                <div class="destination-marker" style="left: 90%; top: 70%;"></div>
+            </div>
+        </div>
+    </section>
+
     <section class="map-section">
         <div class="map-container">
             <!-- Replace with your actual venue coordinates -->
@@ -727,16 +1544,101 @@
         // Register GSAP plugins
         gsap.registerPlugin(ScrollTrigger);
 
-        // Initial hero animations
-        const heroTl = gsap.timeline({ delay: 0.3 });
-        heroTl
-            .to('.save-the-date', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' })
-            .from('.name-1', { opacity: 0, x: -100, duration: 1, ease: 'power3.out' }, '-=0.4')
-            .from('.ampersand', { opacity: 0, scale: 0, rotation: -180, duration: 0.8, ease: 'back.out(1.7)' }, '-=0.6')
-            .from('.name-2', { opacity: 0, x: 100, duration: 1, ease: 'power3.out' }, '-=0.6')
-            .to('.date', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.4')
-            .to('.location-teaser', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.4')
-            .to('.scroll-hint', { opacity: 1, duration: 0.8 }, '-=0.2');
+        // ===== FOLDED PAPER OPENING ANIMATION =====
+
+        // Create the main timeline for the paper unfolding
+        const paperTl = gsap.timeline({
+            scrollTrigger: {
+                trigger: '.envelope-section',
+                start: 'top top',
+                end: 'bottom bottom',
+                scrub: 0.6,
+                pin: false
+            }
+        });
+
+        // Phase 1: Wax seal breaks and fades (0% - 12%)
+        paperTl.to('.wax-seal', {
+            scale: 1.3,
+            opacity: 0,
+            rotation: 45,
+            duration: 0.12,
+            ease: 'power2.in'
+        }, 0);
+
+        // Phase 2: Paper unfolds (rotates upward like opening a book) (8% - 45%)
+        paperTl.to('.paper-fold', {
+            rotateX: -180,
+            duration: 0.37,
+            ease: 'power2.inOut'
+        }, 0.08);
+
+        // Phase 3: Card fades in as fold opens (25% - 45%)
+        paperTl.to('.invitation-card', {
+            opacity: 1,
+            duration: 0.2,
+            ease: 'power2.out'
+        }, 0.25);
+
+        // Phase 4: Paper base and fold fade away (45% - 60%)
+        paperTl.to('.paper-base', {
+            opacity: 0,
+            scale: 1.1,
+            duration: 0.15,
+            ease: 'power2.in'
+        }, 0.45);
+
+        paperTl.to('.paper-fold', {
+            opacity: 0,
+            duration: 0.15,
+            ease: 'power2.in'
+        }, 0.45);
+
+        // Phase 5: Card slides up and scales (50% - 100%)
+        paperTl.to('.invitation-card', {
+            y: -80,
+            scale: 1.15,
+            duration: 0.5,
+            ease: 'power2.out'
+        }, 0.5);
+
+        // Fade out scroll hint as user scrolls
+        gsap.to('.envelope-scroll-hint', {
+            opacity: 0,
+            scrollTrigger: {
+                trigger: '.envelope-section',
+                start: 'top top',
+                end: '5% top',
+                scrub: true
+            }
+        });
+
+        // Initial entrance animation
+        gsap.from('.envelope-wrapper', {
+            scale: 0.85,
+            opacity: 0,
+            y: 40,
+            duration: 1,
+            ease: 'power3.out',
+            delay: 0.2
+        });
+
+        gsap.from('.wax-seal', {
+            scale: 0,
+            rotation: -180,
+            duration: 0.6,
+            ease: 'back.out(1.7)',
+            delay: 0.6
+        });
+
+        gsap.from('.envelope-scroll-hint', {
+            opacity: 0,
+            y: 20,
+            duration: 0.6,
+            delay: 1
+        });
+
+        // ===== END PAPER ANIMATION =====
 
         // Nav animation
         gsap.to('nav', {
@@ -762,6 +1664,211 @@
                     scrub: 1
                 }
             });
+        });
+
+        // Beach scene scroll animations
+        const beachTl = gsap.timeline({
+            scrollTrigger: {
+                trigger: '.beach-scene-section',
+                start: 'top 80%',
+                end: 'center center',
+                scrub: 1
+            }
+        });
+
+        // Scene fades in and scales up
+        gsap.from('.beach-scene', {
+            scale: 0.8,
+            opacity: 0,
+            duration: 1.5,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: '.beach-scene-section',
+                start: 'top 80%'
+            }
+        });
+
+        // Sun rises as you scroll
+        gsap.fromTo('.sun',
+            { y: 100, scale: 0.5, opacity: 0 },
+            {
+                y: 0,
+                scale: 1,
+                opacity: 1,
+                ease: 'power2.out',
+                scrollTrigger: {
+                    trigger: '.beach-scene-section',
+                    start: 'top 70%',
+                    end: 'center center',
+                    scrub: 1
+                }
+            }
+        );
+
+        // Clouds drift in from sides
+        gsap.from('.cloud-1', {
+            x: -200,
+            opacity: 0,
+            duration: 2,
+            ease: 'power2.out',
+            scrollTrigger: {
+                trigger: '.beach-scene-section',
+                start: 'top 70%'
+            }
+        });
+
+        gsap.from('.cloud-2', {
+            x: 200,
+            opacity: 0,
+            duration: 2,
+            delay: 0.3,
+            ease: 'power2.out',
+            scrollTrigger: {
+                trigger: '.beach-scene-section',
+                start: 'top 70%'
+            }
+        });
+
+        gsap.from('.cloud-3', {
+            x: 150,
+            opacity: 0,
+            duration: 2,
+            delay: 0.5,
+            ease: 'power2.out',
+            scrollTrigger: {
+                trigger: '.beach-scene-section',
+                start: 'top 70%'
+            }
+        });
+
+        // Island rises from the water
+        gsap.from('.island', {
+            y: 150,
+            opacity: 0,
+            duration: 1.5,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: '.beach-scene-section',
+                start: 'top 60%'
+            }
+        });
+
+        // Palm trees grow up with stagger
+        gsap.from('.palm-trunk', {
+            scaleY: 0,
+            transformOrigin: 'bottom center',
+            duration: 1,
+            stagger: 0.2,
+            ease: 'elastic.out(1, 0.5)',
+            scrollTrigger: {
+                trigger: '.beach-scene-section',
+                start: 'top 50%'
+            }
+        });
+
+        gsap.from('.palm-leaves', {
+            scale: 0,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.2,
+            delay: 0.5,
+            ease: 'back.out(1.7)',
+            scrollTrigger: {
+                trigger: '.beach-scene-section',
+                start: 'top 50%'
+            }
+        });
+
+        // Palm trees sway continuously
+        gsap.to('.palm-tree-1', {
+            rotation: 3,
+            duration: 2,
+            repeat: -1,
+            yoyo: true,
+            ease: 'sine.inOut',
+            transformOrigin: 'bottom center'
+        });
+
+        gsap.to('.palm-tree-2', {
+            rotation: -4,
+            duration: 2.5,
+            repeat: -1,
+            yoyo: true,
+            ease: 'sine.inOut',
+            transformOrigin: 'bottom center',
+            delay: 0.5
+        });
+
+        gsap.to('.palm-tree-3', {
+            rotation: 2,
+            duration: 3,
+            repeat: -1,
+            yoyo: true,
+            ease: 'sine.inOut',
+            transformOrigin: 'bottom center',
+            delay: 1
+        });
+
+        // Birds fly in
+        gsap.from('.bird', {
+            x: -100,
+            opacity: 0,
+            duration: 1.5,
+            stagger: 0.3,
+            ease: 'power2.out',
+            scrollTrigger: {
+                trigger: '.beach-scene-section',
+                start: 'top 55%'
+            }
+        });
+
+        // Birds float continuously
+        document.querySelectorAll('.bird').forEach((bird, i) => {
+            gsap.to(bird, {
+                x: '+=30',
+                y: '-=10',
+                duration: 3 + i,
+                repeat: -1,
+                yoyo: true,
+                ease: 'sine.inOut'
+            });
+        });
+
+        // Boat sails across
+        gsap.fromTo('.boat',
+            { x: -100, opacity: 0 },
+            {
+                x: 0,
+                opacity: 1,
+                duration: 2,
+                ease: 'power2.out',
+                scrollTrigger: {
+                    trigger: '.beach-scene-section',
+                    start: 'top 50%'
+                }
+            }
+        );
+
+        // Boat bobs on water
+        gsap.to('.boat', {
+            y: -5,
+            rotation: 3,
+            duration: 2,
+            repeat: -1,
+            yoyo: true,
+            ease: 'sine.inOut'
+        });
+
+        // Ocean parallax effect
+        gsap.to('.ocean', {
+            y: -20,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: '.beach-scene-section',
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 1
+            }
         });
 
         // Countdown section
@@ -814,6 +1921,41 @@
             scrollTrigger: {
                 trigger: '.travel-grid',
                 start: 'top 70%'
+            }
+        });
+
+        // Guest origins map
+        gsap.from('.world-map-wrapper', {
+            scale: 0.9,
+            opacity: 0,
+            duration: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: '.guest-map-section',
+                start: 'top 70%'
+            }
+        });
+
+        gsap.from('.guest-dot', {
+            scale: 0,
+            opacity: 0,
+            duration: 0.6,
+            stagger: 0.15,
+            ease: 'back.out(1.7)',
+            scrollTrigger: {
+                trigger: '.guest-map-section',
+                start: 'top 60%'
+            }
+        });
+
+        gsap.from('.destination-marker', {
+            scale: 0,
+            opacity: 0,
+            duration: 0.8,
+            ease: 'elastic.out(1, 0.5)',
+            scrollTrigger: {
+                trigger: '.guest-map-section',
+                start: 'top 50%'
             }
         });
 
