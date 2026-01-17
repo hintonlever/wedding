@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Save the Date | Partner 1 & Partner 2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #faf8f5;
+            --sage: #8b9a7d;
+            --sage-light: #d4dccf;
+            --charcoal: #2d2d2d;
+            --warm-gray: #6b6b6b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Jost', sans-serif;
+            font-weight: 300;
+            background-color: var(--cream);
+            color: var(--charcoal);
+            line-height: 1.7;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            background: var(--cream);
+            z-index: 100;
+            border-bottom: 1px solid var(--sage-light);
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--warm-gray);
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--sage);
+        }
+
+        /* Sections */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 6rem 2rem;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            border: 1px solid var(--sage-light);
+            border-radius: 50%;
+            opacity: 0.5;
+        }
+
+        .save-the-date {
+            font-size: 0.8rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--sage);
+            margin-bottom: 2rem;
+        }
+
+        .names {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-size: clamp(3rem, 10vw, 6rem);
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        .ampersand {
+            font-style: italic;
+            color: var(--sage);
+            display: block;
+            font-size: 0.5em;
+            margin: 0.3em 0;
+        }
+
+        .date {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 300;
+            margin-top: 2rem;
+            letter-spacing: 0.05em;
+        }
+
+        .location-teaser {
+            margin-top: 1rem;
+            color: var(--warm-gray);
+            font-size: 0.95rem;
+        }
+
+        /* Details Section */
+        .details {
+            background: white;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .detail-card {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .detail-card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: var(--sage);
+        }
+
+        .detail-card p {
+            color: var(--warm-gray);
+            font-size: 0.95rem;
+        }
+
+        /* Travel Section */
+        .travel {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .travel-info {
+            display: grid;
+            gap: 2.5rem;
+            max-width: 600px;
+        }
+
+        .travel-item h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 0.75rem;
+        }
+
+        .travel-item p {
+            color: var(--warm-gray);
+            font-size: 0.95rem;
+        }
+
+        .travel-item a {
+            color: var(--sage);
+            text-decoration: none;
+            border-bottom: 1px solid var(--sage-light);
+            transition: border-color 0.3s ease;
+        }
+
+        .travel-item a:hover {
+            border-color: var(--sage);
+        }
+
+        /* RSVP Section */
+        .rsvp {
+            background: var(--charcoal);
+            color: var(--cream);
+        }
+
+        .rsvp .section-title {
+            color: var(--cream);
+        }
+
+        .rsvp-text {
+            text-align: center;
+            max-width: 500px;
+            margin-bottom: 2.5rem;
+            color: rgba(250, 248, 245, 0.8);
+        }
+
+        .rsvp-button {
+            display: inline-block;
+            padding: 1rem 3rem;
+            border: 1px solid var(--sage-light);
+            color: var(--cream);
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .rsvp-button:hover {
+            background: var(--sage);
+            border-color: var(--sage);
+        }
+
+        .rsvp-deadline {
+            margin-top: 2rem;
+            font-size: 0.85rem;
+            color: rgba(250, 248, 245, 0.6);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem;
+            background: var(--charcoal);
+            color: rgba(250, 248, 245, 0.5);
+            font-size: 0.85rem;
+        }
+
+        /* Animations */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero > * {
+            animation: fadeUp 1s ease forwards;
+        }
+
+        .hero .save-the-date { animation-delay: 0.2s; opacity: 0; }
+        .hero .names { animation-delay: 0.4s; opacity: 0; }
+        .hero .date { animation-delay: 0.6s; opacity: 0; }
+        .hero .location-teaser { animation-delay: 0.8s; opacity: 0; }
+
+        /* Mobile */
+        @media (max-width: 600px) {
+            nav {
+                padding: 1rem;
+                gap: 1.5rem;
+            }
+
+            nav a {
+                font-size: 0.75rem;
+            }
+
+            section {
+                padding: 5rem 1.5rem;
+            }
+
+            .details-grid {
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#details">Details</a>
+        <a href="#travel">Travel</a>
+        <a href="#rsvp">RSVP</a>
+    </nav>
+
+    <section id="home" class="hero">
+        <p class="save-the-date">Save the Date</p>
+        <h1 class="names">
+            Partner 1
+            <span class="ampersand">&</span>
+            Partner 2
+        </h1>
+        <p class="date">15th June 2026</p>
+        <p class="location-teaser">Brisbane, Australia</p>
+    </section>
+
+    <section id="details" class="details">
+        <h2 class="section-title">The Details</h2>
+        <div class="details-grid">
+            <div class="detail-card">
+                <h3>Ceremony</h3>
+                <p>3:00 PM<br>
+                Venue Name<br>
+                123 Example Street<br>
+                Brisbane QLD 4000</p>
+            </div>
+            <div class="detail-card">
+                <h3>Reception</h3>
+                <p>5:30 PM<br>
+                Reception Venue<br>
+                456 Another Street<br>
+                Brisbane QLD 4000</p>
+            </div>
+            <div class="detail-card">
+                <h3>Dress Code</h3>
+                <p>Semi-formal<br>
+                Garden party attire</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="travel" class="travel">
+        <h2 class="section-title">Getting There</h2>
+        <div class="travel-info">
+            <div class="travel-item">
+                <h3>By Air</h3>
+                <p>Brisbane Airport (BNE) is the nearest airport, approximately 20 minutes from the venue. Direct flights available from most Australian capitals and many international destinations.</p>
+            </div>
+            <div class="travel-item">
+                <h3>Accommodation</h3>
+                <p>We've arranged a room block at <a href="#">Hotel Name</a> with a discounted rate. Use code WEDDING2026 when booking. Other nearby options include Hotel B and Hotel C.</p>
+            </div>
+            <div class="travel-item">
+                <h3>Getting Around</h3>
+                <p>Uber and taxis are readily available. The venue has parking available for those hiring cars. We'll also arrange a shuttle from Hotel Name.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="rsvp" class="rsvp">
+        <h2 class="section-title">RSVP</h2>
+        <p class="rsvp-text">We'd be delighted to celebrate with you. Please let us know if you can make it.</p>
+        <a href="https://forms.google.com/your-form-link" class="rsvp-button">Respond Here</a>
+        <p class="rsvp-deadline">Kindly respond by 1st April 2026</p>
+    </section>
+
+    <footer>
+        <p>We can't wait to celebrate with you</p>
+    </footer>
+</body>
+</html>
