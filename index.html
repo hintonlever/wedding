@@ -159,128 +159,110 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            perspective: 1200px;
         }
 
         .envelope-wrapper {
             position: relative;
-            width: min(420px, 85vw);
-            height: min(420px, 85vw);
+            height: 380px;
         }
 
-        /* The folded paper - square that becomes a triangle when folded */
-        .folded-paper {
+        /* Envelope styles */
+        #envelope {
+            position: relative;
+            width: 280px;
+            height: 180px;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #8b5a3c;
+            box-shadow: 0 4px 20px rgba(0,0,0,.2);
+        }
+
+        #envelope .front {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            transform-style: preserve-3d;
+            width: 0;
+            height: 0;
+            z-index: 3;
         }
 
-        /* The back/base of the paper (visible when unfolded) */
-        .paper-base {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(145deg, #f8f4ef 0%, #f0e8df 100%);
-            transform: rotate(45deg);
-            box-shadow: 0 25px 80px rgba(0,0,0,0.12);
+        #envelope .flap {
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
+            border-bottom: 82px solid transparent;
+            border-top: 98px solid #8b5a3c;
+            transform-origin: top;
+            pointer-events: none;
+            transition: transform 0.4s ease, z-index 0.6s;
+            z-index: 5;
         }
 
-        /* The triangular fold (top half folded down) */
-        .paper-fold {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            transform-origin: center center;
-            transform-style: preserve-3d;
-            z-index: 10;
+        #envelope .pocket {
+            border-left: 140px solid #a67c5b;
+            border-right: 140px solid #a67c5b;
+            border-bottom: 90px solid #96694a;
+            border-top: 90px solid transparent;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
         }
 
-        .paper-fold-front {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #e8ddd4 0%, #ddd0c4 100%);
-            clip-path: polygon(50% 0%, 0% 50%, 50% 100%, 100% 50%);
-            backface-visibility: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-
-        .paper-fold-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #f5ebe0 0%, #efe3d6 100%);
-            clip-path: polygon(50% 0%, 0% 50%, 50% 100%, 100% 50%);
-            transform: rotateY(180deg);
-            backface-visibility: hidden;
-        }
-
-        /* Wax seal */
-        .wax-seal {
-            position: absolute;
-            width: 70px;
-            height: 70px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 20;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #ff8a80 0%, var(--coral) 50%, #c0392b 100%);
-            box-shadow:
-                0 4px 15px rgba(192, 57, 43, 0.4),
-                inset 0 2px 4px rgba(255,255,255,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .wax-seal::before {
-            content: 'A & B';
-            font-family: 'Playfair Display', serif;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: rgba(255,255,255,0.9);
-            letter-spacing: 0.05em;
-        }
-
-        /* The card inside */
-        .invitation-card {
-            position: absolute;
-            width: 75%;
-            height: 75%;
-            left: 12.5%;
-            top: 12.5%;
-            background: white;
+        #envelope .letter {
+            position: relative;
+            background-color: #fff;
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            height: 90%;
+            top: 5%;
             border-radius: 6px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 26px rgba(0,0,0,.12);
+            z-index: 1;
+            transition: transform 0.4s ease, z-index 0.6s;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 2rem;
-            z-index: 5;
-            opacity: 0;
+            padding: 1rem;
         }
 
-        .invitation-card .save-the-date-text {
-            font-size: 0.75rem;
-            letter-spacing: 0.4em;
+        #envelope .letter::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-image:
+                linear-gradient(180deg,
+                rgba(255,255,255,0.00) 25%,
+                rgba(215,227,239,0.40) 55%,
+                rgba(215,227,239,0.60) 100%);
+            border-radius: 6px;
+            pointer-events: none;
+        }
+
+        #envelope .letter .save-the-date-text {
+            font-size: 0.6rem;
+            letter-spacing: 0.3em;
             text-transform: uppercase;
             color: var(--coral);
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
         }
 
-        .invitation-card .card-names {
+        #envelope .letter .card-names {
             font-family: 'Playfair Display', serif;
             font-weight: 400;
-            font-size: clamp(1.8rem, 7vw, 3rem);
+            font-size: 1.8rem;
             line-height: 1.2;
             color: var(--charcoal);
+            position: relative;
+            z-index: 1;
         }
 
-        .invitation-card .card-ampersand {
+        #envelope .letter .card-ampersand {
             font-family: 'Playfair Display', serif;
             font-style: italic;
             color: var(--coral);
@@ -289,35 +271,139 @@
             margin: 0.1em 0;
         }
 
-        .invitation-card .card-date {
+        #envelope .letter .card-date {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(0.9rem, 2.5vw, 1.3rem);
+            font-size: 0.9rem;
             font-weight: 400;
-            margin-top: 1.5rem;
+            margin-top: 0.75rem;
             color: var(--charcoal);
+            position: relative;
+            z-index: 1;
         }
 
-        .invitation-card .card-location {
-            margin-top: 0.5rem;
+        #envelope .letter .card-location {
+            margin-top: 0.3rem;
             color: var(--warm-gray);
-            font-size: 0.85rem;
+            font-size: 0.75rem;
+            position: relative;
+            z-index: 1;
         }
 
-        /* Decorative elements on the card */
-        .card-decoration {
+        /* Wax seal on the flap */
+        .wax-seal {
             position: absolute;
-            width: 80%;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--peach), var(--coral), var(--peach), transparent);
-            opacity: 0.6;
+            width: 50px;
+            height: 50px;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #ff8a80 0%, var(--coral) 50%, #c0392b 100%);
+            box-shadow:
+                0 4px 15px rgba(192, 57, 43, 0.4),
+                inset 0 2px 4px rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease, transform 0.3s ease;
         }
 
-        .card-decoration.top {
-            top: 15px;
+        .wax-seal::before {
+            content: 'A & B';
+            font-family: 'Playfair Display', serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.9);
+            letter-spacing: 0.05em;
         }
 
-        .card-decoration.bottom {
-            bottom: 15px;
+        /* Floating hearts */
+        #envelope .hearts {
+            position: absolute;
+            top: 90px;
+            left: 0;
+            right: 0;
+            z-index: 2;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #envelope .heart {
+            position: absolute;
+            bottom: 0;
+            pointer-events: none;
+        }
+
+        #envelope .heart:before,
+        #envelope .heart:after {
+            position: absolute;
+            content: "";
+            left: 25px;
+            top: 0;
+            width: 25px;
+            height: 40px;
+            background: var(--coral);
+            border-radius: 25px 25px 0 0;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+        }
+
+        #envelope .heart:after {
+            left: 0;
+            transform: rotate(45deg);
+            transform-origin: 100% 100%;
+        }
+
+        #envelope .heart.a1 {
+            left: 20%;
+            transform: scale(0.6);
+        }
+
+        #envelope .heart.a2 {
+            left: 55%;
+            transform: scale(1);
+        }
+
+        #envelope .heart.a3 {
+            left: 10%;
+            transform: scale(0.8);
+        }
+
+        /* Heart animations */
+        @keyframes slideUp {
+            0% { top: 0; opacity: 1; }
+            100% { top: -400px; opacity: 0; }
+        }
+
+        @keyframes sideSway {
+            0% { margin-left: 0px; }
+            100% { margin-left: 30px; }
+        }
+
+        #envelope.open .hearts {
+            opacity: 1;
+        }
+
+        #envelope.open .heart.a1 {
+            animation:
+                slideUp 4s linear 1 forwards,
+                sideSway 2s ease-in-out 4 alternate;
+            animation-delay: 0.3s;
+        }
+
+        #envelope.open .heart.a2 {
+            animation:
+                slideUp 5s linear 1 forwards,
+                sideSway 4s ease-in-out 2 alternate;
+            animation-delay: 0.3s;
+        }
+
+        #envelope.open .heart.a3 {
+            animation:
+                slideUp 7s linear 1 forwards,
+                sideSway 2s ease-in-out 6 alternate;
+            animation-delay: 0.3s;
         }
 
         /* Scroll hint for envelope */
@@ -1272,13 +1358,10 @@
     <section id="home" class="envelope-section">
         <div class="envelope-container">
             <div class="envelope-wrapper">
-                <div class="folded-paper">
-                    <!-- The base/back of the paper (diamond shape) -->
-                    <div class="paper-base"></div>
-
-                    <!-- The invitation card (hidden initially, revealed after unfold) -->
-                    <div class="invitation-card">
-                        <div class="card-decoration top"></div>
+                <div id="envelope" class="close">
+                    <div class="front flap"></div>
+                    <div class="front pocket"></div>
+                    <div class="letter">
                         <p class="save-the-date-text">Save the Date</p>
                         <h1 class="card-names">
                             Alina
@@ -1287,16 +1370,12 @@
                         </h1>
                         <p class="card-date">Saturday, 29th August 2026</p>
                         <p class="card-location">Great Keppel Island, Australia</p>
-                        <div class="card-decoration bottom"></div>
                     </div>
-
-                    <!-- The folded part (diamond that unfolds) -->
-                    <div class="paper-fold">
-                        <div class="paper-fold-front"></div>
-                        <div class="paper-fold-back"></div>
+                    <div class="hearts">
+                        <div class="heart a1"></div>
+                        <div class="heart a2"></div>
+                        <div class="heart a3"></div>
                     </div>
-
-                    <!-- Wax seal -->
                     <div class="wax-seal"></div>
                 </div>
             </div>
@@ -1544,63 +1623,82 @@
         // Register GSAP plugins
         gsap.registerPlugin(ScrollTrigger);
 
-        // ===== FOLDED PAPER OPENING ANIMATION =====
+        // ===== ENVELOPE OPENING ANIMATION =====
 
-        // Create the main timeline for the paper unfolding
-        const paperTl = gsap.timeline({
+        const envelope = document.getElementById('envelope');
+        let envelopeOpened = false;
+
+        // Create the main envelope timeline
+        const envelopeTl = gsap.timeline({
             scrollTrigger: {
                 trigger: '.envelope-section',
                 start: 'top top',
                 end: 'bottom bottom',
-                scrub: 0.6,
-                pin: false
+                scrub: 0.5,
+                pin: false,
+                onUpdate: (self) => {
+                    // Add 'open' class when scroll progress > 15%
+                    if (self.progress > 0.15 && !envelopeOpened) {
+                        envelope.classList.add('open');
+                        envelope.classList.remove('close');
+                        envelopeOpened = true;
+                    } else if (self.progress <= 0.15 && envelopeOpened) {
+                        envelope.classList.remove('open');
+                        envelope.classList.add('close');
+                        envelopeOpened = false;
+                    }
+                }
             }
         });
 
-        // Phase 1: Wax seal breaks and fades (0% - 12%)
-        paperTl.to('.wax-seal', {
-            scale: 1.3,
+        // Phase 1: Wax seal fades (0% - 15%)
+        envelopeTl.to('.wax-seal', {
+            scale: 1.2,
             opacity: 0,
-            rotation: 45,
-            duration: 0.12,
+            rotation: 30,
+            duration: 0.15,
             ease: 'power2.in'
         }, 0);
 
-        // Phase 2: Paper unfolds (rotates upward like opening a book) (8% - 45%)
-        paperTl.to('.paper-fold', {
-            rotateX: -180,
-            duration: 0.37,
+        // Phase 2: Flap opens (5% - 35%)
+        envelopeTl.to('#envelope .flap', {
+            rotateX: 180,
+            duration: 0.3,
             ease: 'power2.inOut'
-        }, 0.08);
+        }, 0.05);
 
-        // Phase 3: Card fades in as fold opens (25% - 45%)
-        paperTl.to('.invitation-card', {
-            opacity: 1,
-            duration: 0.2,
+        // Phase 3: Letter slides up (25% - 55%)
+        envelopeTl.to('#envelope .letter', {
+            y: -60,
+            duration: 0.3,
             ease: 'power2.out'
         }, 0.25);
 
-        // Phase 4: Paper base and fold fade away (45% - 60%)
-        paperTl.to('.paper-base', {
+        // Phase 4: Envelope fades, letter continues up and scales (50% - 100%)
+        envelopeTl.to('#envelope .flap, #envelope .pocket', {
             opacity: 0,
-            scale: 1.1,
-            duration: 0.15,
+            duration: 0.2,
             ease: 'power2.in'
-        }, 0.45);
+        }, 0.5);
 
-        paperTl.to('.paper-fold', {
-            opacity: 0,
-            duration: 0.15,
+        envelopeTl.to('#envelope', {
+            backgroundColor: 'transparent',
+            boxShadow: 'none',
+            duration: 0.2,
             ease: 'power2.in'
-        }, 0.45);
+        }, 0.5);
 
-        // Phase 5: Card slides up and scales (50% - 100%)
-        paperTl.to('.invitation-card', {
-            y: -80,
-            scale: 1.15,
+        envelopeTl.to('#envelope .letter', {
+            y: -100,
+            scale: 1.3,
             duration: 0.5,
             ease: 'power2.out'
         }, 0.5);
+
+        envelopeTl.to('#envelope .hearts', {
+            opacity: 0,
+            duration: 0.2
+        }, 0.6);
 
         // Fade out scroll hint as user scrolls
         gsap.to('.envelope-scroll-hint', {
@@ -1615,9 +1713,9 @@
 
         // Initial entrance animation
         gsap.from('.envelope-wrapper', {
-            scale: 0.85,
+            scale: 0.9,
             opacity: 0,
-            y: 40,
+            y: 30,
             duration: 1,
             ease: 'power3.out',
             delay: 0.2
@@ -1628,17 +1726,17 @@
             rotation: -180,
             duration: 0.6,
             ease: 'back.out(1.7)',
-            delay: 0.6
+            delay: 0.5
         });
 
         gsap.from('.envelope-scroll-hint', {
             opacity: 0,
             y: 20,
             duration: 0.6,
-            delay: 1
+            delay: 0.8
         });
 
-        // ===== END PAPER ANIMATION =====
+        // ===== END ENVELOPE ANIMATION =====
 
         // Nav animation
         gsap.to('nav', {
