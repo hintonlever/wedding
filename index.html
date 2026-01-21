@@ -6,7 +6,8 @@
     <title>Save the Date | Alina & Ben</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/beloved-script" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <style>
@@ -18,6 +19,7 @@
             --lavender: #b8a9c9;
             --charcoal: #2d2d2d;
             --warm-gray: #6b6b6b;
+            --font-script: 'Beloved Script', cursive;
         }
 
         * {
@@ -261,7 +263,7 @@
         }
 
         #envelope .letter .card-names {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-script);
             font-weight: 400;
             font-size: clamp(1.8rem, 6vw, 3rem);
             line-height: 1.2;
@@ -271,7 +273,7 @@
         }
 
         #envelope .letter .card-ampersand {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-script);
             font-style: italic;
             color: var(--coral);
             font-size: 0.5em;
@@ -280,7 +282,7 @@
         }
 
         #envelope .letter .card-date {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-script);
             font-size: clamp(0.9rem, 3vw, 1.3rem);
             font-weight: 400;
             margin-top: 1rem;
@@ -319,7 +321,7 @@
 
         .wax-seal::before {
             content: 'A & B';
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-script);
             font-size: clamp(0.6rem, 2vw, 0.85rem);
             font-weight: 600;
             color: rgba(255,255,255,0.9);
@@ -469,7 +471,7 @@
         }
 
         .names {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-script);
             font-weight: 400;
             font-size: clamp(3.5rem, 12vw, 8rem);
             line-height: 1.1;
@@ -486,7 +488,7 @@
         }
 
         .ampersand {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-script);
             font-style: italic;
             background: linear-gradient(135deg, var(--coral), var(--peach));
             -webkit-background-clip: text;
@@ -498,7 +500,7 @@
         }
 
         .date {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-script);
             font-size: clamp(1.8rem, 5vw, 3rem);
             font-weight: 400;
             margin-top: 2rem;
@@ -562,7 +564,7 @@
         }
 
         .countdown-title {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-script);
             font-size: 1.5rem;
             font-weight: 400;
             margin-bottom: 3rem;
@@ -582,7 +584,7 @@
         }
 
         .countdown-number {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-script);
             font-size: clamp(3rem, 8vw, 5rem);
             font-weight: 500;
             background: linear-gradient(135deg, var(--peach), var(--coral));
@@ -606,7 +608,7 @@
         }
 
         .section-title {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-script);
             font-size: clamp(2rem, 5vw, 3.5rem);
             font-weight: 400;
             margin-bottom: 4rem;
@@ -660,7 +662,7 @@
         }
 
         .detail-card h3 {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-script);
             font-size: 1.5rem;
             font-weight: 500;
             margin-bottom: 1rem;
@@ -712,7 +714,7 @@
         }
 
         .travel-content h3 {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-script);
             font-size: 1.4rem;
             font-weight: 500;
             margin-bottom: 0.75rem;
@@ -1237,7 +1239,7 @@
         }
 
         .video-text h2 {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-script);
             font-size: clamp(2.5rem, 8vw, 5rem);
             font-weight: 400;
             margin-bottom: 1rem;
@@ -1407,7 +1409,7 @@
         }
 
         .footer-names {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-script);
             font-size: 1.5rem;
             color: white;
             margin-bottom: 1rem;
