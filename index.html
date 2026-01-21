@@ -115,10 +115,9 @@
         .card {
             position: absolute;
             width: 88%;
-            height: 120%;
+            height: 140%;
             left: 6%;
             bottom: 10%;
-            background: #ffffff;
             border-radius: 6px;
             box-shadow: 0 2px 15px rgba(0,0,0,0.1);
             display: flex;
@@ -129,8 +128,25 @@
             padding: 2rem 1.5rem;
             z-index: 3;
             /* Controlled by JS */
+            transform-origin: center center;
             transform: translateY(var(--card-y, 25%)) scale(var(--card-scale, 1));
             transition: box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+
+        .card-video-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .card-video-bg video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         /* Card decorative border */
@@ -155,7 +171,7 @@
             font-size: clamp(0.6rem, 2.5vw, 0.85rem);
             letter-spacing: 0.35em;
             text-transform: uppercase;
-            color: var(--coral);
+            color: var(--cream);
             margin-bottom: 1rem;
         }
 
@@ -163,28 +179,28 @@
             font-family: var(--font-script);
             font-weight: 400;
             font-size: clamp(2.2rem, 8vw, 3.5rem);
-            line-height: 1.15;
+            line-height: 1.4;
             color: var(--charcoal);
         }
 
         .card-ampersand {
             font-family: var(--font-script);
             font-style: italic;
-            color: var(--coral);
+            color: var(--cream);
             font-size: 0.45em;
             display: block;
-            margin: 0.15em 0;
+            margin: 0.3em 0;
         }
 
         .card-date {
             font-size: clamp(1rem, 4vw, 1.5rem);
-            margin-top: 1.25rem;
-            color: var(--charcoal);
+            margin-top: 2rem;
+            color: var(--cream);
         }
 
         .card-location {
             margin-top: 0.5rem;
-            color: var(--warm-gray);
+            color: var(--cream);
             font-size: clamp(0.75rem, 2.5vw, 0.95rem);
             letter-spacing: 0.05em;
         }
@@ -403,6 +419,11 @@
 
                 <!-- Layer 3: Card -->
                 <div class="card">
+                    <div class="card-video-bg">
+                        <video autoplay muted loop playsinline>
+                            <source src="keppel_sunset_light.mp4" type="video/mp4">
+                        </video>
+                    </div>
                     <div class="card-content">
                         <p class="save-the-date-text">Save the Date</p>
                         <h1 class="card-names">
@@ -473,11 +494,11 @@
             // Card positions
             cardYStart: 25,      // % - hidden inside
             cardYSlideEnd: -55,  // % - slid up
-            cardYFinal: -20,     // % - final centered position
+            cardYFinal: 15,      // % - final centered position
 
             // Card scale
             cardScaleStart: 1,
-            cardScaleEnd: 1.25,
+            cardScaleEnd: 1.5,
 
             // Flap rotation
             flapRotationEnd: -180, // degrees
