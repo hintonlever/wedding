@@ -6,11 +6,15 @@
     <title>Save the Date | Alina & Ben</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
-    <link href="https://fonts.cdnfonts.com/css/beloved-script" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500&family=Quicksand:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
+        @font-face {
+            font-family: 'De Lionist';
+            src: url('de-lionist.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         :root {
             --cream: #fdf9f3;
             --peach: #ffb088;
@@ -19,7 +23,14 @@
             --lavender: #b8a9c9;
             --charcoal: #2d2d2d;
             --warm-gray: #6b6b6b;
-            --font-script: 'Beloved Script', cursive;
+            --font-script: 'De Lionist', cursive;
+            --font-script-secondary: 'Roboto Flex', ExtraLight 200;
+
+            /* Envelope colors - configurable */
+            --envelope-back: #d4c4b5;
+            --envelope-front: #e8ddd4;
+            --envelope-flap: #f0e6dc;
+            --envelope-inner: #c9b9a8;
         }
 
         * {
@@ -29,2319 +40,541 @@
         }
 
         html {
-            scroll-behavior: smooth;
+            height: 100%;
         }
 
         body {
-            font-family: 'Outfit', sans-serif;
-            font-weight: 300;
-            background-color: var(--cream);
+            font-family: var(--font-script-secondary);
+            font-weight: 200;
+            background: linear-gradient(135deg, #fdf9f3 0%, #f5ebe0 50%, #efe3d6 100%);
             color: var(--charcoal);
-            line-height: 1.7;
-            overflow-x: hidden;
+            min-height: 100%;
         }
 
-        /* Floating shapes background */
-        .floating-shapes {
-            position: fixed;
+        /* Scroll container - creates scroll space */
+        .scroll-container {
+            height: 300vh; /* 3x viewport for scroll room */
+            position: relative;
+        }
+
+        /* Main container - sticky to viewport */
+        .envelope-scene {
+            position: sticky;
             top: 0;
-            left: 0;
             width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1500px;
             overflow: hidden;
         }
 
-        .shape {
-            position: absolute;
-            border-radius: 50%;
-            opacity: 0.15;
-        }
-
-        .shape-1 {
-            width: 400px;
-            height: 400px;
-            background: linear-gradient(135deg, var(--peach), var(--coral));
-            top: -100px;
-            right: -100px;
-        }
-
-        .shape-2 {
-            width: 300px;
-            height: 300px;
-            background: linear-gradient(135deg, var(--sage), var(--lavender));
-            bottom: 20%;
-            left: -100px;
-        }
-
-        .shape-3 {
-            width: 200px;
-            height: 200px;
-            background: linear-gradient(135deg, var(--lavender), var(--peach));
-            top: 40%;
-            right: 5%;
-        }
-
-        .shape-4 {
-            width: 150px;
-            height: 150px;
-            background: linear-gradient(135deg, var(--coral), var(--sage));
-            bottom: 10%;
-            right: 20%;
-        }
-
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 1.5rem 3rem;
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            background: rgba(253, 249, 243, 0.9);
-            backdrop-filter: blur(10px);
-            z-index: 100;
-            transform: translateY(-100%);
-        }
-
-        nav a {
-            text-decoration: none;
-            color: var(--warm-gray);
-            font-size: 0.85rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--coral), var(--peach));
-            transition: width 0.3s ease;
-        }
-
-        nav a:hover::after {
-            width: 100%;
-        }
-
-        nav a:hover {
-            color: var(--coral);
-        }
-
-        /* Sections */
-        section {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 6rem 2rem;
-            position: relative;
-        }
-
-        /* Envelope Section */
-        .envelope-section {
-            min-height: 300vh;
-            position: relative;
-            background: linear-gradient(180deg, var(--cream) 0%, #f5ebe0 100%);
-        }
-
-        .envelope-container {
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            padding-top: 15vh;
-        }
-
+        /* Envelope wrapper */
         .envelope-wrapper {
             position: relative;
-            height: min(65vw, 360px);
+            width: min(90vw, 420px);
+            height: min(60vw, 280px);
         }
 
-        /* Envelope styles */
-        #envelope {
-            position: relative;
-            width: min(90vw, 500px);
-            height: min(58vw, 320px);
-            border-bottom-left-radius: 8px;
-            border-bottom-right-radius: 8px;
-            margin-left: auto;
-            margin-right: auto;
-            background-color: #e8ddd4;
-            box-shadow: 0 4px 25px rgba(0,0,0,.12);
-        }
+        /* ==========================================
+           LAYER ORDER (bottom to top):
+           1. Envelope back
+           2. Envelope inner shadow
+           3. Card (inside envelope)
+           4. Envelope side flaps (left & right)
+           5. Envelope front flap (bottom V)
+           6. Envelope top flap (opens)
+           7. Wax seal
+           ========================================== */
 
-        #envelope .front {
+        /* Layer 1: Envelope back */
+        .envelope-back {
             position: absolute;
-            width: 0;
-            height: 0;
-            z-index: 3;
-        }
-
-        #envelope .flap {
-            border-left: min(45vw, 250px) solid transparent;
-            border-right: min(45vw, 250px) solid transparent;
-            border-bottom: min(26vw, 145px) solid transparent;
-            border-top: min(32vw, 175px) solid #e8ddd4;
-            transform-origin: top;
-            pointer-events: none;
-            z-index: 5;
-        }
-
-        /* When envelope is open, flap goes behind */
-        #envelope.open .flap {
-            z-index: 0;
-        }
-
-        #envelope .pocket {
-            border-left: min(45vw, 250px) solid #f5ebe0;
-            border-right: min(45vw, 250px) solid #f5ebe0;
-            border-bottom: min(29vw, 160px) solid #efe3d6;
-            border-top: min(29vw, 160px) solid transparent;
-            border-bottom-left-radius: 8px;
-            border-bottom-right-radius: 8px;
-        }
-
-        #envelope .letter {
-            position: absolute;
-            background-color: #fff;
-            width: 85%;
-            left: 7.5%;
-            height: 80%;
-            top: 15%;
-            border-radius: 8px;
-            box-shadow: 0 4px 30px rgba(0,0,0,.1);
+            width: 100%;
+            height: 100%;
+            background: var(--envelope-back);
+            border-radius: 4px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
             z-index: 1;
+            transition: opacity 0.4s ease;
+        }
+
+        /* Layer 2: Inner shadow for depth */
+        .envelope-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, var(--envelope-inner) 0%, var(--envelope-back) 30%);
+            border-radius: 4px;
+            z-index: 2;
+            transition: opacity 0.4s ease;
+        }
+
+        /* Layer 3: The card */
+        .card {
+            position: absolute;
+            width: 88%;
+            height: 120%;
+            left: 6%;
+            bottom: 10%;
+            background: #ffffff;
+            border-radius: 6px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 1.5rem;
+            padding: 2rem 1.5rem;
+            z-index: 3;
+            /* Controlled by JS */
+            transform: translateY(var(--card-y, 25%)) scale(var(--card-scale, 1));
+            transition: box-shadow 0.3s ease;
         }
 
-        /* When envelope is open, letter comes to front */
-        #envelope.open .letter {
-            z-index: 10;
-        }
-
-        #envelope .letter::after {
+        /* Card decorative border */
+        .card::after {
             content: '';
             position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-image:
-                linear-gradient(180deg,
-                rgba(255,255,255,0.00) 25%,
-                rgba(126, 176, 155, 0.08) 55%,
-                rgba(126, 176, 155, 0.15) 100%);
-            border-radius: 8px;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px solid rgba(126, 176, 155, 0.25);
+            border-radius: 4px;
             pointer-events: none;
         }
 
-        #envelope .letter .save-the-date-text {
-            font-size: clamp(0.6rem, 2vw, 0.8rem);
-            letter-spacing: 0.3em;
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .save-the-date-text {
+            font-size: clamp(0.6rem, 2.5vw, 0.85rem);
+            letter-spacing: 0.35em;
             text-transform: uppercase;
             color: var(--coral);
-            margin-bottom: 0.75rem;
-            position: relative;
-            z-index: 1;
+            margin-bottom: 1rem;
         }
 
-        #envelope .letter .card-names {
+        .card-names {
             font-family: var(--font-script);
             font-weight: 400;
-            font-size: clamp(1.8rem, 6vw, 3rem);
-            line-height: 1.2;
+            font-size: clamp(2.2rem, 8vw, 3.5rem);
+            line-height: 1.15;
             color: var(--charcoal);
-            position: relative;
-            z-index: 1;
         }
 
-        #envelope .letter .card-ampersand {
+        .card-ampersand {
             font-family: var(--font-script);
             font-style: italic;
             color: var(--coral);
-            font-size: 0.5em;
+            font-size: 0.45em;
             display: block;
-            margin: 0.1em 0;
+            margin: 0.15em 0;
         }
 
-        #envelope .letter .card-date {
-            font-family: var(--font-script);
-            font-size: clamp(0.9rem, 3vw, 1.3rem);
-            font-weight: 400;
-            margin-top: 1rem;
+        .card-date {
+            font-size: clamp(1rem, 4vw, 1.5rem);
+            margin-top: 1.25rem;
             color: var(--charcoal);
-            position: relative;
-            z-index: 1;
         }
 
-        #envelope .letter .card-location {
-            margin-top: 0.4rem;
+        .card-location {
+            margin-top: 0.5rem;
             color: var(--warm-gray);
-            font-size: clamp(0.75rem, 2.5vw, 1rem);
-            position: relative;
-            z-index: 1;
+            font-size: clamp(0.75rem, 2.5vw, 0.95rem);
+            letter-spacing: 0.05em;
         }
 
-        /* Wax seal on the flap */
+        /* Layer 4: Side flaps (left and right triangles) */
+        .envelope-side-left {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            background: var(--envelope-front);
+            clip-path: polygon(0 0, 0 100%, 100% 50%);
+            z-index: 4;
+            transition: opacity 0.4s ease;
+        }
+
+        .envelope-side-right {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            right: 0;
+            top: 0;
+            background: var(--envelope-front);
+            clip-path: polygon(100% 0, 100% 100%, 0 50%);
+            z-index: 4;
+            transition: opacity 0.4s ease;
+        }
+
+        /* Layer 5: Bottom/front flap (V pointing up) */
+        .envelope-front-flap {
+            position: absolute;
+            width: 100%;
+            height: 75%;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(0deg, var(--envelope-front) 0%, #efe5db 100%);
+            clip-path: polygon(0 100%, 50% 15%, 100% 100%);
+            border-radius: 0 0 4px 4px;
+            z-index: 5;
+            transition: opacity 0.4s ease;
+        }
+
+        /* Layer 6: Top flap (opens upward) */
+        .envelope-top-flap {
+            position: absolute;
+            width: 100%;
+            height: 70%;
+            top: 0;
+            left: 0;
+            background: linear-gradient(180deg, var(--envelope-flap) 0%, var(--envelope-front) 100%);
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            transform-origin: top center;
+            z-index: 6;
+            /* Controlled by JS */
+            transform: rotateX(var(--flap-rotation, 0deg));
+            transition: opacity 0.4s ease;
+        }
+
+        /* Layer 7: Wax seal */
         .wax-seal {
             position: absolute;
-            width: min(60px, 12vw);
-            height: min(60px, 12vw);
-            top: min(22vw, 120px);
+            width: min(50px, 13vw);
+            height: min(50px, 13vw);
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
-            z-index: 10;
+            z-index: 7;
             border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #ff8a80 0%, var(--coral) 50%, #c0392b 100%);
+            background: radial-gradient(circle at 35% 35%,
+                #ff9a8b 0%,
+                var(--coral) 40%,
+                #c44536 100%);
             box-shadow:
-                0 4px 15px rgba(192, 57, 43, 0.4),
-                inset 0 2px 4px rgba(255,255,255,0.3);
+                0 3px 12px rgba(196, 69, 54, 0.4),
+                inset 0 2px 4px rgba(255,255,255,0.3),
+                inset 0 -2px 4px rgba(0,0,0,0.1);
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            /* Controlled by JS */
+            transform: translate(-50%, -50%) scale(var(--seal-scale, 1)) rotate(var(--seal-rotation, 0deg));
+            opacity: var(--seal-opacity, 1);
         }
 
         .wax-seal::before {
             content: 'A & B';
             font-family: var(--font-script);
-            font-size: clamp(0.6rem, 2vw, 0.85rem);
-            font-weight: 600;
-            color: rgba(255,255,255,0.9);
-            letter-spacing: 0.05em;
+            font-size: clamp(0.5rem, 1.8vw, 0.75rem);
+            color: rgba(255,255,255,0.95);
+            letter-spacing: 0.02em;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
 
-        /* Floating hearts */
-        #envelope .hearts {
-            position: absolute;
-            top: min(29vw, 160px);
-            left: 0;
-            right: 0;
-            z-index: 2;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        #envelope .heart {
-            position: absolute;
-            bottom: 0;
-            pointer-events: none;
-        }
-
-        #envelope .heart:before,
-        #envelope .heart:after {
-            position: absolute;
-            content: "";
-            left: 25px;
-            top: 0;
-            width: 25px;
-            height: 40px;
-            background: var(--coral);
-            border-radius: 25px 25px 0 0;
-            transform: rotate(-45deg);
-            transform-origin: 0 100%;
-        }
-
-        #envelope .heart:after {
-            left: 0;
-            transform: rotate(45deg);
-            transform-origin: 100% 100%;
-        }
-
-        #envelope .heart.a1 {
-            left: 20%;
-            transform: scale(0.6);
-        }
-
-        #envelope .heart.a2 {
-            left: 55%;
-            transform: scale(1);
-        }
-
-        #envelope .heart.a3 {
-            left: 10%;
-            transform: scale(0.8);
-        }
-
-        /* Heart animations */
-        @keyframes slideUp {
-            0% { top: 0; opacity: 1; }
-            100% { top: -400px; opacity: 0; }
-        }
-
-        @keyframes sideSway {
-            0% { margin-left: 0px; }
-            100% { margin-left: 30px; }
-        }
-
-        #envelope.open .hearts {
-            opacity: 1;
-        }
-
-        #envelope.open .heart.a1 {
-            animation:
-                slideUp 4s linear 1 forwards,
-                sideSway 2s ease-in-out 4 alternate;
-            animation-delay: 0.3s;
-        }
-
-        #envelope.open .heart.a2 {
-            animation:
-                slideUp 5s linear 1 forwards,
-                sideSway 4s ease-in-out 2 alternate;
-            animation-delay: 0.3s;
-        }
-
-        #envelope.open .heart.a3 {
-            animation:
-                slideUp 7s linear 1 forwards,
-                sideSway 2s ease-in-out 6 alternate;
-            animation-delay: 0.3s;
-        }
-
-        /* Scroll hint for envelope */
-        .envelope-scroll-hint {
-            position: absolute;
-            bottom: 10%;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--warm-gray);
-            font-size: 0.75rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            opacity: 1;
-            transition: opacity 0.5s ease;
-        }
-
-        .envelope-scroll-hint .scroll-arrow {
-            width: 20px;
-            height: 30px;
-            border: 2px solid var(--warm-gray);
-            border-radius: 10px;
-            position: relative;
-        }
-
-        .envelope-scroll-hint .scroll-arrow::before {
-            content: '';
-            position: absolute;
-            top: 6px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 8px;
-            background: var(--coral);
-            border-radius: 2px;
-            animation: scrollBounce 1.5s ease-in-out infinite;
-        }
-
-        /* Hero - now inside envelope card */
-        .hero {
-            text-align: center;
-            position: relative;
-        }
-
-        .save-the-date {
-            font-size: 0.9rem;
-            letter-spacing: 0.4em;
-            text-transform: uppercase;
-            color: var(--coral);
-            margin-bottom: 2rem;
-            opacity: 0;
-        }
-
-        .names {
-            font-family: var(--font-script);
-            font-weight: 400;
-            font-size: clamp(3.5rem, 12vw, 8rem);
-            line-height: 1.1;
-            margin-bottom: 0.5rem;
-            opacity: 0;
-        }
-
-        .name-1, .name-2 {
-            display: block;
-            background: linear-gradient(135deg, var(--charcoal) 0%, var(--warm-gray) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .ampersand {
-            font-family: var(--font-script);
-            font-style: italic;
-            background: linear-gradient(135deg, var(--coral), var(--peach));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            display: block;
-            font-size: 0.4em;
-            margin: 0.2em 0;
-        }
-
-        .date {
-            font-family: var(--font-script);
-            font-size: clamp(1.8rem, 5vw, 3rem);
-            font-weight: 400;
-            margin-top: 2rem;
-            letter-spacing: 0.05em;
-            opacity: 0;
-        }
-
-        .location-teaser {
-            margin-top: 1rem;
-            color: var(--warm-gray);
-            font-size: 1.1rem;
-            opacity: 0;
-        }
-
+        /* Scroll hint */
         .scroll-hint {
             position: absolute;
-            bottom: 3rem;
+            bottom: -70px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.5rem;
+            gap: 8px;
             color: var(--warm-gray);
             font-size: 0.75rem;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            opacity: 0;
+            opacity: var(--hint-opacity, 1);
+            transition: opacity 0.3s ease;
         }
 
-        .scroll-arrow {
-            width: 20px;
-            height: 30px;
+        .scroll-icon {
+            width: 28px;
+            height: 42px;
             border: 2px solid var(--warm-gray);
-            border-radius: 10px;
+            border-radius: 14px;
             position: relative;
         }
 
-        .scroll-arrow::before {
+        .scroll-icon::before {
             content: '';
             position: absolute;
-            top: 6px;
+            top: 8px;
             left: 50%;
             transform: translateX(-50%);
             width: 4px;
             height: 8px;
             background: var(--coral);
             border-radius: 2px;
-            animation: scrollBounce 1.5s ease-in-out infinite;
+            animation: scroll-bounce 1.5s ease-in-out infinite;
         }
 
-        @keyframes scrollBounce {
-            0%, 100% { top: 6px; opacity: 1; }
-            50% { top: 14px; opacity: 0.5; }
+        @keyframes scroll-bounce {
+            0%, 100% { top: 8px; opacity: 1; }
+            50% { top: 20px; opacity: 0.5; }
         }
 
-        /* Countdown */
-        .countdown-section {
-            background: linear-gradient(135deg, var(--charcoal) 0%, #1a1a1a 100%);
-            color: var(--cream);
+        /* Envelope fades when fully open */
+        .envelope-wrapper.envelope-hidden .envelope-back,
+        .envelope-wrapper.envelope-hidden .envelope-inner,
+        .envelope-wrapper.envelope-hidden .envelope-side-left,
+        .envelope-wrapper.envelope-hidden .envelope-side-right,
+        .envelope-wrapper.envelope-hidden .envelope-front-flap,
+        .envelope-wrapper.envelope-hidden .envelope-top-flap {
+            opacity: 0;
         }
 
-        .countdown-title {
-            font-family: var(--font-script);
-            font-size: 1.5rem;
-            font-weight: 400;
-            margin-bottom: 3rem;
-            opacity: 0.8;
+        /* Card comes to front when envelope hidden */
+        .envelope-wrapper.envelope-hidden .card {
+            z-index: 100;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.2);
         }
 
-        .countdown {
-            display: flex;
-            gap: 2rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .countdown-item {
-            text-align: center;
-            min-width: 100px;
-        }
-
-        .countdown-number {
-            font-family: var(--font-script);
-            font-size: clamp(3rem, 8vw, 5rem);
-            font-weight: 500;
-            background: linear-gradient(135deg, var(--peach), var(--coral));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1;
-        }
-
-        .countdown-label {
-            font-size: 0.8rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            opacity: 0.6;
-            margin-top: 0.5rem;
-        }
-
-        /* Details Section */
-        .details {
-            background: white;
-        }
-
-        .section-title {
-            font-family: var(--font-script);
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 400;
-            margin-bottom: 4rem;
-            text-align: center;
-            position: relative;
-        }
-
-        .section-title span {
-            background: linear-gradient(135deg, var(--coral), var(--peach));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .details-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 3rem;
-            max-width: 1000px;
-            width: 100%;
-        }
-
-        .detail-card {
-            text-align: center;
-            padding: 3rem 2rem;
-            background: var(--cream);
-            border-radius: 20px;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-        }
-
-        .detail-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--coral), var(--peach), var(--sage));
-        }
-
-        .detail-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-
-        .detail-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .detail-card h3 {
-            font-family: var(--font-script);
-            font-size: 1.5rem;
-            font-weight: 500;
-            margin-bottom: 1rem;
-            color: var(--charcoal);
-        }
-
-        .detail-card p {
-            color: var(--warm-gray);
-            font-size: 1rem;
-            line-height: 1.8;
-        }
-
-        /* Travel Section */
-        .travel {
-            position: relative;
-        }
-
-        .travel-grid {
-            display: grid;
-            gap: 2rem;
-            max-width: 900px;
-            width: 100%;
-        }
-
-        .travel-item {
-            display: grid;
-            grid-template-columns: 80px 1fr;
-            gap: 2rem;
-            align-items: start;
-            padding: 2rem;
-            background: white;
-            border-radius: 16px;
-            transition: transform 0.3s ease;
-        }
-
-        .travel-item:hover {
-            transform: translateX(10px);
-        }
-
-        .travel-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--sage), var(--lavender));
+        /* Floating decorative elements */
+        .floating-shape {
+            position: fixed;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-        }
-
-        .travel-content h3 {
-            font-family: var(--font-script);
-            font-size: 1.4rem;
-            font-weight: 500;
-            margin-bottom: 0.75rem;
-        }
-
-        .travel-content p {
-            color: var(--warm-gray);
-            font-size: 1rem;
-        }
-
-        .travel-content a {
-            color: var(--coral);
-            text-decoration: none;
-            font-weight: 400;
-            position: relative;
-        }
-
-        .travel-content a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: var(--coral);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-
-        .travel-content a:hover::after {
-            transform: scaleX(1);
-        }
-
-        /* Guest Origins Map */
-        .guest-map-section {
-            background: var(--cream);
-            padding: 6rem 2rem;
-        }
-
-        .guest-map-container {
-            max-width: 1000px;
-            width: 100%;
-            position: relative;
-        }
-
-        .guest-map-subtitle {
-            text-align: center;
-            color: var(--warm-gray);
-            font-size: 1.1rem;
-            margin-bottom: 3rem;
-            font-style: italic;
-        }
-
-        .world-map-wrapper {
-            position: relative;
-            width: 100%;
-            padding-bottom: 50%;
-            background: linear-gradient(180deg, rgba(126, 176, 155, 0.1) 0%, rgba(184, 169, 201, 0.1) 100%);
-            border-radius: 20px;
-            overflow: hidden;
-        }
-
-        .world-map-svg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        .world-map-svg path {
-            fill: var(--sage);
-            opacity: 0.3;
-            stroke: var(--cream);
-            stroke-width: 0.5;
-            transition: opacity 0.3s ease;
-        }
-
-        .guest-dot {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            background: linear-gradient(135deg, var(--coral), var(--peach));
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.2);
-            animation: dotPulse 2s ease-in-out infinite;
-        }
-
-        .guest-dot::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 24px;
-            height: 24px;
-            background: rgba(255, 107, 107, 0.15);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            animation: dotRipple 2s ease-out infinite;
-        }
-
-        @keyframes dotPulse {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.2); }
-        }
-
-        @keyframes dotRipple {
-            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.4; }
-            100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
-        }
-
-        /* Stagger the animations */
-        .guest-dot:nth-child(2) { animation-delay: 0.3s; }
-        .guest-dot:nth-child(2)::before { animation-delay: 0.3s; }
-        .guest-dot:nth-child(3) { animation-delay: 0.6s; }
-        .guest-dot:nth-child(3)::before { animation-delay: 0.6s; }
-        .guest-dot:nth-child(4) { animation-delay: 0.9s; }
-        .guest-dot:nth-child(4)::before { animation-delay: 0.9s; }
-        .guest-dot:nth-child(5) { animation-delay: 1.2s; }
-        .guest-dot:nth-child(5)::before { animation-delay: 1.2s; }
-        .guest-dot:nth-child(6) { animation-delay: 1.5s; }
-        .guest-dot:nth-child(6)::before { animation-delay: 1.5s; }
-        .guest-dot:nth-child(7) { animation-delay: 0.2s; }
-        .guest-dot:nth-child(7)::before { animation-delay: 0.2s; }
-        .guest-dot:nth-child(8) { animation-delay: 0.8s; }
-        .guest-dot:nth-child(8)::before { animation-delay: 0.8s; }
-
-        /* Destination marker (Great Keppel Island) */
-        .destination-marker {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: linear-gradient(135deg, var(--lavender), var(--sage));
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 0 6px rgba(126, 176, 155, 0.3);
-            z-index: 10;
-        }
-
-        .destination-marker::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 8px;
-            height: 8px;
-            background: white;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        /* Beach Scene Section */
-        .beach-scene-section {
-            min-height: 80vh;
-            background: linear-gradient(180deg, var(--cream) 0%, #e8f4f8 100%);
-            position: relative;
-            overflow: hidden;
-            padding: 4rem 2rem;
-        }
-
-        .beach-scene-container {
-            max-width: 1200px;
-            width: 100%;
-            margin: 0 auto;
-            position: relative;
-            height: 500px;
-        }
-
-        .beach-scene {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            border-radius: 30px;
-            overflow: hidden;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.15);
-        }
-
-        /* Sky gradient */
-        .sky {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 60%;
-            background: linear-gradient(180deg,
-                #87ceeb 0%,
-                #ffd89b 40%,
-                #ffb088 70%,
-                #ff6b6b 100%);
-        }
-
-        /* Sun */
-        .sun {
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            background: radial-gradient(circle, #fff5cc 0%, #ffd700 50%, #ff8c00 100%);
-            border-radius: 50%;
-            top: 15%;
-            left: 50%;
-            transform: translateX(-50%);
-            box-shadow: 0 0 60px 20px rgba(255, 200, 100, 0.5);
-        }
-
-        /* Clouds */
-        .cloud {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 50px;
-        }
-
-        .cloud-1 {
-            width: 120px;
-            height: 40px;
-            top: 10%;
-            left: 10%;
-        }
-
-        .cloud-1::before {
-            content: '';
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            top: -30px;
-            left: 20px;
-        }
-
-        .cloud-1::after {
-            content: '';
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            top: -20px;
-            left: 60px;
-        }
-
-        .cloud-2 {
-            width: 100px;
-            height: 35px;
-            top: 8%;
-            right: 15%;
-        }
-
-        .cloud-2::before {
-            content: '';
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            top: -25px;
-            left: 15px;
-        }
-
-        .cloud-3 {
-            width: 80px;
-            height: 30px;
-            top: 20%;
-            right: 30%;
-        }
-
-        /* Ocean */
-        .ocean {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 45%;
-            background: linear-gradient(180deg,
-                #4db8d3 0%,
-                #2d8eb0 30%,
-                #1a5f7a 100%);
-            overflow: hidden;
-        }
-
-        /* Waves */
-        .wave {
-            position: absolute;
-            width: 200%;
-            height: 100px;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath fill='%23ffffff' fill-opacity='0.3' d='M0,60 C150,120 350,0 500,60 C650,120 850,0 1000,60 C1150,120 1200,80 1200,80 L1200,120 L0,120 Z'/%3E%3C/svg%3E");
-            background-size: 600px 100px;
-        }
-
-        .wave-1 {
-            top: -20px;
-            animation: waveMove 8s linear infinite;
-        }
-
-        .wave-2 {
-            top: 0px;
-            opacity: 0.5;
-            animation: waveMove 10s linear infinite reverse;
-        }
-
-        .wave-3 {
-            top: 20px;
-            opacity: 0.3;
-            animation: waveMove 12s linear infinite;
-        }
-
-        @keyframes waveMove {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        /* Island */
-        .island {
-            position: absolute;
-            bottom: 38%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 400px;
-            height: 100px;
-        }
-
-        .island-body {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 350px;
-            height: 60px;
-            background: linear-gradient(180deg, #7eb09b 0%, #5a9a7a 100%);
-            border-radius: 50% 50% 20% 20% / 100% 100% 20% 20%;
-        }
-
-        .island-body::before {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: -20px;
-            width: 390px;
-            height: 30px;
-            background: #f5deb3;
-            border-radius: 50%;
-        }
-
-        /* Palm Trees */
-        .palm-tree {
-            position: absolute;
-            bottom: 40px;
-        }
-
-        .palm-trunk {
-            width: 12px;
-            height: 80px;
-            background: linear-gradient(90deg, #8b4513 0%, #a0522d 50%, #8b4513 100%);
-            border-radius: 6px;
-            transform-origin: bottom center;
-        }
-
-        .palm-leaves {
-            position: absolute;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .palm-leaf {
-            position: absolute;
-            width: 60px;
-            height: 15px;
-            background: linear-gradient(90deg, #228b22 0%, #32cd32 50%, #228b22 100%);
-            border-radius: 50% 50% 0 0;
-            transform-origin: left center;
-        }
-
-        .palm-leaf:nth-child(1) { transform: rotate(-60deg) translateX(-10px); }
-        .palm-leaf:nth-child(2) { transform: rotate(-30deg) translateX(-10px); }
-        .palm-leaf:nth-child(3) { transform: rotate(0deg) translateX(-10px); }
-        .palm-leaf:nth-child(4) { transform: rotate(30deg) translateX(-10px); }
-        .palm-leaf:nth-child(5) { transform: rotate(60deg) translateX(-10px); }
-
-        .palm-tree-1 {
-            left: 30%;
-        }
-
-        .palm-tree-1 .palm-trunk {
-            height: 90px;
-            transform: rotate(-5deg);
-        }
-
-        .palm-tree-2 {
-            left: 55%;
-        }
-
-        .palm-tree-2 .palm-trunk {
-            height: 70px;
-            transform: rotate(8deg);
-        }
-
-        .palm-tree-3 {
-            left: 42%;
-        }
-
-        .palm-tree-3 .palm-trunk {
-            height: 100px;
-        }
-
-        /* Birds */
-        .bird {
-            position: absolute;
-            font-size: 1.5rem;
-            color: #333;
-            opacity: 0.6;
-        }
-
-        .bird-1 { top: 25%; left: 20%; }
-        .bird-2 { top: 18%; left: 75%; }
-        .bird-3 { top: 30%; right: 20%; }
-
-        /* Beach reflection shimmer */
-        .water-shimmer {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg,
-                transparent 0%,
-                rgba(255,255,255,0.1) 50%,
-                transparent 100%);
-            animation: shimmerWater 3s ease-in-out infinite;
-        }
-
-        @keyframes shimmerWater {
-            0%, 100% { transform: translateX(-100%); }
-            50% { transform: translateX(100%); }
-        }
-
-        /* Section text */
-        .beach-scene-title {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .beach-scene-subtitle {
-            text-align: center;
-            color: var(--warm-gray);
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            font-style: italic;
-        }
-
-        /* Boat */
-        .boat {
-            position: absolute;
-            bottom: 52%;
-            left: 20%;
-            width: 50px;
-            height: 20px;
-        }
-
-        .boat-hull {
-            width: 50px;
-            height: 15px;
-            background: #8b4513;
-            border-radius: 0 0 50% 50%;
-        }
-
-        .boat-sail {
-            position: absolute;
-            bottom: 10px;
-            left: 20px;
-            width: 0;
-            height: 0;
-            border-left: 5px solid transparent;
-            border-right: 15px solid white;
-            border-bottom: 40px solid transparent;
-            border-top: 0;
-        }
-
-        /* Video Section */
-        .video-section {
-            position: relative;
-            height: auto;
-            margin-top: -20vh;
-            margin-bottom: -20vh;
-            z-index: 1;
-        }
-
-        .video-container {
-            position: relative;
-            width: 100%;
-            height: 120vh;
-            overflow: hidden;
-        }
-
-        .video-container video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .video-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                180deg,
-                rgba(0, 0, 0, 0.3) 0%,
-                rgba(0, 0, 0, 0.1) 50%,
-                rgba(0, 0, 0, 0.4) 100%
-            );
+            opacity: 0.08;
             pointer-events: none;
         }
 
-        .video-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            color: white;
-            z-index: 2;
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, var(--peach), var(--coral));
+            top: -100px;
+            right: -80px;
         }
 
-        .video-text h2 {
-            font-family: var(--font-script);
-            font-size: clamp(2.5rem, 8vw, 5rem);
-            font-weight: 400;
-            margin-bottom: 1rem;
-            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        .shape-2 {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, var(--sage), var(--lavender));
+            bottom: 10%;
+            left: -60px;
         }
 
-        .video-text p {
-            font-size: clamp(1rem, 3vw, 1.3rem);
-            opacity: 0.9;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        .shape-3 {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, var(--lavender), var(--peach));
+            top: 30%;
+            right: 5%;
         }
 
-        .video-scroll-hint {
-            position: absolute;
-            bottom: 3rem;
-            left: 50%;
-            transform: translateX(-50%);
-            color: white;
-            font-size: 0.75rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            opacity: 0.7;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .video-scroll-hint .scroll-arrow {
-            border-color: rgba(255, 255, 255, 0.5);
-        }
-
-        .video-scroll-hint .scroll-arrow::before {
-            background: white;
-        }
-
-        .video-loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            color: white;
-            z-index: 3;
-        }
-
-        .video-loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(255, 255, 255, 0.2);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .video-loading p {
-            font-size: 0.85rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            opacity: 0.8;
-        }
-
-        /* Map Section */
-        .map-section {
-            background: white;
-            padding: 4rem 2rem;
-        }
-
-        .map-container {
-            max-width: 900px;
-            width: 100%;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-        }
-
-        .map-container iframe {
-            width: 100%;
-            height: 400px;
-            border: none;
-        }
-
-        /* RSVP Section */
-        .rsvp {
-            background: linear-gradient(135deg, var(--coral) 0%, var(--peach) 50%, var(--lavender) 100%);
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .rsvp::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
-            animation: shimmer 15s linear infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .rsvp .section-title {
-            color: white;
-        }
-
-        .rsvp .section-title span {
-            -webkit-text-fill-color: white;
-        }
-
-        .rsvp-text {
-            text-align: center;
-            max-width: 500px;
-            margin-bottom: 3rem;
-            font-size: 1.1rem;
-            opacity: 0.95;
-            position: relative;
-            z-index: 1;
-        }
-
-        .rsvp-button {
-            display: inline-block;
-            padding: 1.2rem 4rem;
-            background: white;
-            color: var(--coral);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            border-radius: 50px;
-            transition: all 0.4s ease;
-            position: relative;
-            z-index: 1;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        .rsvp-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-        }
-
-        .rsvp-deadline {
-            margin-top: 2rem;
-            font-size: 0.9rem;
-            opacity: 0.8;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 4rem 2rem;
-            background: var(--charcoal);
-            color: rgba(255,255,255,0.6);
-            font-size: 0.9rem;
-        }
-
-        .footer-names {
-            font-family: var(--font-script);
-            font-size: 1.5rem;
-            color: white;
-            margin-bottom: 1rem;
-        }
-
-        .hearts {
-            font-size: 1.5rem;
-            margin: 1rem 0;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        /* Mobile */
-        @media (max-width: 768px) {
-            nav {
-                padding: 1rem;
-                gap: 1.5rem;
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .card {
+                padding: 1.5rem 1rem;
             }
 
-            nav a {
-                font-size: 0.7rem;
-                letter-spacing: 0.1em;
-            }
-
-            section {
-                padding: 5rem 1.5rem;
-            }
-
-            .countdown {
-                gap: 1rem;
-            }
-
-            .countdown-item {
-                min-width: 70px;
-            }
-
-            .travel-item {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-
-            .travel-icon {
-                margin: 0 auto;
-            }
-
-            .detail-card {
-                padding: 2rem 1.5rem;
+            .scroll-hint {
+                bottom: -60px;
+                font-size: 0.65rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="floating-shapes">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
-        <div class="shape shape-3"></div>
-        <div class="shape shape-4"></div>
-    </div>
+    <!-- Decorative background shapes -->
+    <div class="floating-shape shape-1"></div>
+    <div class="floating-shape shape-2"></div>
+    <div class="floating-shape shape-3"></div>
 
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#details">Details</a>
-        <a href="#travel">Travel</a>
-        <a href="#rsvp">RSVP</a>
-    </nav>
+    <!-- Scroll container -->
+    <div class="scroll-container">
+        <!-- Envelope scene (sticky) -->
+        <div class="envelope-scene">
+            <div class="envelope-wrapper" id="envelope">
 
-    <!-- Envelope Opening Section -->
-    <section id="home" class="envelope-section">
-        <div class="envelope-container">
-            <div class="envelope-wrapper">
-                <div id="envelope" class="close">
-                    <div class="front flap"></div>
-                    <div class="front pocket"></div>
-                    <div class="letter">
+                <!-- Layer 1: Envelope back -->
+                <div class="envelope-back"></div>
+
+                <!-- Layer 2: Inner shadow -->
+                <div class="envelope-inner"></div>
+
+                <!-- Layer 3: Card -->
+                <div class="card">
+                    <div class="card-content">
                         <p class="save-the-date-text">Save the Date</p>
                         <h1 class="card-names">
                             Alina
                             <span class="card-ampersand">&</span>
                             Ben
                         </h1>
-                        <p class="card-date">Saturday, 29th August 2026</p>
+                        <p class="card-date">29.08.26</p>
                         <p class="card-location">Great Keppel Island, Australia</p>
                     </div>
-                    <div class="hearts">
-                        <div class="heart a1"></div>
-                        <div class="heart a2"></div>
-                        <div class="heart a3"></div>
-                    </div>
-                    <div class="wax-seal"></div>
-                </div>
-            </div>
-
-            <!-- Scroll hint -->
-            <div class="envelope-scroll-hint">
-                <div class="scroll-arrow"></div>
-                <span>Scroll to open</span>
-            </div>
-        </div>
-    </section>
-
-    <section class="beach-scene-section">
-        <h2 class="section-title beach-scene-title">Our <span>Island</span> Paradise</h2>
-        <p class="beach-scene-subtitle">Where the turquoise waters meet golden sands</p>
-        <div class="beach-scene-container">
-            <div class="beach-scene">
-                <!-- Sky -->
-                <div class="sky"></div>
-
-                <!-- Sun -->
-                <div class="sun"></div>
-
-                <!-- Clouds -->
-                <div class="cloud cloud-1"></div>
-                <div class="cloud cloud-2"></div>
-                <div class="cloud cloud-3"></div>
-
-                <!-- Birds -->
-                <svg class="bird bird-1" width="30" height="15" viewBox="0 0 30 15">
-                    <path d="M0,7 Q7,0 15,7 Q23,0 30,7" stroke="currentColor" fill="none" stroke-width="2"/>
-                </svg>
-                <svg class="bird bird-2" width="25" height="12" viewBox="0 0 30 15">
-                    <path d="M0,7 Q7,0 15,7 Q23,0 30,7" stroke="currentColor" fill="none" stroke-width="2"/>
-                </svg>
-                <svg class="bird bird-3" width="20" height="10" viewBox="0 0 30 15">
-                    <path d="M0,7 Q7,0 15,7 Q23,0 30,7" stroke="currentColor" fill="none" stroke-width="2"/>
-                </svg>
-
-                <!-- Ocean -->
-                <div class="ocean">
-                    <div class="wave wave-1"></div>
-                    <div class="wave wave-2"></div>
-                    <div class="wave wave-3"></div>
-                    <div class="water-shimmer"></div>
                 </div>
 
-                <!-- Boat -->
-                <div class="boat">
-                    <div class="boat-hull"></div>
-                    <div class="boat-sail"></div>
-                </div>
+                <!-- Layer 4: Side flaps -->
+                <div class="envelope-side-left"></div>
+                <div class="envelope-side-right"></div>
 
-                <!-- Island with palm trees -->
-                <div class="island">
-                    <div class="island-body"></div>
+                <!-- Layer 5: Front flap (bottom V) -->
+                <div class="envelope-front-flap"></div>
 
-                    <!-- Palm trees -->
-                    <div class="palm-tree palm-tree-1">
-                        <div class="palm-trunk"></div>
-                        <div class="palm-leaves">
-                            <div class="palm-leaf"></div>
-                            <div class="palm-leaf"></div>
-                            <div class="palm-leaf"></div>
-                            <div class="palm-leaf"></div>
-                            <div class="palm-leaf"></div>
-                        </div>
-                    </div>
+                <!-- Layer 6: Top flap (opens) -->
+                <div class="envelope-top-flap"></div>
 
-                    <div class="palm-tree palm-tree-2">
-                        <div class="palm-trunk"></div>
-                        <div class="palm-leaves">
-                            <div class="palm-leaf"></div>
-                            <div class="palm-leaf"></div>
-                            <div class="palm-leaf"></div>
-                            <div class="palm-leaf"></div>
-                            <div class="palm-leaf"></div>
-                        </div>
-                    </div>
+                <!-- Layer 7: Wax seal -->
+                <div class="wax-seal"></div>
 
-                    <div class="palm-tree palm-tree-3">
-                        <div class="palm-trunk"></div>
-                        <div class="palm-leaves">
-                            <div class="palm-leaf"></div>
-                            <div class="palm-leaf"></div>
-                            <div class="palm-leaf"></div>
-                            <div class="palm-leaf"></div>
-                            <div class="palm-leaf"></div>
-                        </div>
-                    </div>
+                <!-- Scroll hint -->
+                <div class="scroll-hint">
+                    <div class="scroll-icon"></div>
+                    <span>Scroll to open</span>
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- Video Section -->
-    <section class="video-section">
-        <div class="video-container">
-            <video id="scroll-video" muted playsinline>
-                <source src="video-optimized.mp4" type="video/mp4">
-            </video>
-            <div class="video-overlay"></div>
-            <div class="video-loading" id="video-loading">
-                <div class="video-loading-spinner"></div>
-                <p>Loading video...</p>
-            </div>
-            <div class="video-text" style="opacity: 0;">
-                <h2>Our Journey</h2>
-                <p>Scroll to explore our story</p>
-            </div>
-            <div class="video-scroll-hint">
-                <div class="scroll-arrow"></div>
-                <span>Keep scrolling</span>
-            </div>
-        </div>
-    </section>
-
-    <section class="countdown-section">
-        <p class="countdown-title">Counting down to forever</p>
-        <div class="countdown">
-            <div class="countdown-item">
-                <div class="countdown-number" id="days">---</div>
-                <div class="countdown-label">Days</div>
-            </div>
-            <div class="countdown-item">
-                <div class="countdown-number" id="hours">--</div>
-                <div class="countdown-label">Hours</div>
-            </div>
-            <div class="countdown-item">
-                <div class="countdown-number" id="minutes">--</div>
-                <div class="countdown-label">Minutes</div>
-            </div>
-            <div class="countdown-item">
-                <div class="countdown-number" id="seconds">--</div>
-                <div class="countdown-label">Seconds</div>
-            </div>
-        </div>
-    </section>
-
-    <section id="details" class="details">
-        <h2 class="section-title">The <span>Details</span></h2>
-        <div class="details-grid">
-            <div class="detail-card">
-                <div class="detail-icon">💒</div>
-                <h3>Ceremony</h3>
-                <p>3:00 PM<br>
-                Venue Name<br>
-                123 Example Street<br>
-                Brisbane QLD 4000</p>
-            </div>
-            <div class="detail-card">
-                <div class="detail-icon">🥂</div>
-                <h3>Reception</h3>
-                <p>5:30 PM<br>
-                Reception Venue<br>
-                456 Another Street<br>
-                Brisbane QLD 4000</p>
-            </div>
-            <div class="detail-card">
-                <div class="detail-icon">👔</div>
-                <h3>Dress Code</h3>
-                <p>Semi-formal<br>
-                Garden party vibes<br>
-                Wear something you can dance in!</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="travel" class="travel">
-        <h2 class="section-title">Getting <span>There</span></h2>
-        <div class="travel-grid">
-            <div class="travel-item">
-                <div class="travel-icon">✈️</div>
-                <div class="travel-content">
-                    <h3>By Air</h3>
-                    <p>Brisbane Airport (BNE) is approximately 20 minutes from the venue. Direct flights available from most Australian capitals and many international destinations.</p>
-                </div>
-            </div>
-            <div class="travel-item">
-                <div class="travel-icon">🏨</div>
-                <div class="travel-content">
-                    <h3>Where to Stay</h3>
-                    <p>We've arranged a room block at <a href="#">Hotel Name</a> with a special rate. Use code <strong>WEDDING2026</strong> when booking. Other nearby options include Hotel B and Hotel C.</p>
-                </div>
-            </div>
-            <div class="travel-item">
-                <div class="travel-icon">🚗</div>
-                <div class="travel-content">
-                    <h3>Getting Around</h3>
-                    <p>Uber and taxis are readily available. The venue has parking for those hiring cars. We'll arrange a shuttle from Hotel Name for those who want to enjoy the open bar worry-free!</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="guest-map-section">
-        <h2 class="section-title">Coming From <span>Everywhere</span></h2>
-        <div class="guest-map-container">
-            <p class="guest-map-subtitle">Our loved ones are traveling from around the world to celebrate with us</p>
-            <div class="world-map-wrapper">
-                <!-- Simplified artistic world map SVG -->
-                <svg class="world-map-svg" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid slice">
-                    <!-- Stylized continents -->
-                    <!-- North America -->
-                    <path d="M 50 120 Q 80 100 120 110 Q 160 90 200 100 Q 240 85 280 95 Q 300 100 290 130 Q 285 160 270 180 Q 250 200 220 210 Q 180 220 150 230 Q 120 240 100 220 Q 80 200 70 170 Q 55 140 50 120 Z"/>
-                    <!-- South America -->
-                    <path d="M 180 280 Q 200 260 220 270 Q 240 280 250 310 Q 260 350 250 390 Q 240 420 220 440 Q 200 450 180 430 Q 165 400 170 360 Q 175 320 180 280 Z"/>
-                    <!-- Europe -->
-                    <path d="M 440 100 Q 470 90 500 95 Q 530 100 550 110 Q 560 130 550 150 Q 530 160 500 155 Q 470 150 450 140 Q 435 125 440 100 Z"/>
-                    <!-- Africa -->
-                    <path d="M 460 180 Q 490 170 520 180 Q 550 200 560 240 Q 565 280 550 320 Q 530 360 500 370 Q 470 365 450 340 Q 440 300 445 260 Q 450 220 460 180 Z"/>
-                    <!-- Asia -->
-                    <path d="M 560 80 Q 620 60 700 70 Q 780 80 840 100 Q 880 130 870 170 Q 850 200 800 210 Q 740 220 680 200 Q 620 180 580 150 Q 550 120 560 80 Z"/>
-                    <!-- Southeast Asia / Indonesia -->
-                    <path d="M 720 240 Q 750 230 780 240 Q 810 250 830 270 Q 820 290 790 295 Q 760 290 740 275 Q 720 260 720 240 Z"/>
-                    <!-- Australia -->
-                    <path d="M 780 340 Q 820 320 870 330 Q 920 350 930 390 Q 925 430 890 450 Q 850 460 810 445 Q 775 420 770 380 Q 770 355 780 340 Z"/>
-                    <!-- New Zealand -->
-                    <path d="M 940 420 Q 955 410 965 420 Q 970 440 960 460 Q 945 470 935 455 Q 930 435 940 420 Z"/>
-                </svg>
-
-                <!-- Guest origin dots (placeholder locations) -->
-                <!-- London, UK -->
-                <div class="guest-dot" style="left: 47%; top: 25%;"></div>
-                <!-- New York, USA -->
-                <div class="guest-dot" style="left: 25%; top: 32%;"></div>
-                <!-- Los Angeles, USA -->
-                <div class="guest-dot" style="left: 12%; top: 38%;"></div>
-                <!-- Tokyo, Japan -->
-                <div class="guest-dot" style="left: 82%; top: 35%;"></div>
-                <!-- Sydney, Australia -->
-                <div class="guest-dot" style="left: 88%; top: 78%;"></div>
-                <!-- Berlin, Germany -->
-                <div class="guest-dot" style="left: 51%; top: 27%;"></div>
-                <!-- Singapore -->
-                <div class="guest-dot" style="left: 75%; top: 55%;"></div>
-                <!-- Cape Town, South Africa -->
-                <div class="guest-dot" style="left: 52%; top: 72%;"></div>
-
-                <!-- Destination marker - Great Keppel Island, Australia -->
-                <div class="destination-marker" style="left: 90%; top: 70%;"></div>
-            </div>
-        </div>
-    </section>
-
-    <section class="map-section">
-        <div class="map-container">
-            <!-- Replace with your actual venue coordinates -->
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d113579.76176036871!2d153.0235087!3d-27.4710107!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b91579aac93d233%3A0x402a35af3deaf40!2sBrisbane%20QLD!5e0!3m2!1sen!2sau!4v1234567890" allowfullscreen="" loading="lazy"></iframe>
-        </div>
-    </section>
-
-    <section id="rsvp" class="rsvp">
-        <h2 class="section-title">Join <span>Us</span></h2>
-        <p class="rsvp-text">We'd absolutely love to celebrate with you. Let us know you're coming so we can save you a seat (and a drink)!</p>
-        <a href="https://forms.google.com/your-form-link" class="rsvp-button">RSVP Now</a>
-        <p class="rsvp-deadline">Kindly respond by 1st April 2026</p>
-    </section>
-
-    <footer>
-        <p class="footer-names">Alina & Ben</p>
-        <p class="hearts">💕</p>
-        <p>We can't wait to celebrate with you!</p>
-    </footer>
+    </div>
 
     <script>
-        // Register GSAP plugins
-        gsap.registerPlugin(ScrollTrigger);
+        // ==========================================
+        // CONFIGURATION - Scroll breakpoints (0-1)
+        // ==========================================
+        const CONFIG = {
+            // Stage 1: Seal breaks
+            sealStart: 0,
+            sealEnd: 0.15,
 
-        // ===== ENVELOPE OPENING ANIMATION =====
+            // Stage 2: Flap opens
+            flapStart: 0.05,
+            flapEnd: 0.35,
 
+            // Stage 3: Card slides up
+            cardSlideStart: 0.25,
+            cardSlideEnd: 0.55,
+
+            // Stage 4: Card enlarges
+            cardEnlargeStart: 0.50,
+            cardEnlargeEnd: 0.75,
+
+            // Stage 5: Envelope fades
+            envelopeFadeStart: 0.65,
+            envelopeFadeEnd: 0.80,
+
+            // Hint fades
+            hintFadeEnd: 0.10
+        };
+
+        // ==========================================
+        // ANIMATION VALUES
+        // ==========================================
+        const ANIMATION = {
+            // Card positions
+            cardYStart: 25,      // % - hidden inside
+            cardYSlideEnd: -55,  // % - slid up
+            cardYFinal: -20,     // % - final centered position
+
+            // Card scale
+            cardScaleStart: 1,
+            cardScaleEnd: 1.25,
+
+            // Flap rotation
+            flapRotationEnd: -180, // degrees
+
+            // Seal
+            sealScaleEnd: 0.3,
+            sealRotationEnd: 45  // degrees
+        };
+
+        // ==========================================
+        // UTILITY FUNCTIONS
+        // ==========================================
+        function lerp(start, end, t) {
+            return start + (end - start) * t;
+        }
+
+        function clamp(value, min, max) {
+            return Math.min(Math.max(value, min), max);
+        }
+
+        function getProgress(scroll, start, end) {
+            if (scroll <= start) return 0;
+            if (scroll >= end) return 1;
+            return (scroll - start) / (end - start);
+        }
+
+        // Easing function for smoother animation
+        function easeOutCubic(t) {
+            return 1 - Math.pow(1 - t, 3);
+        }
+
+        function easeInOutCubic(t) {
+            return t < 0.5
+                ? 4 * t * t * t
+                : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        }
+
+        // ==========================================
+        // SCROLL HANDLER
+        // ==========================================
         const envelope = document.getElementById('envelope');
-        let envelopeOpened = false;
+        const scrollContainer = document.querySelector('.scroll-container');
 
-        // Create the main envelope timeline
-        const envelopeTl = gsap.timeline({
-            scrollTrigger: {
-                trigger: '.envelope-section',
-                start: 'top top',
-                end: 'bottom bottom',
-                scrub: 0.5,
-                pin: false,
-                onUpdate: (self) => {
-                    // Add 'open' class when scroll progress > 15%
-                    if (self.progress > 0.15 && !envelopeOpened) {
-                        envelope.classList.add('open');
-                        envelope.classList.remove('close');
-                        envelopeOpened = true;
-                    } else if (self.progress <= 0.15 && envelopeOpened) {
-                        envelope.classList.remove('open');
-                        envelope.classList.add('close');
-                        envelopeOpened = false;
-                    }
-                }
-            }
-        });
+        function updateAnimation() {
+            const scrollTop = window.scrollY;
+            const maxScroll = scrollContainer.offsetHeight - window.innerHeight;
+            const scrollProgress = clamp(scrollTop / maxScroll, 0, 1);
 
-        // Phase 1: Wax seal fades (0% - 15%)
-        envelopeTl.to('.wax-seal', {
-            scale: 1.2,
-            opacity: 0,
-            rotation: 30,
-            duration: 0.15,
-            ease: 'power2.in'
-        }, 0);
+            // Stage 1: Seal
+            const sealProgress = easeOutCubic(getProgress(scrollProgress, CONFIG.sealStart, CONFIG.sealEnd));
+            const sealScale = lerp(1, ANIMATION.sealScaleEnd, sealProgress);
+            const sealRotation = lerp(0, ANIMATION.sealRotationEnd, sealProgress);
+            const sealOpacity = lerp(1, 0, sealProgress);
 
-        // Phase 2: Flap opens (5% - 35%)
-        envelopeTl.to('#envelope .flap', {
-            rotateX: 180,
-            duration: 0.3,
-            ease: 'power2.inOut'
-        }, 0.05);
+            envelope.style.setProperty('--seal-scale', sealScale);
+            envelope.style.setProperty('--seal-rotation', sealRotation + 'deg');
+            envelope.style.setProperty('--seal-opacity', sealOpacity);
 
-        // Phase 3: Letter slides up out of envelope (25% - 55%)
-        envelopeTl.to('#envelope .letter', {
-            y: '-50%',
-            duration: 0.3,
-            ease: 'power2.out'
-        }, 0.25);
+            // Stage 2: Flap opens
+            const flapProgress = easeInOutCubic(getProgress(scrollProgress, CONFIG.flapStart, CONFIG.flapEnd));
+            const flapRotation = lerp(0, ANIMATION.flapRotationEnd, flapProgress);
 
-        // Phase 4: Envelope fades, letter continues up and scales (50% - 100%)
-        envelopeTl.to('#envelope .flap, #envelope .pocket', {
-            opacity: 0,
-            duration: 0.2,
-            ease: 'power2.in'
-        }, 0.5);
+            envelope.style.setProperty('--flap-rotation', flapRotation + 'deg');
 
-        envelopeTl.to('#envelope', {
-            backgroundColor: 'transparent',
-            boxShadow: 'none',
-            duration: 0.2,
-            ease: 'power2.in'
-        }, 0.5);
+            // Stage 3: Card slides up
+            const slideProgress = easeOutCubic(getProgress(scrollProgress, CONFIG.cardSlideStart, CONFIG.cardSlideEnd));
+            const cardYSlide = lerp(ANIMATION.cardYStart, ANIMATION.cardYSlideEnd, slideProgress);
 
-        envelopeTl.to('#envelope .letter', {
-            y: '-70%',
-            scale: 1.2,
-            duration: 0.5,
-            ease: 'power2.out'
-        }, 0.5);
+            // Stage 4: Card enlarges and moves to final position
+            const enlargeProgress = easeOutCubic(getProgress(scrollProgress, CONFIG.cardEnlargeStart, CONFIG.cardEnlargeEnd));
+            const cardYFinal = lerp(ANIMATION.cardYSlideEnd, ANIMATION.cardYFinal, enlargeProgress);
+            const cardScale = lerp(ANIMATION.cardScaleStart, ANIMATION.cardScaleEnd, enlargeProgress);
 
-        envelopeTl.to('#envelope .hearts', {
-            opacity: 0,
-            duration: 0.2
-        }, 0.6);
+            // Use slide position until enlarge starts, then transition to final
+            const cardY = enlargeProgress > 0 ? cardYFinal : cardYSlide;
 
-        // Fade out scroll hint as user scrolls
-        gsap.to('.envelope-scroll-hint', {
-            opacity: 0,
-            scrollTrigger: {
-                trigger: '.envelope-section',
-                start: 'top top',
-                end: '5% top',
-                scrub: true
-            }
-        });
+            envelope.style.setProperty('--card-y', cardY + '%');
+            envelope.style.setProperty('--card-scale', cardScale);
 
-        // Initial entrance animation - envelope is visible immediately
-        gsap.from('.envelope-wrapper', {
-            scale: 0.95,
-            duration: 0.8,
-            ease: 'power3.out',
-            delay: 0.1
-        });
-
-
-        gsap.from('.envelope-scroll-hint', {
-            opacity: 0,
-            y: 20,
-            duration: 0.6,
-            delay: 0.8
-        });
-
-        // ===== END ENVELOPE ANIMATION =====
-
-        // ===== SCROLL-DRIVEN VIDEO =====
-        const video = document.getElementById('scroll-video');
-        const videoLoading = document.getElementById('video-loading');
-        const videoText = document.querySelector('.video-text');
-        const videoScrollHint = document.querySelector('.video-scroll-hint');
-        let videoReady = false;
-
-        // Preload the entire video for smoother scrubbing
-        video.preload = 'auto';
-
-        // Function to check if video is fully buffered
-        function isVideoFullyBuffered() {
-            if (video.buffered.length === 0) return false;
-            // Check if the entire duration is buffered
-            return video.buffered.end(video.buffered.length - 1) >= video.duration - 0.5;
-        }
-
-        // Wait for video to be fully buffered
-        function checkBufferStatus() {
-            if (video.duration && isVideoFullyBuffered()) {
-                videoReady = true;
-                // Hide loading, show text
-                gsap.to(videoLoading, { opacity: 0, duration: 0.3, onComplete: () => {
-                    videoLoading.style.display = 'none';
-                }});
-                gsap.to(videoText, { opacity: 1, duration: 0.5, delay: 0.2 });
-                gsap.to(videoScrollHint, { opacity: 0.7, duration: 0.5, delay: 0.3 });
-                video.currentTime = 0;
+            // Stage 5: Envelope fades
+            const fadeProgress = getProgress(scrollProgress, CONFIG.envelopeFadeStart, CONFIG.envelopeFadeEnd);
+            if (fadeProgress > 0) {
+                envelope.classList.add('envelope-hidden');
             } else {
-                // Keep checking
-                setTimeout(checkBufferStatus, 100);
+                envelope.classList.remove('envelope-hidden');
             }
+
+            // Hint fades
+            const hintOpacity = 1 - getProgress(scrollProgress, 0, CONFIG.hintFadeEnd);
+            envelope.style.setProperty('--hint-opacity', hintOpacity);
         }
 
-        video.addEventListener('loadedmetadata', () => {
-            // Start checking buffer status
-            checkBufferStatus();
-        });
+        // Listen to scroll
+        window.addEventListener('scroll', updateAnimation, { passive: true });
 
-        // Also listen for progress events to speed up detection
-        video.addEventListener('progress', () => {
-            if (!videoReady && video.duration) {
-                checkBufferStatus();
-            }
-        });
-
-        // Video plays as it scrolls through viewport - starts when entering, ends when leaving
-        ScrollTrigger.create({
-            trigger: '.video-section',
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: true,
-            onUpdate: (self) => {
-                if (videoReady && video.duration) {
-                    video.currentTime = self.progress * video.duration;
-                }
-            }
-        });
-
-        // Fade out video text as section scrolls up
-        gsap.to('.video-text', {
-            opacity: 0,
-            y: -50,
-            scrollTrigger: {
-                trigger: '.video-section',
-                start: 'top 80%',
-                end: 'top 30%',
-                scrub: true
-            }
-        });
-
-        // Fade out video scroll hint
-        gsap.to('.video-scroll-hint', {
-            opacity: 0,
-            scrollTrigger: {
-                trigger: '.video-section',
-                start: 'top 90%',
-                end: 'top 60%',
-                scrub: true
-            }
-        });
-
-        // ===== END SCROLL-DRIVEN VIDEO =====
-
-        // Nav animation
-        gsap.to('nav', {
-            y: 0,
-            duration: 0.6,
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: '.countdown-section',
-                start: 'top 80%',
-                toggleActions: 'play none none reverse'
-            }
-        });
-
-        // Floating shapes parallax
-        document.querySelectorAll('.shape').forEach((shape, i) => {
-            gsap.to(shape, {
-                y: (i + 1) * -100,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: 'body',
-                    start: 'top top',
-                    end: 'bottom bottom',
-                    scrub: 1
-                }
-            });
-        });
-
-        // Beach scene scroll animations
-        const beachTl = gsap.timeline({
-            scrollTrigger: {
-                trigger: '.beach-scene-section',
-                start: 'top 80%',
-                end: 'center center',
-                scrub: 1
-            }
-        });
-
-        // Scene fades in and scales up
-        gsap.from('.beach-scene', {
-            scale: 0.8,
-            opacity: 0,
-            duration: 1.5,
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: '.beach-scene-section',
-                start: 'top 80%'
-            }
-        });
-
-        // Sun rises as you scroll
-        gsap.fromTo('.sun',
-            { y: 100, scale: 0.5, opacity: 0 },
-            {
-                y: 0,
-                scale: 1,
-                opacity: 1,
-                ease: 'power2.out',
-                scrollTrigger: {
-                    trigger: '.beach-scene-section',
-                    start: 'top 70%',
-                    end: 'center center',
-                    scrub: 1
-                }
-            }
-        );
-
-        // Clouds drift in from sides
-        gsap.from('.cloud-1', {
-            x: -200,
-            opacity: 0,
-            duration: 2,
-            ease: 'power2.out',
-            scrollTrigger: {
-                trigger: '.beach-scene-section',
-                start: 'top 70%'
-            }
-        });
-
-        gsap.from('.cloud-2', {
-            x: 200,
-            opacity: 0,
-            duration: 2,
-            delay: 0.3,
-            ease: 'power2.out',
-            scrollTrigger: {
-                trigger: '.beach-scene-section',
-                start: 'top 70%'
-            }
-        });
-
-        gsap.from('.cloud-3', {
-            x: 150,
-            opacity: 0,
-            duration: 2,
-            delay: 0.5,
-            ease: 'power2.out',
-            scrollTrigger: {
-                trigger: '.beach-scene-section',
-                start: 'top 70%'
-            }
-        });
-
-        // Island rises from the water
-        gsap.from('.island', {
-            y: 150,
-            opacity: 0,
-            duration: 1.5,
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: '.beach-scene-section',
-                start: 'top 60%'
-            }
-        });
-
-        // Palm trees grow up with stagger
-        gsap.from('.palm-trunk', {
-            scaleY: 0,
-            transformOrigin: 'bottom center',
-            duration: 1,
-            stagger: 0.2,
-            ease: 'elastic.out(1, 0.5)',
-            scrollTrigger: {
-                trigger: '.beach-scene-section',
-                start: 'top 50%'
-            }
-        });
-
-        gsap.from('.palm-leaves', {
-            scale: 0,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.2,
-            delay: 0.5,
-            ease: 'back.out(1.7)',
-            scrollTrigger: {
-                trigger: '.beach-scene-section',
-                start: 'top 50%'
-            }
-        });
-
-        // Palm trees sway continuously
-        gsap.to('.palm-tree-1', {
-            rotation: 3,
-            duration: 2,
-            repeat: -1,
-            yoyo: true,
-            ease: 'sine.inOut',
-            transformOrigin: 'bottom center'
-        });
-
-        gsap.to('.palm-tree-2', {
-            rotation: -4,
-            duration: 2.5,
-            repeat: -1,
-            yoyo: true,
-            ease: 'sine.inOut',
-            transformOrigin: 'bottom center',
-            delay: 0.5
-        });
-
-        gsap.to('.palm-tree-3', {
-            rotation: 2,
-            duration: 3,
-            repeat: -1,
-            yoyo: true,
-            ease: 'sine.inOut',
-            transformOrigin: 'bottom center',
-            delay: 1
-        });
-
-        // Birds fly in
-        gsap.from('.bird', {
-            x: -100,
-            opacity: 0,
-            duration: 1.5,
-            stagger: 0.3,
-            ease: 'power2.out',
-            scrollTrigger: {
-                trigger: '.beach-scene-section',
-                start: 'top 55%'
-            }
-        });
-
-        // Birds float continuously
-        document.querySelectorAll('.bird').forEach((bird, i) => {
-            gsap.to(bird, {
-                x: '+=30',
-                y: '-=10',
-                duration: 3 + i,
-                repeat: -1,
-                yoyo: true,
-                ease: 'sine.inOut'
-            });
-        });
-
-        // Boat sails across
-        gsap.fromTo('.boat',
-            { x: -100, opacity: 0 },
-            {
-                x: 0,
-                opacity: 1,
-                duration: 2,
-                ease: 'power2.out',
-                scrollTrigger: {
-                    trigger: '.beach-scene-section',
-                    start: 'top 50%'
-                }
-            }
-        );
-
-        // Boat bobs on water
-        gsap.to('.boat', {
-            y: -5,
-            rotation: 3,
-            duration: 2,
-            repeat: -1,
-            yoyo: true,
-            ease: 'sine.inOut'
-        });
-
-        // Ocean parallax effect
-        gsap.to('.ocean', {
-            y: -20,
-            ease: 'none',
-            scrollTrigger: {
-                trigger: '.beach-scene-section',
-                start: 'top bottom',
-                end: 'bottom top',
-                scrub: 1
-            }
-        });
-
-        // Countdown section
-        gsap.from('.countdown-item', {
-            y: 80,
-            opacity: 0,
-            duration: 1,
-            stagger: 0.15,
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: '.countdown-section',
-                start: 'top 70%'
-            }
-        });
-
-        // Details cards
-        gsap.from('.detail-card', {
-            y: 100,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.2,
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: '.details-grid',
-                start: 'top 75%'
-            }
-        });
-
-        // Section titles
-        document.querySelectorAll('.section-title').forEach(title => {
-            gsap.from(title, {
-                y: 50,
-                opacity: 0,
-                duration: 1,
-                ease: 'power3.out',
-                scrollTrigger: {
-                    trigger: title,
-                    start: 'top 80%'
-                }
-            });
-        });
-
-        // Travel items
-        gsap.from('.travel-item', {
-            x: -100,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.2,
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: '.travel-grid',
-                start: 'top 70%'
-            }
-        });
-
-        // Guest origins map
-        gsap.from('.world-map-wrapper', {
-            scale: 0.9,
-            opacity: 0,
-            duration: 1,
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: '.guest-map-section',
-                start: 'top 70%'
-            }
-        });
-
-        gsap.from('.guest-dot', {
-            scale: 0,
-            opacity: 0,
-            duration: 0.6,
-            stagger: 0.15,
-            ease: 'back.out(1.7)',
-            scrollTrigger: {
-                trigger: '.guest-map-section',
-                start: 'top 60%'
-            }
-        });
-
-        gsap.from('.destination-marker', {
-            scale: 0,
-            opacity: 0,
-            duration: 0.8,
-            ease: 'elastic.out(1, 0.5)',
-            scrollTrigger: {
-                trigger: '.guest-map-section',
-                start: 'top 50%'
-            }
-        });
-
-        // Map container
-        gsap.from('.map-container', {
-            scale: 0.8,
-            opacity: 0,
-            duration: 1,
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: '.map-section',
-                start: 'top 70%'
-            }
-        });
-
-        // RSVP section
-        gsap.from('.rsvp-text', {
-            y: 50,
-            opacity: 0,
-            duration: 1,
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: '.rsvp',
-                start: 'top 60%'
-            }
-        });
-
-        gsap.from('.rsvp-button', {
-            scale: 0,
-            duration: 0.8,
-            ease: 'back.out(1.7)',
-            scrollTrigger: {
-                trigger: '.rsvp',
-                start: 'top 50%'
-            }
-        });
-
-        // Countdown timer
-        function updateCountdown() {
-            const weddingDate = new Date('August 29, 2026 15:00:00').getTime();
-            const now = new Date().getTime();
-            const diff = weddingDate - now;
-
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-            document.getElementById('days').textContent = days;
-            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-        }
-
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
-
-        // Smooth scroll for nav links
-        document.querySelectorAll('nav a').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const target = document.querySelector(link.getAttribute('href'));
-                target.scrollIntoView({ behavior: 'smooth' });
-            });
-        });
+        // Initial state
+        updateAnimation();
     </script>
 </body>
 </html>
