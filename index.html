@@ -33,75 +33,98 @@
             --envelope-inner: #c9b9a8;
 
             /* Scroll length - how much to scroll through the animation */
-            /* 400vh = scroll 3x viewport height, 500vh = 4x, etc. */
-            --scroll-length: 400vh;
+            --scroll-length: 500vh;
 
-            /* ==========================================
-               LAYOUT POSITIONING
-               ========================================== */
             /* Scroll hint position from bottom of screen */
             --scroll-hint-bottom: 10%;
 
             /* ==========================================
-               ENVELOPE DIMENSIONS
-               All relative to screen height (vh)
+               Z-INDEX LAYERS
                ========================================== */
-            --envelope-width: 60vh;
-            --envelope-height: 40vh;
+            --z-envelope-back: 1;
+            --z-card: 5;
+            --z-envelope-flap-closed: 10;  /* Flap on top when closed */
+            --z-envelope-flap-open: 2;     /* Flap behind card when open */
 
             /* ==========================================
-               ENVELOPE STEP 1: Centered on screen
-               Y position relative to screen (vh)
+               STEP 1: Card inside envelope
+               Envelope closed, card hidden inside
                ========================================== */
-            --envelope-step1-y: 50vh;      /* Centered vertically */
-
-            /* ==========================================
-               ENVELOPE STEP 2: Near bottom of screen
-               Y position relative to screen (vh)
-               ========================================== */
-            --envelope-step2-y: 85vh;      /* 15vh from bottom */
-
-            /* ==========================================
-               CARD STEP 1: Inside envelope (hidden)
-               Y position is from top of screen (vh)
-               Z between back-layer (1) and front-layer (10)
-               ========================================== */
+            /* Envelope */
+            --envelope-step1-x: 50vh;
+            --envelope-step1-y: 50vh;
+            --envelope-step1-width: 60vh;
+            --envelope-step1-height: 40vh;
+            /* Card */
+            --card-step1-x: 50vh;
+            --card-step1-y: 32vh;
             --card-step1-width: 50vh;
             --card-step1-height: 35vh;
-            --card-step1-y: 32vh;          /* Inside envelope (envelope is at 50vh) */
-            --card-step1-z: 5;             /* Between back (z=1) and front (z=10) */
-            --card-step1-video-x: 50%;
-            --card-step1-video-y: 80%;     /* Show bottom portion of video */
+            /* Video crop (position and size) */
+            --video-step1-x: 25vh;
+            --video-step1-y: 15vh;
+            --video-step1-width: 100vh;
+            --video-step1-height: 60vh;
 
             /* ==========================================
-               CARD STEP 2: Pulled out, above envelope
-               Y position is from top of screen (vh)
-               Z above front-layer (10) to appear in front
+               STEP 2: Envelope opens (flap z changes)
+               Card and envelope don't move
                ========================================== */
+            /* Envelope */
+            --envelope-step2-x: 50vh;
+            --envelope-step2-y: 50vh;
+            --envelope-step2-width: 60vh;
+            --envelope-step2-height: 40vh;
+            /* Card */
+            --card-step2-x: 50vh;
+            --card-step2-y: 32vh;
             --card-step2-width: 50vh;
             --card-step2-height: 35vh;
-            --card-step2-y: 10vh;          /* Near top of screen */
-            --card-step2-z: 15;            /* Above front layer (z=10) */
-            --card-step2-video-x: 50%;
-            --card-step2-video-y: 50%;     /* Center of video */
+            /* Video crop */
+            --video-step2-x: 25vh;
+            --video-step2-y: 15vh;
+            --video-step2-width: 100vh;
+            --video-step2-height: 60vh;
 
             /* ==========================================
-               CARD STEP 3: Centered and zoomed
-               Y position is from top of screen (vh)
+               STEP 3: Card pulled out
+               Card at 35vh, envelope at 75vh
                ========================================== */
-            --card-step3-width: 55vh;
-            --card-step3-height: 90vh;
-            --card-step3-y: 5vh;           /* Centered on screen */
-            --card-step3-z: 100;           /* Well in front of everything */
-            --card-step3-video-x: 50%;
-            --card-step3-video-y: 50%;
+            /* Envelope */
+            --envelope-step3-x: 50vh;
+            --envelope-step3-y: 75vh;
+            --envelope-step3-width: 60vh;
+            --envelope-step3-height: 40vh;
+            /* Card */
+            --card-step3-x: 50vh;
+            --card-step3-y: 35vh;
+            --card-step3-width: 50vh;
+            --card-step3-height: 50vh;
+            /* Video crop */
+            --video-step3-x: 25vh;
+            --video-step3-y: 25vh;
+            --video-step3-width: 100vh;
+            --video-step3-height: 60vh;
 
-            /* Z-index layers (card sits between back and front)
-               Back layer < Card < Front layer */
-            --z-envelope-back-layer: 1;   /* Behind card */
-            --z-card-inside: 5;           /* Card when inside envelope */
-            --z-envelope-front-layer: 10; /* In front of card at start */
-            --z-card-outside: 15;         /* Card when pulled out */
+            /* ==========================================
+               STEP 4: Card centered, envelope fades
+               Card grows and centers
+               ========================================== */
+            /* Envelope */
+            --envelope-step4-x: 50vh;
+            --envelope-step4-y: 90vh;
+            --envelope-step4-width: 60vh;
+            --envelope-step4-height: 40vh;
+            /* Card */
+            --card-step4-x: 50vh;
+            --card-step4-y: 50vh;
+            --card-step4-width: 55vh;
+            --card-step4-height: 90vh;
+            /* Video crop */
+            --video-step4-x: 27vh;
+            --video-step4-y: 5vh;
+            --video-step4-width: 100vh;
+            --video-step4-height: 100vh;
         }
 
         * {
@@ -143,22 +166,22 @@
         /* ==========================================
            LAYER ORDER (bottom to top):
            1. Envelope back layer (behind card)
-           2. Card (inside envelope at start)
+           2. Card
            3. Envelope front layer (sides, flaps, seal)
            ========================================== */
 
         /* Envelope back layer - sits BEHIND the card */
         .envelope-back-layer {
             position: absolute;
-            width: var(--envelope-width);
-            height: var(--envelope-height);
-            left: 50%;
+            width: var(--envelope-width, var(--envelope-step1-width));
+            height: var(--envelope-height, var(--envelope-step1-height));
+            left: var(--envelope-x, var(--envelope-step1-x));
             top: var(--envelope-y, var(--envelope-step1-y));
             transform: translate(-50%, -50%);
             background: var(--envelope-back);
             border-radius: 4px;
             box-shadow: 0 15px 50px rgba(0,0,0,0.2);
-            z-index: var(--z-envelope-back-layer);
+            z-index: var(--z-envelope-back);
             transition: opacity 0.4s ease;
         }
 
@@ -172,28 +195,29 @@
             border-radius: 4px;
         }
 
-        /* Envelope front layer - sits IN FRONT of card at start */
+        /* Envelope front layer - sides and flaps */
         .envelope-wrapper {
             position: absolute;
-            width: var(--envelope-width);
-            height: var(--envelope-height);
-            left: 50%;
+            width: var(--envelope-width, var(--envelope-step1-width));
+            height: var(--envelope-height, var(--envelope-step1-height));
+            left: var(--envelope-x, var(--envelope-step1-x));
             top: var(--envelope-y, var(--envelope-step1-y));
             transform: translate(-50%, -50%);
-            z-index: var(--z-envelope-front-layer);
+        }
+
+        /* Top flap z-index changes from closed (on top) to open (behind) */
+        .envelope-top-flap {
+            z-index: var(--flap-z, var(--z-envelope-flap-closed));
         }
 
         /* The card - positioned relative to viewport */
         .card {
             position: absolute;
-            /* Size: use JS variable, fallback to step1 */
             width: var(--card-width, var(--card-step1-width));
             height: var(--card-height, var(--card-step1-height));
-            /* Horizontally centered on screen */
-            left: 50%;
-            transform: translateX(-50%);
-            /* Vertically positioned relative to screen (vh) */
+            left: var(--card-x, var(--card-step1-x));
             top: var(--card-y, var(--card-step1-y));
+            transform: translate(-50%, -50%);
             border-radius: 6px;
             box-shadow: 0 2px 15px rgba(0,0,0,0.1);
             display: flex;
@@ -202,17 +226,17 @@
             align-items: center;
             text-align: center;
             padding: 2rem 1.5rem;
-            /* Z-index controlled by JS */
-            z-index: var(--card-z, var(--card-step1-z));
+            z-index: var(--z-card);
             overflow: hidden;
         }
 
         .card-video-bg {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            /* Video position and size for cropping - all in vh */
+            left: var(--video-x, var(--video-step1-x));
+            top: var(--video-y, var(--video-step1-y));
+            width: var(--video-width, var(--video-step1-width));
+            height: var(--video-height, var(--video-step1-height));
             z-index: 0;
         }
 
@@ -220,8 +244,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            /* Video crop position controlled by JS */
-            object-position: var(--video-x, var(--card-step1-video-x)) var(--video-y, var(--card-step1-video-y));
         }
 
         /* Card decorative border */
@@ -611,24 +633,25 @@
         // CONFIGURATION
         // ==========================================
         //
-        // Card animation has 3 steps, each with equal scroll duration.
-        // All card properties (size, position, z-index, video crop) are
-        // defined in CSS :root as --card-step1-*, --card-step2-*, --card-step3-*
-        //
-        // To change scroll length, edit --scroll-length in CSS :root
+        // 4-Step Animation:
+        // Step 1: Card inside envelope (seal breaks, flap starts opening)
+        // Step 2: Envelope fully open, flap z changes to behind card
+        // Step 3: Card pulled out to 35vh, envelope moves to 75vh
+        // Step 4: Envelope fades, card centers and grows
         //
         // ==========================================
 
         const CONFIG = {
-            // Envelope animations
-            seal: { start: 0, end: 0.15 },
-            flap: { start: 0.05, end: 0.30 },
-            envelopeFade: { start: 0.55, end: 0.70 },
-            hintFade: { start: 0, end: 0.10 },
+            // Seal animation (step 1)
+            seal: { start: 0, end: 0.12 },
+            // Flap animation (step 1 to step 2)
+            flap: { start: 0.05, end: 0.25 },
+            // Hint fade
+            hintFade: { start: 0, end: 0.08 },
 
-            // Card animation timing (3 equal steps within this range)
+            // Main animation timing (4 steps within this range)
             card: {
-                start: 0.20,
+                start: 0.10,
                 end: 0.95
             },
 
@@ -752,83 +775,101 @@
             const flapProgress = easeInOutCubic(getProgress(scrollProgress, CONFIG.flap.start, CONFIG.flap.end));
             envelope.style.setProperty('--flap-rotation', lerp(0, CONFIG.flapRotationEnd, flapProgress) + 'deg');
 
-            // --- Card animation (3 equal steps) ---
-            const cardProgress = getProgress(scrollProgress, CONFIG.card.start, CONFIG.card.end);
+            // --- 4-Step Animation ---
+            // Step 1: Card in envelope (0 - 0.25)
+            // Step 2: Envelope opens, flap z changes (0.25 - 0.50)
+            // Step 3: Card pulled out, envelope moves down (0.50 - 0.75)
+            // Step 4: Envelope fades, card centers and grows (0.75 - 1.0)
+            const animProgress = getProgress(scrollProgress, CONFIG.card.start, CONFIG.card.end);
 
-            // Get card step values from CSS
-            const cardSteps = {
-                1: {
-                    width: getCSSVar('--card-step1-width'),
-                    height: getCSSVar('--card-step1-height'),
-                    y: getCSSVar('--card-step1-y'),
-                    z: getCSSVar('--card-step1-z'),
-                    videoX: getCSSVar('--card-step1-video-x'),
-                    videoY: getCSSVar('--card-step1-video-y')
+            // Get all step values from CSS
+            const steps = {
+                envelope: {
+                    1: { x: getCSSVar('--envelope-step1-x'), y: getCSSVar('--envelope-step1-y'), width: getCSSVar('--envelope-step1-width'), height: getCSSVar('--envelope-step1-height') },
+                    2: { x: getCSSVar('--envelope-step2-x'), y: getCSSVar('--envelope-step2-y'), width: getCSSVar('--envelope-step2-width'), height: getCSSVar('--envelope-step2-height') },
+                    3: { x: getCSSVar('--envelope-step3-x'), y: getCSSVar('--envelope-step3-y'), width: getCSSVar('--envelope-step3-width'), height: getCSSVar('--envelope-step3-height') },
+                    4: { x: getCSSVar('--envelope-step4-x'), y: getCSSVar('--envelope-step4-y'), width: getCSSVar('--envelope-step4-width'), height: getCSSVar('--envelope-step4-height') }
                 },
-                2: {
-                    width: getCSSVar('--card-step2-width'),
-                    height: getCSSVar('--card-step2-height'),
-                    y: getCSSVar('--card-step2-y'),
-                    z: getCSSVar('--card-step2-z'),
-                    videoX: getCSSVar('--card-step2-video-x'),
-                    videoY: getCSSVar('--card-step2-video-y')
+                card: {
+                    1: { x: getCSSVar('--card-step1-x'), y: getCSSVar('--card-step1-y'), width: getCSSVar('--card-step1-width'), height: getCSSVar('--card-step1-height') },
+                    2: { x: getCSSVar('--card-step2-x'), y: getCSSVar('--card-step2-y'), width: getCSSVar('--card-step2-width'), height: getCSSVar('--card-step2-height') },
+                    3: { x: getCSSVar('--card-step3-x'), y: getCSSVar('--card-step3-y'), width: getCSSVar('--card-step3-width'), height: getCSSVar('--card-step3-height') },
+                    4: { x: getCSSVar('--card-step4-x'), y: getCSSVar('--card-step4-y'), width: getCSSVar('--card-step4-width'), height: getCSSVar('--card-step4-height') }
                 },
-                3: {
-                    width: getCSSVar('--card-step3-width'),
-                    height: getCSSVar('--card-step3-height'),
-                    y: getCSSVar('--card-step3-y'),
-                    z: getCSSVar('--card-step3-z'),
-                    videoX: getCSSVar('--card-step3-video-x'),
-                    videoY: getCSSVar('--card-step3-video-y')
+                video: {
+                    1: { x: getCSSVar('--video-step1-x'), y: getCSSVar('--video-step1-y'), width: getCSSVar('--video-step1-width'), height: getCSSVar('--video-step1-height') },
+                    2: { x: getCSSVar('--video-step2-x'), y: getCSSVar('--video-step2-y'), width: getCSSVar('--video-step2-width'), height: getCSSVar('--video-step2-height') },
+                    3: { x: getCSSVar('--video-step3-x'), y: getCSSVar('--video-step3-y'), width: getCSSVar('--video-step3-width'), height: getCSSVar('--video-step3-height') },
+                    4: { x: getCSSVar('--video-step4-x'), y: getCSSVar('--video-step4-y'), width: getCSSVar('--video-step4-width'), height: getCSSVar('--video-step4-height') }
                 }
             };
 
-            // Get envelope step values from CSS
-            const envelopeSteps = {
-                1: { y: getCSSVar('--envelope-step1-y') },
-                2: { y: getCSSVar('--envelope-step2-y') }
-            };
-
-            // Calculate which step we're in and progress within that step
-            let currentWidth, currentHeight, currentY, currentZ, currentVideoX, currentVideoY;
-            let currentEnvelopeY;
-
-            if (cardProgress <= 0.5) {
-                // Card Step 1 → Step 2, Envelope Step 1 → Step 2 (both animate together)
-                const t = easeOutCubic(cardProgress / 0.5);
-                currentEnvelopeY = lerpUnits(envelopeSteps[1].y, envelopeSteps[2].y, t);
-                currentWidth = lerpUnits(cardSteps[1].width, cardSteps[2].width, t);
-                currentHeight = lerpUnits(cardSteps[1].height, cardSteps[2].height, t);
-                currentY = lerpUnits(cardSteps[1].y, cardSteps[2].y, t);
-                currentZ = Math.round(lerp(parseFloat(cardSteps[1].z), parseFloat(cardSteps[2].z), t));
-                currentVideoX = lerpUnits(cardSteps[1].videoX, cardSteps[2].videoX, t);
-                currentVideoY = lerpUnits(cardSteps[1].videoY, cardSteps[2].videoY, t);
+            // Determine current step and interpolate
+            let fromStep, toStep, t;
+            if (animProgress <= 0.333) {
+                // Step 1 → Step 2 (envelope opens)
+                fromStep = 1; toStep = 2;
+                t = easeInOutCubic(animProgress / 0.333);
+            } else if (animProgress <= 0.666) {
+                // Step 2 → Step 3 (card pulled out)
+                fromStep = 2; toStep = 3;
+                t = easeInOutCubic((animProgress - 0.333) / 0.333);
             } else {
-                // Card Step 2 → Step 3 (center and zoom), Envelope stays at step 2
-                const t = easeInOutCubic((cardProgress - 0.5) / 0.5);
-                currentWidth = lerpUnits(cardSteps[2].width, cardSteps[3].width, t);
-                currentHeight = lerpUnits(cardSteps[2].height, cardSteps[3].height, t);
-                currentY = lerpUnits(cardSteps[2].y, cardSteps[3].y, t);
-                currentZ = Math.round(lerp(parseFloat(cardSteps[2].z), parseFloat(cardSteps[3].z), t));
-                currentVideoX = lerpUnits(cardSteps[2].videoX, cardSteps[3].videoX, t);
-                currentVideoY = lerpUnits(cardSteps[2].videoY, cardSteps[3].videoY, t);
-                currentEnvelopeY = envelopeSteps[2].y;
+                // Step 3 → Step 4 (envelope fades, card centers)
+                fromStep = 3; toStep = 4;
+                t = easeInOutCubic((animProgress - 0.666) / 0.334);
             }
 
+            // Interpolate envelope
+            const envX = lerpUnits(steps.envelope[fromStep].x, steps.envelope[toStep].x, t);
+            const envY = lerpUnits(steps.envelope[fromStep].y, steps.envelope[toStep].y, t);
+            const envW = lerpUnits(steps.envelope[fromStep].width, steps.envelope[toStep].width, t);
+            const envH = lerpUnits(steps.envelope[fromStep].height, steps.envelope[toStep].height, t);
+
+            // Interpolate card
+            const cardX = lerpUnits(steps.card[fromStep].x, steps.card[toStep].x, t);
+            const cardY = lerpUnits(steps.card[fromStep].y, steps.card[toStep].y, t);
+            const cardW = lerpUnits(steps.card[fromStep].width, steps.card[toStep].width, t);
+            const cardH = lerpUnits(steps.card[fromStep].height, steps.card[toStep].height, t);
+
+            // Interpolate video
+            const vidX = lerpUnits(steps.video[fromStep].x, steps.video[toStep].x, t);
+            const vidY = lerpUnits(steps.video[fromStep].y, steps.video[toStep].y, t);
+            const vidW = lerpUnits(steps.video[fromStep].width, steps.video[toStep].width, t);
+            const vidH = lerpUnits(steps.video[fromStep].height, steps.video[toStep].height, t);
+
+            // Apply envelope properties to both layers
+            envelope.style.left = envX;
+            envelope.style.top = envY;
+            envelope.style.width = envW;
+            envelope.style.height = envH;
+            envelopeBack.style.left = envX;
+            envelopeBack.style.top = envY;
+            envelopeBack.style.width = envW;
+            envelopeBack.style.height = envH;
+
             // Apply card properties
-            card.style.setProperty('--card-width', currentWidth);
-            card.style.setProperty('--card-height', currentHeight);
-            card.style.setProperty('--card-y', currentY);
-            card.style.setProperty('--card-z', currentZ);
-            card.style.setProperty('--video-x', currentVideoX);
-            card.style.setProperty('--video-y', currentVideoY);
+            card.style.setProperty('--card-x', cardX);
+            card.style.setProperty('--card-y', cardY);
+            card.style.setProperty('--card-width', cardW);
+            card.style.setProperty('--card-height', cardH);
 
-            // Apply envelope position to both layers
-            envelope.style.top = currentEnvelopeY;
-            envelopeBack.style.top = currentEnvelopeY;
+            // Apply video properties
+            card.style.setProperty('--video-x', vidX);
+            card.style.setProperty('--video-y', vidY);
+            card.style.setProperty('--video-width', vidW);
+            card.style.setProperty('--video-height', vidH);
 
-            // --- Envelope fade ---
-            const fadeProgress = getProgress(scrollProgress, CONFIG.envelopeFade.start, CONFIG.envelopeFade.end);
+            // --- Flap z-index change at step 2 ---
+            // When flap is fully open (after step 1→2), change z to be behind card
+            if (animProgress > 0.333) {
+                envelope.style.setProperty('--flap-z', getCSSVar('--z-envelope-flap-open'));
+            } else {
+                envelope.style.setProperty('--flap-z', getCSSVar('--z-envelope-flap-closed'));
+            }
+
+            // --- Envelope fade (step 4) ---
+            const fadeProgress = getProgress(animProgress, 0.75, 1.0);
             if (fadeProgress > 0) {
                 envelope.classList.add('envelope-hidden');
                 envelopeBack.classList.add('envelope-hidden');
@@ -841,9 +882,8 @@
             const hintOpacity = 1 - getProgress(scrollProgress, CONFIG.hintFade.start, CONFIG.hintFade.end);
             envelope.style.setProperty('--hint-opacity', hintOpacity);
 
-            // --- Card text fade in (step 3) ---
-            // Show text when we're 30% into step 3 (cardProgress > 0.65)
-            if (cardProgress > 0.65) {
+            // --- Card text fade in (step 4) ---
+            if (animProgress > 0.85) {
                 card.classList.add('text-visible');
             } else {
                 card.classList.remove('text-visible');
