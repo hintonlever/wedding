@@ -32,26 +32,50 @@
             --envelope-flap: #f0e6dc;
             --envelope-inner: #c9b9a8;
 
-            /* Card size - START (inside envelope) */
-            --card-start-width: 50%;
-            --card-start-height: 50%;
+            /* Scroll length - how much to scroll through the animation */
+            /* 400vh = scroll 3x viewport height, 500vh = 4x, etc. */
+            --scroll-length: 400vh;
 
-            /* Card size - END (after scrolling) */
-            --card-end-width: 150%;
-            --card-end-height: 200%;
+            /* ==========================================
+               CARD STEP 1: Inside envelope (hidden)
+               Card is larger than envelope but clipped/hidden
+               ========================================== */
+            --card-step1-width: 85%;
+            --card-step1-height: 200%;
+            --card-step1-y: 80%;           /* Pushed down, mostly hidden */
+            --card-step1-z: 3;
+            --card-step1-video-x: 50%;
+            --card-step1-video-y: 20%;     /* Show top portion of video */
 
-            /* Z-index layers */
+            /* ==========================================
+               CARD STEP 2: Pulled out, above envelope
+               Card is fully visible above the envelope
+               ========================================== */
+            --card-step2-width: 85%;
+            --card-step2-height: 200%;
+            --card-step2-y: -110%;         /* Above envelope */
+            --card-step2-z: 10;
+            --card-step2-video-x: 50%;
+            --card-step2-video-y: 50%;     /* Center of video */
+
+            /* ==========================================
+               CARD STEP 3: Centered and zoomed
+               Card fills screen, envelope fades away
+               ========================================== */
+            --card-step3-width: 90vw;
+            --card-step3-height: 85vh;
+            --card-step3-y: -50%;          /* Centered on screen */
+            --card-step3-z: 100;
+            --card-step3-video-x: 50%;
+            --card-step3-video-y: 50%;
+
+            /* Z-index layers for envelope parts */
             --z-envelope-back: 1;
             --z-envelope-inner: 2;
-
             --z-envelope-sides: 4;
             --z-envelope-front-flap: 5;
             --z-envelope-top-flap: 6;
-            
             --z-wax-seal: 7;
-            
-            --z-card-start: 3;
-            --z-card-end: 100;
         }
 
         * {
@@ -75,7 +99,9 @@
         /* Scroll container - creates scroll space */
         .scroll-container {
             position: relative;
-            min-height: 300vh; /* Creates scroll space for the animation */
+            /* Total scroll length = 100vh (viewport) + this value */
+            /* e.g., 400vh means you scroll 3x the viewport height */
+            min-height: var(--scroll-length, 400vh);
         }
 
         /* Main container - sticky to viewport */
@@ -135,10 +161,11 @@
         /* Layer 3: The card */
         .card {
             position: absolute;
-            width: var(--card-start-width);
-            height: var(--card-start-height);
-            left: 6%;
-            bottom: 10%;
+            /* Size controlled by JS via --card-width and --card-height */
+            width: var(--card-width, var(--card-step1-width));
+            height: var(--card-height, var(--card-step1-height));
+            left: 50%;
+            top: 50%;
             border-radius: 6px;
             box-shadow: 0 2px 15px rgba(0,0,0,0.1);
             display: flex;
@@ -147,11 +174,11 @@
             align-items: center;
             text-align: center;
             padding: 2rem 1.5rem;
-            z-index: var(--z-card-start);
-            /* Controlled by JS */
-            transform-origin: center center;
-            transform: translateY(var(--card-y, 25%)) scale(var(--card-scale, 1));
-            transition: box-shadow 0.3s ease, width 0.5s ease, height 0.5s ease, left 0.5s ease, top 0.5s ease, bottom 0.5s ease, transform 0.5s ease;
+            /* Z-index controlled by JS */
+            z-index: var(--card-z, var(--card-step1-z));
+            /* Position controlled by JS via --card-y */
+            transform-origin: center top;
+            transform: translate(-50%, var(--card-y, var(--card-step1-y)));
             overflow: hidden;
         }
 
@@ -168,6 +195,8 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            /* Video crop position controlled by JS */
+            object-position: var(--video-x, var(--card-step1-video-x)) var(--video-y, var(--card-step1-video-y));
         }
 
         /* Card decorative border */
@@ -371,16 +400,9 @@
             opacity: 0;
         }
 
-        /* Card comes to front when envelope hidden */
+        /* Card shadow enhancement when envelope hidden */
         .envelope-wrapper.envelope-hidden .card {
-            z-index: var(--z-card-end);
             box-shadow: 0 30px 80px rgba(0,0,0,0.2);
-            width: var(--card-end-width);
-            height: var(--card-end-height);
-            left: 50%;
-            bottom: auto;
-            top: 50%;
-            transform: translate(-50%, -50%) !important;
         }
 
   
@@ -534,52 +556,36 @@
 
     <script>
         // ==========================================
-        // CONFIGURATION - Scroll breakpoints (0-1)
+        // CONFIGURATION
         // ==========================================
+        //
+        // Card animation has 3 steps, each with equal scroll duration.
+        // All card properties (size, position, z-index, video crop) are
+        // defined in CSS :root as --card-step1-*, --card-step2-*, --card-step3-*
+        //
+        // To change scroll length, edit --scroll-length in CSS :root
+        //
+        // ==========================================
+
         const CONFIG = {
-            // Stage 1: Seal breaks
-            sealStart: 0,
-            sealEnd: 0.15,
+            // Envelope animations
+            seal: { start: 0, end: 0.15 },
+            flap: { start: 0.05, end: 0.30 },
+            envelopeFade: { start: 0.55, end: 0.70 },
+            hintFade: { start: 0, end: 0.10 },
 
-            // Stage 2: Flap opens
-            flapStart: 0.05,
-            flapEnd: 0.35,
-
-            // Stage 3: Card slides up
-            cardSlideStart: 0.25,
-            cardSlideEnd: 0.55,
-
-            // Stage 4: Card enlarges
-            cardEnlargeStart: 0.50,
-            cardEnlargeEnd: 0.75,
-
-            // Stage 5: Envelope fades
-            envelopeFadeStart: 0.65,
-            envelopeFadeEnd: 0.80,
-
-            // Hint fades
-            hintFadeEnd: 0.10
-        };
-
-        // ==========================================
-        // ANIMATION VALUES
-        // ==========================================
-        const ANIMATION = {
-            // Card positions
-            cardYStart: 25,      // % - hidden inside
-            cardYSlideEnd: -55,  // % - slid up
-            cardYFinal: 15,      // % - final centered position
-
-            // Card scale
-            cardScaleStart: 1,
-            cardScaleEnd: 1.5,
+            // Card animation timing (3 equal steps within this range)
+            card: {
+                start: 0.20,
+                end: 0.95
+            },
 
             // Flap rotation
-            flapRotationEnd: -180, // degrees
+            flapRotationEnd: -180,
 
-            // Seal
+            // Seal animation
             sealScaleEnd: 0.3,
-            sealRotationEnd: 45  // degrees
+            sealRotationEnd: 45
         };
 
         // ==========================================
@@ -587,6 +593,60 @@
         // ==========================================
         function lerp(start, end, t) {
             return start + (end - start) * t;
+        }
+
+        function lerpUnits(start, end, t) {
+            // Parse values like "85%" or "90vw"
+            const startMatch = String(start).match(/^(-?[\d.]+)(.*)$/);
+            const endMatch = String(end).match(/^(-?[\d.]+)(.*)$/);
+
+            if (!startMatch || !endMatch) return end;
+
+            const startVal = parseFloat(startMatch[1]);
+            const endVal = parseFloat(endMatch[1]);
+            const startUnit = startMatch[2];
+            const endUnit = endMatch[2];
+
+            // If units match, interpolate directly
+            if (startUnit === endUnit) {
+                return lerp(startVal, endVal, t) + startUnit;
+            }
+
+            // Convert both to pixels, interpolate, then output in end unit
+            const envelopeWrapper = document.querySelector('.envelope-wrapper');
+            const envelopeWidth = envelopeWrapper ? envelopeWrapper.offsetWidth : 400;
+            const envelopeHeight = envelopeWrapper ? envelopeWrapper.offsetHeight : 280;
+
+            function toPx(val, unit, isWidth) {
+                switch(unit) {
+                    case '%': return val / 100 * (isWidth ? envelopeWidth : envelopeHeight);
+                    case 'vw': return val / 100 * window.innerWidth;
+                    case 'vh': return val / 100 * window.innerHeight;
+                    case 'px': return val;
+                    default: return val;
+                }
+            }
+
+            function fromPx(px, unit, isWidth) {
+                switch(unit) {
+                    case '%': return px / (isWidth ? envelopeWidth : envelopeHeight) * 100;
+                    case 'vw': return px / window.innerWidth * 100;
+                    case 'vh': return px / window.innerHeight * 100;
+                    case 'px': return px;
+                    default: return px;
+                }
+            }
+
+            // Determine if this is width or height based on unit type
+            const isWidth = startUnit === 'vw' || endUnit === 'vw' ||
+                          (startUnit === '%' && endUnit === '%');
+
+            const startPx = toPx(startVal, startUnit, isWidth);
+            const endPx = toPx(endVal, endUnit, isWidth);
+            const resultPx = lerp(startPx, endPx, t);
+
+            // Output in pixels for smooth transition
+            return resultPx + 'px';
         }
 
         function clamp(value, min, max) {
@@ -599,7 +659,7 @@
             return (scroll - start) / (end - start);
         }
 
-        // Easing function for smoother animation
+        // Easing functions
         function easeOutCubic(t) {
             return 1 - Math.pow(1 - t, 3);
         }
@@ -611,9 +671,17 @@
         }
 
         // ==========================================
+        // GET CSS VARIABLE VALUES
+        // ==========================================
+        function getCSSVar(name) {
+            return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+        }
+
+        // ==========================================
         // SCROLL HANDLER
         // ==========================================
         const envelope = document.getElementById('envelope');
+        const card = document.querySelector('.card');
         const scrollContainer = document.querySelector('.scroll-container');
 
         function updateAnimation() {
@@ -621,47 +689,88 @@
             const maxScroll = scrollContainer.offsetHeight - window.innerHeight;
             const scrollProgress = clamp(scrollTop / maxScroll, 0, 1);
 
-            // Stage 1: Seal
-            const sealProgress = easeOutCubic(getProgress(scrollProgress, CONFIG.sealStart, CONFIG.sealEnd));
-            const sealScale = lerp(1, ANIMATION.sealScaleEnd, sealProgress);
-            const sealRotation = lerp(0, ANIMATION.sealRotationEnd, sealProgress);
-            const sealOpacity = lerp(1, 0, sealProgress);
+            // --- Seal animation ---
+            const sealProgress = easeOutCubic(getProgress(scrollProgress, CONFIG.seal.start, CONFIG.seal.end));
+            envelope.style.setProperty('--seal-scale', lerp(1, CONFIG.sealScaleEnd, sealProgress));
+            envelope.style.setProperty('--seal-rotation', lerp(0, CONFIG.sealRotationEnd, sealProgress) + 'deg');
+            envelope.style.setProperty('--seal-opacity', lerp(1, 0, sealProgress));
 
-            envelope.style.setProperty('--seal-scale', sealScale);
-            envelope.style.setProperty('--seal-rotation', sealRotation + 'deg');
-            envelope.style.setProperty('--seal-opacity', sealOpacity);
+            // --- Flap animation ---
+            const flapProgress = easeInOutCubic(getProgress(scrollProgress, CONFIG.flap.start, CONFIG.flap.end));
+            envelope.style.setProperty('--flap-rotation', lerp(0, CONFIG.flapRotationEnd, flapProgress) + 'deg');
 
-            // Stage 2: Flap opens
-            const flapProgress = easeInOutCubic(getProgress(scrollProgress, CONFIG.flapStart, CONFIG.flapEnd));
-            const flapRotation = lerp(0, ANIMATION.flapRotationEnd, flapProgress);
+            // --- Card animation (3 equal steps) ---
+            const cardProgress = getProgress(scrollProgress, CONFIG.card.start, CONFIG.card.end);
 
-            envelope.style.setProperty('--flap-rotation', flapRotation + 'deg');
+            // Get step values from CSS
+            const steps = {
+                1: {
+                    width: getCSSVar('--card-step1-width'),
+                    height: getCSSVar('--card-step1-height'),
+                    y: getCSSVar('--card-step1-y'),
+                    z: getCSSVar('--card-step1-z'),
+                    videoX: getCSSVar('--card-step1-video-x'),
+                    videoY: getCSSVar('--card-step1-video-y')
+                },
+                2: {
+                    width: getCSSVar('--card-step2-width'),
+                    height: getCSSVar('--card-step2-height'),
+                    y: getCSSVar('--card-step2-y'),
+                    z: getCSSVar('--card-step2-z'),
+                    videoX: getCSSVar('--card-step2-video-x'),
+                    videoY: getCSSVar('--card-step2-video-y')
+                },
+                3: {
+                    width: getCSSVar('--card-step3-width'),
+                    height: getCSSVar('--card-step3-height'),
+                    y: getCSSVar('--card-step3-y'),
+                    z: getCSSVar('--card-step3-z'),
+                    videoX: getCSSVar('--card-step3-video-x'),
+                    videoY: getCSSVar('--card-step3-video-y')
+                }
+            };
 
-            // Stage 3: Card slides up
-            const slideProgress = easeOutCubic(getProgress(scrollProgress, CONFIG.cardSlideStart, CONFIG.cardSlideEnd));
-            const cardYSlide = lerp(ANIMATION.cardYStart, ANIMATION.cardYSlideEnd, slideProgress);
+            // Calculate which step we're in and progress within that step
+            let currentWidth, currentHeight, currentY, currentZ, currentVideoX, currentVideoY;
 
-            // Stage 4: Card enlarges and moves to final position
-            const enlargeProgress = easeOutCubic(getProgress(scrollProgress, CONFIG.cardEnlargeStart, CONFIG.cardEnlargeEnd));
-            const cardYFinal = lerp(ANIMATION.cardYSlideEnd, ANIMATION.cardYFinal, enlargeProgress);
-            const cardScale = lerp(ANIMATION.cardScaleStart, ANIMATION.cardScaleEnd, enlargeProgress);
+            if (cardProgress <= 0.5) {
+                // Step 1 → Step 2 (pull out)
+                const t = easeOutCubic(cardProgress / 0.5);
+                currentWidth = lerpUnits(steps[1].width, steps[2].width, t);
+                currentHeight = lerpUnits(steps[1].height, steps[2].height, t);
+                currentY = lerpUnits(steps[1].y, steps[2].y, t);
+                currentZ = Math.round(lerp(parseFloat(steps[1].z), parseFloat(steps[2].z), t));
+                currentVideoX = lerpUnits(steps[1].videoX, steps[2].videoX, t);
+                currentVideoY = lerpUnits(steps[1].videoY, steps[2].videoY, t);
+            } else {
+                // Step 2 → Step 3 (center and zoom)
+                const t = easeInOutCubic((cardProgress - 0.5) / 0.5);
+                currentWidth = lerpUnits(steps[2].width, steps[3].width, t);
+                currentHeight = lerpUnits(steps[2].height, steps[3].height, t);
+                currentY = lerpUnits(steps[2].y, steps[3].y, t);
+                currentZ = Math.round(lerp(parseFloat(steps[2].z), parseFloat(steps[3].z), t));
+                currentVideoX = lerpUnits(steps[2].videoX, steps[3].videoX, t);
+                currentVideoY = lerpUnits(steps[2].videoY, steps[3].videoY, t);
+            }
 
-            // Use slide position until enlarge starts, then transition to final
-            const cardY = enlargeProgress > 0 ? cardYFinal : cardYSlide;
+            // Apply card properties
+            card.style.setProperty('--card-width', currentWidth);
+            card.style.setProperty('--card-height', currentHeight);
+            card.style.setProperty('--card-y', currentY);
+            card.style.setProperty('--card-z', currentZ);
+            card.style.setProperty('--video-x', currentVideoX);
+            card.style.setProperty('--video-y', currentVideoY);
 
-            envelope.style.setProperty('--card-y', cardY + '%');
-            envelope.style.setProperty('--card-scale', cardScale);
-
-            // Stage 5: Envelope fades
-            const fadeProgress = getProgress(scrollProgress, CONFIG.envelopeFadeStart, CONFIG.envelopeFadeEnd);
+            // --- Envelope fade ---
+            const fadeProgress = getProgress(scrollProgress, CONFIG.envelopeFade.start, CONFIG.envelopeFade.end);
             if (fadeProgress > 0) {
                 envelope.classList.add('envelope-hidden');
             } else {
                 envelope.classList.remove('envelope-hidden');
             }
 
-            // Hint fades
-            const hintOpacity = 1 - getProgress(scrollProgress, 0, CONFIG.hintFadeEnd);
+            // --- Hint fade ---
+            const hintOpacity = 1 - getProgress(scrollProgress, CONFIG.hintFade.start, CONFIG.hintFade.end);
             envelope.style.setProperty('--hint-opacity', hintOpacity);
         }
 
