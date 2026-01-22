@@ -64,7 +64,7 @@
 
             /* Video crop (position and size) */
             --video-step1-x: 50%;
-            --video-step1-y: -12vh;
+            --video-step1-y: 5vh;
             --video-step1-width: 50vh;
             --video-step1-height: 90vh;
 
@@ -84,7 +84,7 @@
             --card-step2-height: 35vh;
             /* Video crop */
             --video-step2-x: 50%;
-            --video-step2-y: 50%;
+            --video-step2-y: 5vh; 
             --video-step2-width: 50vh;
             --video-step2-height: 90vh;
 
@@ -104,7 +104,7 @@
             --card-step3-height: 35vh;
             /* Video crop */
             --video-step3-x: 50%;
-            --video-step3-y: 50%;
+            --video-step3-y: 5vh;
             --video-step3-width: 50vh;
             --video-step3-height: 90vh;
 
@@ -119,12 +119,12 @@
             --envelope-step4-height: 40vh;
             /* Card */
             --card-step4-x: 50%;
-            --card-step4-y: 50vh;
-            --card-step4-width: 55vh;
+            --card-step4-y: 5vh;
+            --card-step4-width: 50vh;
             --card-step4-height: 90vh;
             /* Video crop */
-            --video-step4-x: -22vh;
-            --video-step4-y: -5vh;
+            --video-step4-x: 50%;
+            --video-step4-y: 5vh;
             --video-step4-width: 50vh;
             --video-step4-height: 90vh;
         }
@@ -233,13 +233,17 @@
         }
 
         .card-video-bg {
-            position: absolute;
-            /* Video position and size for cropping - all in vh */
+            position: fixed;
+            /* Video position relative to screen - card acts as clip window */
             left: var(--video-x, var(--video-step1-x));
             top: var(--video-y, var(--video-step1-y));
             width: var(--video-width, var(--video-step1-width));
             height: var(--video-height, var(--video-step1-height));
-            z-index: 0;
+            transform: translate(-50%, -50%);
+            z-index: var(--z-card);
+            border-radius: 6px;
+            /* Clip path calculated by JS to match card bounds */
+            clip-path: var(--video-clip);
         }
 
         .card-video-bg video {
@@ -574,13 +578,15 @@
     <div class="scroll-container">
         <!-- Envelope scene (sticky) -->
         <div class="envelope-scene">
+            <!-- Video layer - fixed position, clipped to card bounds -->
+            <div class="card-video-bg" id="videoBg">
+                <video autoplay muted loop playsinline>
+                    <source src="keppel_sunset_light.mp4" type="video/mp4">
+                </video>
+            </div>
+
             <!-- Card (positioned relative to viewport, outside envelope for screen-relative sizing) -->
             <div class="card">
-                <div class="card-video-bg">
-                    <video autoplay muted loop playsinline>
-                        <source src="keppel_sunset_light.mp4" type="video/mp4">
-                    </video>
-                </div>
                 <div class="card-content">
                     <p class="save-the-date-text">Save the Date</p>
                     <h1 class="card-names">
@@ -760,6 +766,7 @@
         const envelope = document.getElementById('envelope');
         const envelopeBack = document.getElementById('envelopeBack');
         const card = document.querySelector('.card');
+        const videoBg = document.getElementById('videoBg');
         const scrollContainer = document.querySelector('.scroll-container');
 
         function updateAnimation() {
@@ -834,7 +841,7 @@
             const cardW = lerpUnits(steps.card[fromStep].width, steps.card[toStep].width, t);
             const cardH = lerpUnits(steps.card[fromStep].height, steps.card[toStep].height, t);
 
-            // Interpolate video
+            // Interpolate video (screen coordinates - where video CENTER should be on screen)
             const vidX = lerpUnits(steps.video[fromStep].x, steps.video[toStep].x, t);
             const vidY = lerpUnits(steps.video[fromStep].y, steps.video[toStep].y, t);
             const vidW = lerpUnits(steps.video[fromStep].width, steps.video[toStep].width, t);
@@ -856,11 +863,29 @@
             card.style.setProperty('--card-width', cardW);
             card.style.setProperty('--card-height', cardH);
 
-            // Apply video properties
-            card.style.setProperty('--video-x', vidX);
-            card.style.setProperty('--video-y', vidY);
-            card.style.setProperty('--video-width', vidW);
-            card.style.setProperty('--video-height', vidH);
+            // Apply video properties (video is fixed to screen, clipped to card)
+            videoBg.style.setProperty('--video-x', vidX);
+            videoBg.style.setProperty('--video-y', vidY);
+            videoBg.style.setProperty('--video-width', vidW);
+            videoBg.style.setProperty('--video-height', vidH);
+
+            // Calculate clip-path to clip video to card bounds
+            // Video center is at (vidX, vidY), card center is at (cardX, cardY)
+            // Clip-path inset(top right bottom left) relative to video element
+            // Card top-left: (cardX - cardW/2, cardY - cardH/2)
+            // Card bottom-right: (cardX + cardW/2, cardY + cardH/2)
+            // Video top-left: (vidX - vidW/2, vidY - vidH/2)
+            // Video bottom-right: (vidX + vidW/2, vidY + vidH/2)
+            // Inset from video edge to card edge:
+            //   top = cardTop - videoTop = (cardY - cardH/2) - (vidY - vidH/2)
+            //   left = cardLeft - videoLeft = (cardX - cardW/2) - (vidX - vidW/2)
+            //   bottom = videoBottom - cardBottom = (vidY + vidH/2) - (cardY + cardH/2)
+            //   right = videoRight - cardRight = (vidX + vidW/2) - (cardX + cardW/2)
+            const clipTop = `calc(${cardY} - ${cardH} / 2 - ${vidY} + ${vidH} / 2)`;
+            const clipRight = `calc(${vidX} + ${vidW} / 2 - ${cardX} - ${cardW} / 2)`;
+            const clipBottom = `calc(${vidY} + ${vidH} / 2 - ${cardY} - ${cardH} / 2)`;
+            const clipLeft = `calc(${cardX} - ${cardW} / 2 - ${vidX} + ${vidW} / 2)`;
+            videoBg.style.setProperty('--video-clip', `inset(${clipTop} ${clipRight} ${clipBottom} ${clipLeft} round 6px)`);
 
             // --- Flap z-index change at step 2 ---
             // When flap is fully open (after step 1→2), change z to be behind card
