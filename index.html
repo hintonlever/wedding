@@ -46,27 +46,26 @@
 
             /* ==========================================
                CARD STEP 1: Inside envelope (hidden)
-               Card is larger than envelope but mostly hidden below
-               Y position: card top starts at envelope center (top:50%)
-               then translateY shifts it. Negative = up, Positive = down
+               Y is the 'top' position relative to envelope
+               0% = top edge, 50% = middle, 100% = bottom
                ========================================== */
             --card-step1-width: 85%;
             --card-step1-height: 100%;
-            --card-step1-y: -10%;          /* Just peeking out at the top */
+            --card-step1-y: 0%;           /* Card top at envelope middle, extends down */
             --card-step1-z: 3;
             --card-step1-video-x: 50%;
             --card-step1-video-y: 80%;     /* Show bottom portion of video */
 
             /* ==========================================
                CARD STEP 2: Pulled out, above envelope
-               Card is fully visible above the envelope
+               Negative values position above the envelope
                ========================================== */
             --card-step2-width: 85%;
             --card-step2-height: 100%;
-            --card-step2-y: -150%;         /* Fully above envelope */
+            --card-step2-y: -120%;         /* Fully above envelope */
             --card-step2-z: 10;
             --card-step2-video-x: 50%;
-            --card-step2-video-y: 80%;     /* Center of video */
+            --card-step2-video-y: 50%;     /* Center of video */
 
             /* ==========================================
                CARD STEP 3: Centered and zoomed
@@ -74,7 +73,7 @@
                ========================================== */
             --card-step3-width: 85%;
             --card-step3-height: 90vh;
-            --card-step3-y: -50%;          /* Centered on screen */
+            --card-step3-y: -45vh;         /* Centered on screen (viewport units) */
             --card-step3-z: 100;
             --card-step3-video-x: 50%;
             --card-step3-video-y: 50%;
@@ -172,11 +171,14 @@
         /* Layer 3: The card */
         .card {
             position: absolute;
-            /* Size controlled by JS via --card-width and --card-height */
+            /* Size: use JS variable, fallback to step1 */
             width: var(--card-width, var(--card-step1-width));
             height: var(--card-height, var(--card-step1-height));
+            /* Horizontally centered in envelope */
             left: 50%;
-            top: 50%;
+            transform: translateX(-50%);
+            /* Vertically positioned by --card-y (from top of envelope) */
+            top: var(--card-y, var(--card-step1-y));
             border-radius: 6px;
             box-shadow: 0 2px 15px rgba(0,0,0,0.1);
             display: flex;
@@ -187,9 +189,6 @@
             padding: 2rem 1.5rem;
             /* Z-index controlled by JS */
             z-index: var(--card-z, var(--card-step1-z));
-            /* Position controlled by JS via --card-y */
-            transform-origin: center top;
-            transform: translate(0%, var(--card-y, var(--card-step1-y)));
             overflow: hidden;
         }
 
