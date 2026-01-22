@@ -31,6 +31,14 @@
             --envelope-front: #e8ddd4;
             --envelope-flap: #f0e6dc;
             --envelope-inner: #c9b9a8;
+
+            /* Card size - START (inside envelope) */
+            --card-start-width: 50%;
+            --card-start-height: 50%;
+
+            /* Card size - END (after scrolling) */
+            --card-end-width: 150%;
+            --card-end-height: 200%;
         }
 
         * {
@@ -114,8 +122,8 @@
         /* Layer 3: The card */
         .card {
             position: absolute;
-            width: 88%;
-            height: 140%;
+            width: var(--card-start-width);
+            height: var(--card-start-height);
             left: 6%;
             bottom: 10%;
             border-radius: 6px;
@@ -130,7 +138,7 @@
             /* Controlled by JS */
             transform-origin: center center;
             transform: translateY(var(--card-y, 25%)) scale(var(--card-scale, 1));
-            transition: box-shadow 0.3s ease;
+            transition: box-shadow 0.3s ease, width 0.5s ease, height 0.5s ease, left 0.5s ease, top 0.5s ease, bottom 0.5s ease, transform 0.5s ease;
             overflow: hidden;
         }
 
@@ -353,6 +361,12 @@
         .envelope-wrapper.envelope-hidden .card {
             z-index: 100;
             box-shadow: 0 30px 80px rgba(0,0,0,0.2);
+            width: var(--card-end-width);
+            height: var(--card-end-height);
+            left: 50%;
+            bottom: auto;
+            top: 50%;
+            transform: translate(-50%, -50%) !important;
         }
 
   
