@@ -44,65 +44,67 @@
             --z-envelope-back: 1;
             --z-card: 5;
             --z-envelope-flap-closed: 10;  /* Flap on top when closed */
-            --z-envelope-flap-open: 2;     /* Flap behind card when open */
+            --z-envelope-flap-open: 1;     /* Flap behind card when open */
 
             /* ==========================================
                STEP 1: Card inside envelope
                Envelope closed, card hidden inside
                ========================================== */
             /* Envelope */
-            --envelope-step1-x: 50vh;
+            --envelope-step1-x: 50%;
             --envelope-step1-y: 50vh;
             --envelope-step1-width: 60vh;
             --envelope-step1-height: 40vh;
+
             /* Card */
-            --card-step1-x: 50vh;
-            --card-step1-y: 32vh;
+            --card-step1-x: 50%;
+            --card-step1-y: 50vh;
             --card-step1-width: 50vh;
             --card-step1-height: 35vh;
+
             /* Video crop (position and size) */
-            --video-step1-x: 25vh;
-            --video-step1-y: 15vh;
-            --video-step1-width: 100vh;
-            --video-step1-height: 60vh;
+            --video-step1-x: 50%;
+            --video-step1-y: -12vh;
+            --video-step1-width: 50vh;
+            --video-step1-height: 90vh;
 
             /* ==========================================
                STEP 2: Envelope opens (flap z changes)
                Card and envelope don't move
                ========================================== */
             /* Envelope */
-            --envelope-step2-x: 50vh;
+            --envelope-step2-x: 50%;
             --envelope-step2-y: 50vh;
             --envelope-step2-width: 60vh;
             --envelope-step2-height: 40vh;
             /* Card */
-            --card-step2-x: 50vh;
-            --card-step2-y: 32vh;
+            --card-step2-x: 50%;
+            --card-step2-y: 50vh;
             --card-step2-width: 50vh;
             --card-step2-height: 35vh;
             /* Video crop */
-            --video-step2-x: 25vh;
-            --video-step2-y: 15vh;
-            --video-step2-width: 100vh;
-            --video-step2-height: 60vh;
+            --video-step2-x: 50%;
+            --video-step2-y: 50%;
+            --video-step2-width: 50vh;
+            --video-step2-height: 90vh;
 
             /* ==========================================
                STEP 3: Card pulled out
                Card at 35vh, envelope at 75vh
                ========================================== */
             /* Envelope */
-            --envelope-step3-x: 50vh;
+            --envelope-step3-x: 50%;
             --envelope-step3-y: 75vh;
             --envelope-step3-width: 60vh;
             --envelope-step3-height: 40vh;
             /* Card */
-            --card-step3-x: 50vh;
+            --card-step3-x: 50%;
             --card-step3-y: 35vh;
             --card-step3-width: 50vh;
-            --card-step3-height: 50vh;
+            --card-step3-height: 35vh;
             /* Video crop */
-            --video-step3-x: 25vh;
-            --video-step3-y: 25vh;
+            --video-step3-x: 50%;
+            --video-step3-y: 50%;
             --video-step3-width: 100vh;
             --video-step3-height: 60vh;
 
@@ -111,18 +113,18 @@
                Card grows and centers
                ========================================== */
             /* Envelope */
-            --envelope-step4-x: 50vh;
+            --envelope-step4-x: 50%;
             --envelope-step4-y: 90vh;
             --envelope-step4-width: 60vh;
             --envelope-step4-height: 40vh;
             /* Card */
-            --card-step4-x: 50vh;
+            --card-step4-x: 50%;
             --card-step4-y: 50vh;
             --card-step4-width: 55vh;
             --card-step4-height: 90vh;
             /* Video crop */
-            --video-step4-x: 27vh;
-            --video-step4-y: 5vh;
+            --video-step4-x: -22vh;
+            --video-step4-y: -5vh;
             --video-step4-width: 100vh;
             --video-step4-height: 100vh;
         }
