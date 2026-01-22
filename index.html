@@ -53,7 +53,6 @@
 
         /* Scroll container - creates scroll space */
         .scroll-container {
-            height: 300vh; /* 3x viewport for scroll room */
             position: relative;
         }
 
@@ -63,6 +62,7 @@
             top: 0;
             width: 100%;
             height: 100vh;
+            min-height: 300vh; /* Creates scroll space for the animation */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -157,9 +157,10 @@
             left: 10px;
             right: 10px;
             bottom: 10px;
-            border: 1px solid rgba(126, 176, 155, 0.25);
+            border: 2px solid white;
             border-radius: 4px;
             pointer-events: none;
+            box-shadow: 0 20px 40px 10px rgba(0, 0, 0, 0.5);
         }
 
         .card-content {
@@ -354,14 +355,7 @@
             box-shadow: 0 30px 80px rgba(0,0,0,0.2);
         }
 
-        /* Floating decorative elements */
-        .floating-shape {
-            position: fixed;
-            border-radius: 50%;
-            opacity: 0.08;
-            pointer-events: none;
-        }
-
+  
         .shape-1 {
             width: 300px;
             height: 300px;
@@ -386,6 +380,47 @@
             right: 5%;
         }
 
+        /* Info box section */
+        .info-section {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem 2rem;
+        }
+
+        .info-box {
+            background: var(--lavender);
+            border-radius: 12px;
+            padding: 3rem 2.5rem;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(184, 169, 201, 0.4);
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .info-box.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .info-box h2 {
+            font-family: var(--font-script);
+            font-size: 2rem;
+            color: var(--charcoal);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .info-box p {
+            color: var(--charcoal);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
         /* Responsive adjustments */
         @media (max-width: 480px) {
             .card {
@@ -396,14 +431,15 @@
                 bottom: -60px;
                 font-size: 0.65rem;
             }
+
+            .info-box {
+                padding: 2rem 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Decorative background shapes -->
-    <div class="floating-shape shape-1"></div>
-    <div class="floating-shape shape-2"></div>
-    <div class="floating-shape shape-3"></div>
+    
 
     <!-- Scroll container -->
     <div class="scroll-container">
@@ -433,6 +469,7 @@
                         </h1>
                         <p class="card-date">29.08.26</p>
                         <p class="card-location">Great Keppel Island, Australia</p>
+                        <p class="card-information">Information</p>
                     </div>
                 </div>
 
@@ -454,6 +491,14 @@
                     <div class="scroll-icon"></div>
                     <span>Scroll to open</span>
                 </div>
+            </div>
+        </div>
+
+        <!-- Info section -->
+        <div class="info-section">
+            <div class="info-box" id="infoBox">
+                <h2>More Details Coming Soon</h2>
+                <p>We're so excited to celebrate with you on Great Keppel Island. More information about accommodation, travel, and the celebration will be shared soon.</p>
             </div>
         </div>
     </div>
@@ -596,6 +641,18 @@
 
         // Initial state
         updateAnimation();
+
+        // Info box visibility
+        const infoBox = document.getElementById('infoBox');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    infoBox.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.3 });
+
+        observer.observe(infoBox);
     </script>
 </body>
 </html>
