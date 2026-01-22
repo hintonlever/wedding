@@ -272,8 +272,8 @@
         /* Layer 7: Wax seal */
         .wax-seal {
             position: absolute;
-            width: min(50px, 13vw);
-            height: min(50px, 13vw);
+            width: min(70px, 18vw);
+            height: min(70px, 18vw);
             top: 50%;
             left: 50%;
             z-index: 7;
@@ -297,10 +297,11 @@
         .wax-seal::before {
             content: 'A & B';
             font-family: var(--font-script);
-            font-size: clamp(0.5rem, 1.8vw, 0.75rem);
+            font-size: clamp(0.7rem, 2.5vw, 1rem);
             color: rgba(255,255,255,0.95);
             letter-spacing: 0.02em;
             text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            white-space: nowrap;
         }
 
         /* Scroll hint */
