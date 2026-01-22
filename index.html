@@ -39,6 +39,19 @@
             /* Card size - END (after scrolling) */
             --card-end-width: 150%;
             --card-end-height: 200%;
+
+            /* Z-index layers */
+            --z-envelope-back: 1;
+            --z-envelope-inner: 2;
+
+            --z-envelope-sides: 4;
+            --z-envelope-front-flap: 5;
+            --z-envelope-top-flap: 6;
+            
+            --z-wax-seal: 7;
+            
+            --z-card-start: 3;
+            --z-card-end: 100;
         }
 
         * {
@@ -104,7 +117,7 @@
             background: var(--envelope-back);
             border-radius: 4px;
             box-shadow: 0 15px 50px rgba(0,0,0,0.2);
-            z-index: 1;
+            z-index: var(--z-envelope-back);
             transition: opacity 0.4s ease;
         }
 
@@ -115,7 +128,7 @@
             height: 100%;
             background: linear-gradient(180deg, var(--envelope-inner) 0%, var(--envelope-back) 30%);
             border-radius: 4px;
-            z-index: 2;
+            z-index: var(--z-envelope-inner);
             transition: opacity 0.4s ease;
         }
 
@@ -134,7 +147,7 @@
             align-items: center;
             text-align: center;
             padding: 2rem 1.5rem;
-            z-index: 3;
+            z-index: var(--z-card-start);
             /* Controlled by JS */
             transform-origin: center center;
             transform: translateY(var(--card-y, 25%)) scale(var(--card-scale, 1));
@@ -223,7 +236,7 @@
             top: 0;
             background: var(--envelope-front);
             clip-path: polygon(0 0, 0 100%, 100% 50%);
-            z-index: 4;
+            z-index: var(--z-envelope-sides);
             transition: opacity 0.4s ease;
         }
 
@@ -235,7 +248,7 @@
             top: 0;
             background: var(--envelope-front);
             clip-path: polygon(100% 0, 100% 100%, 0 50%);
-            z-index: 4;
+            z-index: var(--z-envelope-sides);
             transition: opacity 0.4s ease;
         }
 
@@ -249,7 +262,7 @@
             background: linear-gradient(0deg, var(--envelope-front) 0%, #efe5db 100%);
             clip-path: polygon(0 100%, 50% 15%, 100% 100%);
             border-radius: 0 0 4px 4px;
-            z-index: 5;
+            z-index: var(--z-envelope-front-flap);
             transition: opacity 0.4s ease;
         }
 
@@ -263,7 +276,7 @@
             background: linear-gradient(180deg, var(--envelope-flap) 0%, var(--envelope-front) 100%);
             clip-path: polygon(0 0, 100% 0, 50% 100%);
             transform-origin: top center;
-            z-index: 6;
+            z-index: var(--z-envelope-top-flap);
             /* Controlled by JS */
             transform: rotateX(var(--flap-rotation, 0deg));
             transition: opacity 0.4s ease;
@@ -276,7 +289,7 @@
             height: min(70px, 18vw);
             top: 50%;
             left: 50%;
-            z-index: 7;
+            z-index: var(--z-wax-seal);
             border-radius: 50%;
             background: radial-gradient(circle at 35% 35%,
                 #ff9a8b 0%,
@@ -360,7 +373,7 @@
 
         /* Card comes to front when envelope hidden */
         .envelope-wrapper.envelope-hidden .card {
-            z-index: 100;
+            z-index: var(--z-card-end);
             box-shadow: 0 30px 80px rgba(0,0,0,0.2);
             width: var(--card-end-width);
             height: var(--card-end-height);
