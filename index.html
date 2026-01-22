@@ -37,6 +37,14 @@
             --scroll-length: 400vh;
 
             /* ==========================================
+               LAYOUT POSITIONING
+               ========================================== */
+            /* Envelope position from bottom of screen */
+            --envelope-bottom: 10%;
+            /* Scroll hint position from top of screen */
+            --scroll-hint-top: 10%;
+
+            /* ==========================================
                CARD STEP 1: Inside envelope (hidden)
                Card is larger than envelope but mostly hidden below
                Y position: card top starts at envelope center (top:50%)
@@ -114,7 +122,8 @@
             height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-end;
+            padding-bottom: var(--envelope-bottom);
             perspective: 1500px;
             overflow: hidden;
         }
@@ -180,7 +189,7 @@
             z-index: var(--card-z, var(--card-step1-z));
             /* Position controlled by JS via --card-y */
             transform-origin: center top;
-            transform: translate(-50%, var(--card-y, var(--card-step1-y)));
+            transform: translate(0%, var(--card-y, var(--card-step1-y)));
             overflow: hidden;
         }
 
@@ -351,7 +360,7 @@
         /* Scroll hint */
         .scroll-hint {
             position: fixed;
-            bottom: 10%;
+            top: var(--scroll-hint-top);
             left: 50%;
             transform: translateX(-50%);
             display: flex;
