@@ -43,8 +43,9 @@
                ========================================== */
             --z-envelope-back: 1;
             --z-card: 5;
-            --z-envelope-flap-closed: 10;  /* Flap on top when closed */
-            --z-envelope-flap-open: 1;     /* Flap behind card when open */
+            --z-envelope-front: 8;         /* Side flaps and front flap - in front of card */
+            --z-envelope-flap-closed: 10;  /* Top flap on top when closed */
+            --z-envelope-flap-open: 1;     /* Top flap behind card when open */
 
             /* ==========================================
                STEP 1: Card inside envelope
@@ -64,7 +65,7 @@
 
             /* Video crop (position and size) */
             --video-step1-x: 50%;
-            --video-step1-y: 5vh;
+            --video-step1-y: 50vh;
             --video-step1-width: 50vh;
             --video-step1-height: 90vh;
 
@@ -205,6 +206,7 @@
             left: var(--envelope-x, var(--envelope-step1-x));
             top: var(--envelope-y, var(--envelope-step1-y));
             transform: translate(-50%, -50%);
+            z-index: var(--z-envelope-front);
         }
 
         /* Top flap z-index changes from closed (on top) to open (behind) */
@@ -357,6 +359,7 @@
             background: var(--envelope-front);
             clip-path: polygon(0 0, 0 100%, 100% 50%);
             transition: opacity 0.4s ease;
+            z-index: var(--z-envelope-front);
         }
 
         .envelope-side-right {
@@ -368,6 +371,7 @@
             background: var(--envelope-front);
             clip-path: polygon(100% 0, 100% 100%, 0 50%);
             transition: opacity 0.4s ease;
+            z-index: var(--z-envelope-front);
         }
 
         /* Bottom/front flap (V pointing up) */
@@ -381,21 +385,22 @@
             clip-path: polygon(0 100%, 50% 15%, 100% 100%);
             border-radius: 0 0 4px 4px;
             transition: opacity 0.4s ease;
+            z-index: var(--z-envelope-front);
         }
 
-        /* Top flap (opens upward) */
+        /* Top flap (opens upward) - positioned independently for z-index control */
         .envelope-top-flap {
             position: absolute;
-            width: 100%;
-            height: 70%;
-            top: 0;
-            left: 0;
+            width: var(--envelope-width, var(--envelope-step1-width));
+            height: calc(var(--envelope-height, var(--envelope-step1-height)) * 0.7);
+            left: var(--envelope-x, var(--envelope-step1-x));
+            top: calc(var(--envelope-y, var(--envelope-step1-y)) - var(--envelope-height, var(--envelope-step1-height)) / 2);
+            transform: translateX(-50%) rotateX(var(--flap-rotation, 0deg));
+            transform-origin: center top;
             background: linear-gradient(180deg, var(--envelope-flap) 0%, var(--envelope-front) 100%);
             clip-path: polygon(0 0, 100% 0, 50% 100%);
-            transform-origin: top center;
-            /* Controlled by JS */
-            transform: rotateX(var(--flap-rotation, 0deg));
             transition: opacity 0.4s ease;
+            z-index: var(--flap-z, var(--z-envelope-flap-closed));
         }
 
         /* Wax seal */
@@ -479,12 +484,12 @@
         /* Envelope fades when fully open */
         .envelope-wrapper.envelope-hidden .envelope-side-left,
         .envelope-wrapper.envelope-hidden .envelope-side-right,
-        .envelope-wrapper.envelope-hidden .envelope-front-flap,
-        .envelope-wrapper.envelope-hidden .envelope-top-flap {
+        .envelope-wrapper.envelope-hidden .envelope-front-flap {
             opacity: 0;
         }
 
-        .envelope-back-layer.envelope-hidden {
+        .envelope-back-layer.envelope-hidden,
+        .envelope-top-flap.envelope-hidden {
             opacity: 0;
         }
 
@@ -605,17 +610,14 @@
 
             <div class="envelope-wrapper" id="envelope">
 
-                <!-- Layer 4: Side flaps -->
+                <!-- Side flaps -->
                 <div class="envelope-side-left"></div>
                 <div class="envelope-side-right"></div>
 
-                <!-- Layer 5: Front flap (bottom V) -->
+                <!-- Front flap (bottom V) -->
                 <div class="envelope-front-flap"></div>
 
-                <!-- Layer 6: Top flap (opens) -->
-                <div class="envelope-top-flap"></div>
-
-                <!-- Layer 7: Wax seal -->
+                <!-- Wax seal -->
                 <div class="wax-seal"></div>
 
                 <!-- Scroll hint -->
@@ -624,6 +626,9 @@
                     <span>Scroll to open</span>
                 </div>
             </div>
+
+            <!-- Top flap (separate for independent z-index control) -->
+            <div class="envelope-top-flap" id="envelopeTopFlap"></div>
         </div>
 
     </div>
@@ -765,6 +770,7 @@
         // ==========================================
         const envelope = document.getElementById('envelope');
         const envelopeBack = document.getElementById('envelopeBack');
+        const envelopeTopFlap = document.getElementById('envelopeTopFlap');
         const card = document.querySelector('.card');
         const videoBg = document.getElementById('videoBg');
         const scrollContainer = document.querySelector('.scroll-container');
@@ -782,7 +788,7 @@
 
             // --- Flap animation ---
             const flapProgress = easeInOutCubic(getProgress(scrollProgress, CONFIG.flap.start, CONFIG.flap.end));
-            envelope.style.setProperty('--flap-rotation', lerp(0, CONFIG.flapRotationEnd, flapProgress) + 'deg');
+            envelopeTopFlap.style.setProperty('--flap-rotation', lerp(0, CONFIG.flapRotationEnd, flapProgress) + 'deg');
 
             // --- 4-Step Animation ---
             // Step 1: Card in envelope (0 - 0.25)
@@ -847,7 +853,7 @@
             const vidW = lerpUnits(steps.video[fromStep].width, steps.video[toStep].width, t);
             const vidH = lerpUnits(steps.video[fromStep].height, steps.video[toStep].height, t);
 
-            // Apply envelope properties to both layers
+            // Apply envelope properties to all envelope layers
             envelope.style.left = envX;
             envelope.style.top = envY;
             envelope.style.width = envW;
@@ -856,6 +862,11 @@
             envelopeBack.style.top = envY;
             envelopeBack.style.width = envW;
             envelopeBack.style.height = envH;
+            // Top flap follows envelope position
+            envelopeTopFlap.style.setProperty('--envelope-x', envX);
+            envelopeTopFlap.style.setProperty('--envelope-y', envY);
+            envelopeTopFlap.style.setProperty('--envelope-width', envW);
+            envelopeTopFlap.style.setProperty('--envelope-height', envH);
 
             // Apply card properties
             card.style.setProperty('--card-x', cardX);
@@ -890,9 +901,9 @@
             // --- Flap z-index change at step 2 ---
             // When flap is fully open (after step 1→2), change z to be behind card
             if (animProgress > 0.333) {
-                envelope.style.setProperty('--flap-z', getCSSVar('--z-envelope-flap-open'));
+                envelopeTopFlap.style.setProperty('--flap-z', getCSSVar('--z-envelope-flap-open'));
             } else {
-                envelope.style.setProperty('--flap-z', getCSSVar('--z-envelope-flap-closed'));
+                envelopeTopFlap.style.setProperty('--flap-z', getCSSVar('--z-envelope-flap-closed'));
             }
 
             // --- Envelope fade (step 4) ---
@@ -900,9 +911,11 @@
             if (fadeProgress > 0) {
                 envelope.classList.add('envelope-hidden');
                 envelopeBack.classList.add('envelope-hidden');
+                envelopeTopFlap.classList.add('envelope-hidden');
             } else {
                 envelope.classList.remove('envelope-hidden');
                 envelopeBack.classList.remove('envelope-hidden');
+                envelopeTopFlap.classList.remove('envelope-hidden');
             }
 
             // --- Hint fade ---
