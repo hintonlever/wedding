@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Save the Date | Alina & Ben</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500&family=Roboto+Flex:wght@200;300;400&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'De Lionist';
+            src: url('de-lionist.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        :root {
+            --cream: #fdf9f3;
+            --peach: #ffb088;
+            --coral: #ff6b6b;
+            --sage: #7eb09b;
+            --lavender: #b8a9c9;
+            --charcoal: #2d2d2d;
+            --warm-gray: #6b6b6b;
+            --font-script: 'De Lionist', cursive;
+            --font-script-secondary: 'Roboto Flex', sans-serif;
+
+            /* Envelope colors */
+            --envelope-back: #d4c4b5;
+            --envelope-front: #e8ddd4;
+            --envelope-flap: #f0e6dc;
+            --envelope-inner: #c9b9a8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: var(--font-script-secondary);
+            font-weight: 200;
+            background: linear-gradient(135deg, #fdf9f3 0%, #f5ebe0 50%, #efe3d6 100%);
+            color: var(--cream);
+        }
+
+        /* Scroll container */
+        .scroll-container {
+            position: relative;
+            min-height: 600vh;
+        }
+
+        /* Envelope scene - sticky container */
+        .envelope-scene {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1500px;
+            z-index: 10;
+        }
+
+        /* Envelope wrapper */
+        .envelope-wrapper {
+            position: relative;
+            width: min(90vw, 420px);
+            height: min(60vw, 280px);
+            transition: opacity 0.5s ease;
+        }
+
+        .envelope-wrapper.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Envelope layers */
+        .envelope-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--envelope-back);
+            border-radius: 4px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+            z-index: 1;
+            transition: opacity 0.4s ease;
+        }
+
+        .envelope-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, var(--envelope-inner) 0%, var(--envelope-back) 30%);
+            border-radius: 4px;
+            z-index: 2;
+            transition: opacity 0.4s ease;
+        }
+
+        /* Card with video - this expands to fullscreen */
+        .card {
+            position: absolute;
+            width: 88%;
+            height: 130%;
+            left: 6%;
+            bottom: 10%;
+            border-radius: 6px;
+            overflow: hidden;
+            z-index: 3;
+            transform: translateY(var(--card-y, 30%));
+            transition: opacity 0.4s ease;
+        }
+
+        .card video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Side flaps */
+        .envelope-side-left {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            background: var(--envelope-front);
+            clip-path: polygon(0 0, 0 100%, 100% 50%);
+            z-index: 4;
+            transition: opacity 0.4s ease;
+        }
+
+        .envelope-side-right {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            right: 0;
+            top: 0;
+            background: var(--envelope-front);
+            clip-path: polygon(100% 0, 100% 100%, 0 50%);
+            z-index: 4;
+            transition: opacity 0.4s ease;
+        }
+
+        /* Bottom flap */
+        .envelope-front-flap {
+            position: absolute;
+            width: 100%;
+            height: 75%;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(0deg, var(--envelope-front) 0%, #efe5db 100%);
+            clip-path: polygon(0 100%, 50% 15%, 100% 100%);
+            border-radius: 0 0 4px 4px;
+            z-index: 5;
+            transition: opacity 0.4s ease;
+        }
+
+        /* Top flap */
+        .envelope-top-flap {
+            position: absolute;
+            width: 100%;
+            height: 70%;
+            top: 0;
+            left: 0;
+            background: linear-gradient(180deg, var(--envelope-flap) 0%, var(--envelope-front) 100%);
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            transform-origin: top center;
+            z-index: 6;
+            transform: rotateX(var(--flap-rotation, 0deg));
+            transition: opacity 0.4s ease;
+        }
+
+        /* Wax seal */
+        .wax-seal {
+            position: absolute;
+            width: min(50px, 13vw);
+            height: min(50px, 13vw);
+            top: 50%;
+            left: 50%;
+            z-index: 7;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%,
+                #ff9a8b 0%,
+                var(--coral) 40%,
+                #c44536 100%);
+            box-shadow:
+                0 3px 12px rgba(196, 69, 54, 0.4),
+                inset 0 2px 4px rgba(255,255,255,0.3),
+                inset 0 -2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translate(-50%, -50%) scale(var(--seal-scale, 1)) rotate(var(--seal-rotation, 0deg));
+            opacity: var(--seal-opacity, 1);
+        }
+
+        .wax-seal::before {
+            content: 'A & B';
+            font-family: var(--font-script);
+            font-size: clamp(0.5rem, 1.8vw, 0.75rem);
+            color: rgba(255,255,255,0.95);
+            letter-spacing: 0.02em;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        /* Envelope fades when open */
+        .envelope-wrapper.envelope-open .envelope-back,
+        .envelope-wrapper.envelope-open .envelope-inner,
+        .envelope-wrapper.envelope-open .envelope-side-left,
+        .envelope-wrapper.envelope-open .envelope-side-right,
+        .envelope-wrapper.envelope-open .envelope-front-flap,
+        .envelope-wrapper.envelope-open .envelope-top-flap {
+            opacity: 0;
+        }
+
+        /* Scroll hint */
+        .scroll-hint {
+            position: absolute;
+            bottom: -70px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--warm-gray);
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            opacity: var(--hint-opacity, 1);
+            transition: opacity 0.3s ease;
+        }
+
+        .scroll-icon {
+            width: 28px;
+            height: 42px;
+            border: 2px solid var(--warm-gray);
+            border-radius: 14px;
+            position: relative;
+        }
+
+        .scroll-icon::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 8px;
+            background: var(--coral);
+            border-radius: 2px;
+            animation: scroll-bounce 1.5s ease-in-out infinite;
+        }
+
+        @keyframes scroll-bounce {
+            0%, 100% { top: 8px; opacity: 1; }
+            50% { top: 20px; opacity: 0.5; }
+        }
+
+        /* Fullscreen video card */
+        .video-fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease;
+        }
+
+        .video-fullscreen.visible {
+            opacity: 1;
+            z-index: 100;
+        }
+
+        .video-fullscreen video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Dark overlay on fullscreen video */
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.35);
+            z-index: 1;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease;
+        }
+
+        .video-overlay.visible {
+            opacity: 1;
+            z-index: 101;
+        }
+
+        /* Content overlay on fullscreen video */
+        .content-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            pointer-events: none;
+            padding: 2rem;
+        }
+
+        .content-overlay.visible {
+            opacity: 1;
+            transform: translateY(0);
+            z-index: 102;
+        }
+
+        .save-the-date-text {
+            font-size: clamp(0.8rem, 3vw, 1.1rem);
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--cream);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .names {
+            font-family: var(--font-script);
+            font-size: clamp(3rem, 12vw, 6rem);
+            line-height: 1.3;
+            color: var(--cream);
+            text-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+
+        .ampersand {
+            font-family: var(--font-script);
+            font-style: italic;
+            font-size: 0.4em;
+            display: block;
+            margin: 0.2em 0;
+            opacity: 0.9;
+        }
+
+        .date {
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            margin-top: 2rem;
+            color: var(--cream);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .location {
+            margin-top: 0.75rem;
+            color: var(--cream);
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            letter-spacing: 0.1em;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        /* Info section */
+        .info-section {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem 2rem;
+        }
+
+        .info-box {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 3rem 2.5rem;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .info-box.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .info-box h2 {
+            font-family: var(--font-script);
+            font-size: 2rem;
+            color: var(--charcoal);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .info-box p {
+            color: var(--charcoal);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .scroll-hint {
+                bottom: -60px;
+                font-size: 0.65rem;
+            }
+
+            .info-box {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Fullscreen video (appears after envelope opens) -->
+    <div class="video-fullscreen" id="videoFullscreen">
+        <video autoplay muted loop playsinline>
+            <source src="keppel_sunset_light.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="video-overlay" id="videoOverlay"></div>
+
+    <!-- Content that appears over fullscreen video -->
+    <div class="content-overlay" id="contentOverlay">
+        <p class="save-the-date-text">Save the Date</p>
+        <h1 class="names">
+            Alina
+            <span class="ampersand">&</span>
+            Ben
+        </h1>
+        <p class="date">29.08.26</p>
+        <p class="location">Great Keppel Island, Australia</p>
+    </div>
+
+    <!-- Scroll container -->
+    <div class="scroll-container">
+        <!-- Envelope scene -->
+        <div class="envelope-scene" id="envelopeScene">
+            <div class="envelope-wrapper" id="envelope">
+                <div class="envelope-back"></div>
+                <div class="envelope-inner"></div>
+
+                <!-- Card with video inside envelope -->
+                <div class="card">
+                    <video autoplay muted loop playsinline>
+                        <source src="keppel_sunset_light.mp4" type="video/mp4">
+                    </video>
+                </div>
+
+                <div class="envelope-side-left"></div>
+                <div class="envelope-side-right"></div>
+                <div class="envelope-front-flap"></div>
+                <div class="envelope-top-flap"></div>
+                <div class="wax-seal"></div>
+
+                <div class="scroll-hint">
+                    <div class="scroll-icon"></div>
+                    <span>Scroll to open</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info section -->
+        <div class="info-section">
+            <div class="info-box" id="infoBox">
+                <h2>More Details Coming Soon</h2>
+                <p>We're so excited to celebrate with you on Great Keppel Island. More information about accommodation, travel, and the celebration will be shared soon.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // CONFIGURATION - Adjust timing here
+        // ==========================================
+        const CONFIG = {
+            // Stage 1: Seal breaks
+            sealStart: 0,
+            sealEnd: 0.08,
+
+            // Stage 2: Flap opens
+            flapStart: 0.03,
+            flapEnd: 0.18,
+
+            // Stage 3: Card slides up out of envelope
+            cardSlideStart: 0.12,
+            cardSlideEnd: 0.28,
+
+            // Stage 4: Envelope fades away
+            envelopeFadeStart: 0.25,
+            envelopeFadeEnd: 0.35,
+
+            // Stage 5: Fullscreen video fades in
+            videoFadeStart: 0.30,
+            videoFadeEnd: 0.40,
+
+            // Stage 6: Content text fades in
+            contentFadeStart: 0.38,
+            contentFadeEnd: 0.45,
+
+            // Hint fades
+            hintFadeEnd: 0.05
+        };
+
+        // ==========================================
+        // UTILITY FUNCTIONS
+        // ==========================================
+        function lerp(start, end, t) {
+            return start + (end - start) * t;
+        }
+
+        function clamp(value, min, max) {
+            return Math.min(Math.max(value, min), max);
+        }
+
+        function getProgress(scroll, start, end) {
+            if (scroll <= start) return 0;
+            if (scroll >= end) return 1;
+            return (scroll - start) / (end - start);
+        }
+
+        function easeOutCubic(t) {
+            return 1 - Math.pow(1 - t, 3);
+        }
+
+        function easeInOutCubic(t) {
+            return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        }
+
+        // ==========================================
+        // ELEMENTS
+        // ==========================================
+        const envelope = document.getElementById('envelope');
+        const videoFullscreen = document.getElementById('videoFullscreen');
+        const videoOverlay = document.getElementById('videoOverlay');
+        const contentOverlay = document.getElementById('contentOverlay');
+        const scrollContainer = document.querySelector('.scroll-container');
+
+        // ==========================================
+        // SCROLL HANDLER
+        // ==========================================
+        function updateAnimation() {
+            const scrollTop = window.scrollY;
+            const maxScroll = scrollContainer.offsetHeight - window.innerHeight;
+            const scrollProgress = clamp(scrollTop / maxScroll, 0, 1);
+
+            // Stage 1: Seal breaks
+            const sealProgress = easeOutCubic(getProgress(scrollProgress, CONFIG.sealStart, CONFIG.sealEnd));
+            envelope.style.setProperty('--seal-scale', lerp(1, 0.3, sealProgress));
+            envelope.style.setProperty('--seal-rotation', lerp(0, 45, sealProgress) + 'deg');
+            envelope.style.setProperty('--seal-opacity', lerp(1, 0, sealProgress));
+
+            // Stage 2: Flap opens
+            const flapProgress = easeInOutCubic(getProgress(scrollProgress, CONFIG.flapStart, CONFIG.flapEnd));
+            envelope.style.setProperty('--flap-rotation', lerp(0, -180, flapProgress) + 'deg');
+
+            // Stage 3: Card slides up
+            const slideProgress = easeOutCubic(getProgress(scrollProgress, CONFIG.cardSlideStart, CONFIG.cardSlideEnd));
+            envelope.style.setProperty('--card-y', lerp(30, -70, slideProgress) + '%');
+
+            // Stage 4: Envelope fades (flaps disappear)
+            const envelopeFadeProgress = getProgress(scrollProgress, CONFIG.envelopeFadeStart, CONFIG.envelopeFadeEnd);
+            if (envelopeFadeProgress > 0.5) {
+                envelope.classList.add('envelope-open');
+            } else {
+                envelope.classList.remove('envelope-open');
+            }
+
+            // Hide entire envelope after video takes over
+            if (envelopeFadeProgress >= 1) {
+                envelope.classList.add('hidden');
+            } else {
+                envelope.classList.remove('hidden');
+            }
+
+            // Stage 5: Fullscreen video fades in
+            const videoFadeProgress = getProgress(scrollProgress, CONFIG.videoFadeStart, CONFIG.videoFadeEnd);
+            if (videoFadeProgress > 0) {
+                videoFullscreen.classList.add('visible');
+                videoOverlay.classList.add('visible');
+            } else {
+                videoFullscreen.classList.remove('visible');
+                videoOverlay.classList.remove('visible');
+            }
+
+            // Stage 6: Content fades in
+            const contentFadeProgress = getProgress(scrollProgress, CONFIG.contentFadeStart, CONFIG.contentFadeEnd);
+            if (contentFadeProgress > 0.3) {
+                contentOverlay.classList.add('visible');
+            } else {
+                contentOverlay.classList.remove('visible');
+            }
+
+            // Hint fades out
+            envelope.style.setProperty('--hint-opacity', 1 - getProgress(scrollProgress, 0, CONFIG.hintFadeEnd));
+        }
+
+        window.addEventListener('scroll', updateAnimation, { passive: true });
+        updateAnimation();
+
+        // Info box visibility
+        const infoBox = document.getElementById('infoBox');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    infoBox.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.3 });
+
+        observer.observe(infoBox);
+    </script>
+</body>
+</html>
