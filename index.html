@@ -274,17 +274,18 @@
 
         /* Bleed shadow overlay - fades in at step 4 */
         .card-bleed-shadow {
-            position: absolute;
+            position: fixed;
             left: var(--card-x, var(--card-step4-x));
             top: var(--card-y, var(--card-step4-y));
             width: var(--card-width, var(--card-step4-width));
             height: var(--card-height, var(--card-step4-height));
             transform: translate(-50%, -50%);
             border-radius: 6px;
+            background: rgba(0, 0, 0, 0.001);
             box-shadow:
-                0 0 calc(40px * var(--bleed-opacity, 0)) calc(15px * var(--bleed-opacity, 0)) rgba(0, 0, 0, calc(0.3 * var(--bleed-opacity, 0))),
-                0 0 calc(80px * var(--bleed-opacity, 0)) calc(30px * var(--bleed-opacity, 0)) rgba(0, 0, 0, calc(0.15 * var(--bleed-opacity, 0))),
-                0 0 calc(120px * var(--bleed-opacity, 0)) calc(50px * var(--bleed-opacity, 0)) rgba(0, 0, 0, calc(0.08 * var(--bleed-opacity, 0)));
+                0 0 60px 20px rgba(0, 0, 0, 0.20),
+                0 0 100px 40px rgba(0, 0, 0, 0.10);
+            opacity: var(--bleed-opacity, 0);
             z-index: calc(var(--z-card) - 1);
             pointer-events: none;
         }
@@ -916,6 +917,12 @@
             card.style.setProperty('--card-width', cardW);
             card.style.setProperty('--card-height', cardH);
 
+            // Apply bleed shadow properties (follows card position)
+            cardBleedShadow.style.setProperty('--card-x', cardX);
+            cardBleedShadow.style.setProperty('--card-y', cardY);
+            cardBleedShadow.style.setProperty('--card-width', cardW);
+            cardBleedShadow.style.setProperty('--card-height', cardH);
+
             // Apply video properties (video is fixed to screen, clipped to card)
             videoBg.style.setProperty('--video-x', vidX);
             videoBg.style.setProperty('--video-y', vidY);
@@ -959,6 +966,9 @@
                 envelopeBack.classList.remove('envelope-hidden');
                 envelopeTopFlap.classList.remove('envelope-hidden');
             }
+
+            // --- Bleed shadow fade in (step 3→4) ---
+            cardBleedShadow.style.opacity = fadeProgress;
 
             // --- Hint fade ---
             const hintOpacity = 1 - getProgress(scrollProgress, CONFIG.hintFade.start, CONFIG.hintFade.end);
