@@ -250,6 +250,8 @@
             box-shadow: 0 2px 15px rgba(0,0,0,0.1);
             z-index: var(--z-card);
             overflow: hidden;
+            /* Enable container queries - fonts will scale relative to card width */
+            container-type: inline-size;
         }
 
         .card-video-bg {
@@ -400,7 +402,8 @@
         }
 
         .save-the-date-text {
-            font-size: clamp(0.65rem, 2.5vw, 0.9rem);
+            /* cqw = container query width (relative to card) */
+            font-size: clamp(0.5rem, 4cqw, 0.9rem);
             letter-spacing: 0.35em;
             text-transform: uppercase;
             color: var(--cream);
@@ -410,7 +413,8 @@
         .card-names {
             font-family: var(--font-script);
             font-weight: 400;
-            font-size: clamp(2.2rem, 8vw, 3.5rem);
+            /* Smaller names - relative to card width */
+            font-size: clamp(1.5rem, 12cqw, 2.8rem);
             line-height: 1;
             color: var(--charcoal);
             display: flex;
@@ -432,14 +436,14 @@
         }
 
         .card-date {
-            font-size: clamp(1rem, 4vw, 1.5rem);
+            font-size: clamp(0.8rem, 6cqw, 1.4rem);
             margin-top: 1.5em;
             color: var(--cream);
         }
 
         .card-location {
             color: var(--cream);
-            font-size: clamp(0.65rem, 2.5vw, 0.9rem);
+            font-size: clamp(0.5rem, 4cqw, 0.9rem);
             letter-spacing: 0.35em;
             text-transform: uppercase;
             margin-top: 0.3em;
@@ -447,7 +451,7 @@
 
         .card-information {
             color: var(--cream);
-            font-size: clamp(0.65rem, 2vw, 0.85rem);
+            font-size: clamp(0.5rem, 3.5cqw, 0.85rem);
             letter-spacing: 0.1em;
             line-height: 1.5;
             margin: 0;
@@ -674,7 +678,12 @@
                         <p class="card-location">Great Keppel Island<br>Australia</p>
                     </div>
                     <div class="card-content-bottom">
-                        <p class="card-information">Information</p>
+                        <p class="card-information">We can't wait to celebrate with you!<br>
+                            <br>
+                            Please hold off on booking accomodation for now. 
+                            We have reserved rooms and will share full details on this page 
+                            on 1st Feb.
+                             </p>
                     </div>
                 </div>
             </div>
