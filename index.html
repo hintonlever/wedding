@@ -704,57 +704,39 @@
             return start + (end - start) * t;
         }
 
+        // Parse a CSS value to pixels (handles simple units and min/max)
+        function cssToPixels(value) {
+            const str = String(value).trim();
+
+            // Handle min() or max()
+            const minMaxMatch = str.match(/^(min|max)\((.+)\)$/);
+            if (minMaxMatch) {
+                const fn = minMaxMatch[1];
+                const args = minMaxMatch[2].split(',').map(s => cssToPixels(s.trim()));
+                return fn === 'min' ? Math.min(...args) : Math.max(...args);
+            }
+
+            // Handle simple values like "50vh", "90vw", "100px", "50%"
+            const match = str.match(/^(-?[\d.]+)(vw|vh|px|%)?$/);
+            if (!match) return 0;
+
+            const num = parseFloat(match[1]);
+            const unit = match[2] || 'px';
+
+            switch(unit) {
+                case 'vw': return num / 100 * window.innerWidth;
+                case 'vh': return num / 100 * window.innerHeight;
+                case '%': return num / 100 * window.innerWidth; // assume % is viewport width
+                case 'px': return num;
+                default: return num;
+            }
+        }
+
         function lerpUnits(start, end, t) {
-            // Parse values like "85%" or "90vw"
-            const startMatch = String(start).match(/^(-?[\d.]+)(.*)$/);
-            const endMatch = String(end).match(/^(-?[\d.]+)(.*)$/);
-
-            if (!startMatch || !endMatch) return end;
-
-            const startVal = parseFloat(startMatch[1]);
-            const endVal = parseFloat(endMatch[1]);
-            const startUnit = startMatch[2];
-            const endUnit = endMatch[2];
-
-            // If units match, interpolate directly
-            if (startUnit === endUnit) {
-                return lerp(startVal, endVal, t) + startUnit;
-            }
-
-            // Convert both to pixels, interpolate, then output in end unit
-            const envelopeWrapper = document.querySelector('.envelope-wrapper');
-            const envelopeWidth = envelopeWrapper ? envelopeWrapper.offsetWidth : 400;
-            const envelopeHeight = envelopeWrapper ? envelopeWrapper.offsetHeight : 280;
-
-            function toPx(val, unit, isWidth) {
-                switch(unit) {
-                    case '%': return val / 100 * (isWidth ? envelopeWidth : envelopeHeight);
-                    case 'vw': return val / 100 * window.innerWidth;
-                    case 'vh': return val / 100 * window.innerHeight;
-                    case 'px': return val;
-                    default: return val;
-                }
-            }
-
-            function fromPx(px, unit, isWidth) {
-                switch(unit) {
-                    case '%': return px / (isWidth ? envelopeWidth : envelopeHeight) * 100;
-                    case 'vw': return px / window.innerWidth * 100;
-                    case 'vh': return px / window.innerHeight * 100;
-                    case 'px': return px;
-                    default: return px;
-                }
-            }
-
-            // Determine if this is width or height based on unit type
-            const isWidth = startUnit === 'vw' || endUnit === 'vw' ||
-                          (startUnit === '%' && endUnit === '%');
-
-            const startPx = toPx(startVal, startUnit, isWidth);
-            const endPx = toPx(endVal, endUnit, isWidth);
+            // Convert both values to pixels, interpolate, return as px
+            const startPx = cssToPixels(start);
+            const endPx = cssToPixels(end);
             const resultPx = lerp(startPx, endPx, t);
-
-            // Output in pixels for smooth transition
             return resultPx + 'px';
         }
 
