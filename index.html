@@ -322,19 +322,19 @@
             align-items: center;
         }
 
-        /* Group for middle section - Names */
+        /* Group for middle section - Names, Date, Location */
         .card-content-middle {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        /* Group for bottom section - Location & Info */
+        /* Group for bottom section - Information (multi-line) */
         .card-content-bottom {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.5em;
+            text-align: center;
         }
 
         /* Card text elements - hidden initially, fancy fade in */
@@ -400,8 +400,7 @@
         }
 
         .save-the-date-text {
-            /* Use min() to cap at a reasonable size, with vh for vertical responsiveness */
-            font-size: clamp(0.5rem, min(2.5vw, 2vh), 0.85rem);
+            font-size: clamp(0.65rem, 2.5vw, 0.9rem);
             letter-spacing: 0.35em;
             text-transform: uppercase;
             color: var(--cream);
@@ -411,13 +410,13 @@
         .card-names {
             font-family: var(--font-script);
             font-weight: 400;
-            /* Use min(vw, vh) to prevent overflow on narrow or short screens */
-            font-size: clamp(1.8rem, min(8vw, 6vh), 3.5rem);
-            line-height: 1.2;
+            font-size: clamp(2.2rem, 8vw, 3.5rem);
+            line-height: 1;
             color: var(--charcoal);
             display: flex;
             flex-direction: column;
             align-items: center;
+            gap: 0.4em;
         }
 
         .card-names .name {
@@ -428,30 +427,31 @@
             font-family: var(--font-script);
             font-style: italic;
             color: var(--cream);
-            font-size: 0.45em;
+            font-size: 0.5em;
             display: block;
-            margin: 0.2em 0;
         }
 
         .card-date {
-            /* Responsive with both dimensions considered */
-            font-size: clamp(0.8rem, min(4vw, 3vh), 1.5rem);
-            margin-top: 0.5em;
+            font-size: clamp(1rem, 4vw, 1.5rem);
+            margin-top: 1.5em;
             color: var(--cream);
         }
 
         .card-location {
             color: var(--cream);
-            font-size: clamp(0.55rem, min(2.5vw, 2vh), 0.95rem);
-            letter-spacing: 0.05em;
-            margin: 0;
+            font-size: clamp(0.65rem, 2.5vw, 0.9rem);
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            margin-top: 0.3em;
         }
 
         .card-information {
             color: var(--cream);
-            font-size: clamp(0.5rem, min(2vw, 1.8vh), 0.85rem);
+            font-size: clamp(0.65rem, 2vw, 0.85rem);
             letter-spacing: 0.1em;
+            line-height: 1.5;
             margin: 0;
+            text-align: center;
         }
 
         /* Side flaps (left and right triangles) */
@@ -663,7 +663,7 @@
             <div class="card">
                 <div class="card-content">
                     <div class="card-content-top">
-                        <p class="save-the-date-text">Save the Date</p>
+                        <p class="save-the-date-text">Save the Date<br>29.08.2026</p>
                     </div>
                     <div class="card-content-middle">
                         <div class="card-names">
@@ -671,10 +671,9 @@
                             <span class="card-ampersand">&</span>
                             <span class="name name-2">Ben</span>
                         </div>
-                        <p class="card-date">29.08.26</p>
+                        <p class="card-location">Great Keppel Island<br>Australia</p>
                     </div>
                     <div class="card-content-bottom">
-                        <p class="card-location">Great Keppel Island, Australia</p>
                         <p class="card-information">Information</p>
                     </div>
                 </div>
