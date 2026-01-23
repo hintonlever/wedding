@@ -470,13 +470,14 @@
             z-index: var(--flap-z, var(--z-envelope-flap-closed));
         }
 
-        /* Wax seal */
+        /* Wax seal - positioned independently for z-index control */
         .wax-seal {
             position: absolute;
             width: min(70px, 18vw);
             height: min(70px, 18vw);
-            top: 50%;
-            left: 50%;
+            /* Position at envelope center - controlled by JS */
+            left: var(--envelope-x, var(--envelope-step1-x));
+            top: var(--envelope-y, var(--envelope-step1-y));
             border-radius: 50%;
             background: radial-gradient(circle at 35% 35%,
                 #ff9a8b 0%,
@@ -492,6 +493,7 @@
             /* Controlled by JS */
             transform: translate(-50%, -50%) scale(var(--seal-scale, 1)) rotate(var(--seal-rotation, 0deg));
             opacity: var(--seal-opacity, 1);
+            z-index: var(--z-envelope-flap-closed);
         }
 
         .wax-seal::before {
@@ -649,19 +651,19 @@
 
                 <!-- Front flap (bottom V) -->
                 <div class="envelope-front-flap"></div>
-
-                <!-- Wax seal -->
-                <div class="wax-seal"></div>
-
-                <!-- Scroll hint -->
-                <div class="scroll-hint">
-                    <div class="scroll-icon"></div>
-                    <span>Scroll to open</span>
-                </div>
             </div>
 
             <!-- Top flap (separate for independent z-index control) -->
             <div class="envelope-top-flap" id="envelopeTopFlap"></div>
+
+            <!-- Wax seal (separate for independent z-index control) -->
+            <div class="wax-seal" id="waxSeal"></div>
+
+            <!-- Scroll hint (positioned relative to viewport) -->
+            <div class="scroll-hint">
+                <div class="scroll-icon"></div>
+                <span>Scroll to open</span>
+            </div>
         </div>
 
     </div>
@@ -778,10 +780,12 @@
         const envelope = document.getElementById('envelope');
         const envelopeBack = document.getElementById('envelopeBack');
         const envelopeTopFlap = document.getElementById('envelopeTopFlap');
+        const waxSeal = document.getElementById('waxSeal');
         const card = document.querySelector('.card');
         const videoBg = document.getElementById('videoBg');
         const cardBleedShadow = document.getElementById('cardBleedShadow');
         const scrollContainer = document.querySelector('.scroll-container');
+        const scrollHint = document.querySelector('.scroll-hint');
 
         function updateAnimation() {
             const scrollTop = window.scrollY;
@@ -790,9 +794,9 @@
 
             // --- Seal animation ---
             const sealProgress = easeOutCubic(getProgress(scrollProgress, CONFIG.seal.start, CONFIG.seal.end));
-            envelope.style.setProperty('--seal-scale', lerp(1, CONFIG.sealScaleEnd, sealProgress));
-            envelope.style.setProperty('--seal-rotation', lerp(0, CONFIG.sealRotationEnd, sealProgress) + 'deg');
-            envelope.style.setProperty('--seal-opacity', lerp(1, 0, sealProgress));
+            waxSeal.style.setProperty('--seal-scale', lerp(1, CONFIG.sealScaleEnd, sealProgress));
+            waxSeal.style.setProperty('--seal-rotation', lerp(0, CONFIG.sealRotationEnd, sealProgress) + 'deg');
+            waxSeal.style.setProperty('--seal-opacity', lerp(1, 0, sealProgress));
 
             // --- Flap animation ---
             const flapProgress = easeInOutCubic(getProgress(scrollProgress, CONFIG.flap.start, CONFIG.flap.end));
@@ -896,6 +900,9 @@
             envelopeTopFlap.style.setProperty('--envelope-y', envY);
             envelopeTopFlap.style.setProperty('--envelope-width', envW);
             envelopeTopFlap.style.setProperty('--envelope-height', envH);
+            // Wax seal follows envelope center
+            waxSeal.style.setProperty('--envelope-x', envX);
+            waxSeal.style.setProperty('--envelope-y', envY);
 
             // Apply card properties
             card.style.setProperty('--card-x', cardX);
@@ -958,7 +965,7 @@
 
             // --- Hint fade ---
             const hintOpacity = 1 - getProgress(scrollProgress, CONFIG.hintFade.start, CONFIG.hintFade.end);
-            envelope.style.setProperty('--hint-opacity', hintOpacity);
+            scrollHint.style.opacity = hintOpacity;
 
             // --- Card text fade in (halfway between step 3 and 4) ---
             const textTrigger = step3Start + (step4Start - step3Start) * 0.5;
