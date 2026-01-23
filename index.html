@@ -272,6 +272,23 @@
             clip-path: var(--video-clip);
         }
 
+        /* Bleed shadow overlay - fades in at step 4 */
+        .card-bleed-shadow {
+            position: absolute;
+            left: var(--card-x, var(--card-step4-x));
+            top: var(--card-y, var(--card-step4-y));
+            width: var(--card-width, var(--card-step4-width));
+            height: var(--card-height, var(--card-step4-height));
+            transform: translate(-50%, -50%);
+            border-radius: 6px;
+            box-shadow:
+                0 0 calc(40px * var(--bleed-opacity, 0)) calc(15px * var(--bleed-opacity, 0)) rgba(0, 0, 0, calc(0.3 * var(--bleed-opacity, 0))),
+                0 0 calc(80px * var(--bleed-opacity, 0)) calc(30px * var(--bleed-opacity, 0)) rgba(0, 0, 0, calc(0.15 * var(--bleed-opacity, 0))),
+                0 0 calc(120px * var(--bleed-opacity, 0)) calc(50px * var(--bleed-opacity, 0)) rgba(0, 0, 0, calc(0.08 * var(--bleed-opacity, 0)));
+            z-index: calc(var(--z-card) - 1);
+            pointer-events: none;
+        }
+
         .card-video-bg video {
             width: 100%;
             height: 100%;
@@ -598,6 +615,9 @@
                 </video>
             </div>
 
+            <!-- Bleed shadow for card (fades in at step 4) -->
+            <div class="card-bleed-shadow" id="cardBleedShadow"></div>
+
             <!-- Card (positioned relative to viewport, outside envelope for screen-relative sizing) -->
             <div class="card">
                 <div class="card-content">
@@ -773,6 +793,7 @@
         const envelopeTopFlap = document.getElementById('envelopeTopFlap');
         const card = document.querySelector('.card');
         const videoBg = document.getElementById('videoBg');
+        const cardBleedShadow = document.getElementById('cardBleedShadow');
         const scrollContainer = document.querySelector('.scroll-container');
 
         function updateAnimation() {
