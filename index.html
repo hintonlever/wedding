@@ -248,12 +248,6 @@
             transform: translate(-50%, -50%);
             border-radius: 6px;
             box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 2rem 1.5rem;
             z-index: var(--z-card);
             overflow: hidden;
         }
@@ -311,12 +305,43 @@
         }
 
         .card-content {
-            position: relative;
+            position: absolute;
+            inset: 10%; /* 10% padding from card edges */
             z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Group for top section - Save the Date */
+        .card-content-top {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Group for middle section - Names */
+        .card-content-middle {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Group for bottom section - Location & Info */
+        .card-content-bottom {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5em;
         }
 
         /* Card text elements - hidden initially, fancy fade in */
-        .card-content > *,
+        .card-content .save-the-date-text,
+        .card-content .card-date,
+        .card-content .card-location,
+        .card-content .card-information,
         .card-content .name,
         .card-content .card-ampersand {
             opacity: 0;
@@ -363,7 +388,10 @@
         }
 
         /* Text visible state */
-        .card.text-visible .card-content > *,
+        .card.text-visible .card-content .save-the-date-text,
+        .card.text-visible .card-content .card-date,
+        .card.text-visible .card-content .card-location,
+        .card.text-visible .card-content .card-information,
         .card.text-visible .card-content .name,
         .card.text-visible .card-content .card-ampersand {
             opacity: 1;
@@ -372,18 +400,20 @@
         }
 
         .save-the-date-text {
-            font-size: clamp(0.6rem, 2.5vw, 0.85rem);
+            /* Use min() to cap at a reasonable size, with vh for vertical responsiveness */
+            font-size: clamp(0.5rem, min(2.5vw, 2vh), 0.85rem);
             letter-spacing: 0.35em;
             text-transform: uppercase;
             color: var(--cream);
-            margin-bottom: 1rem;
+            margin: 0;
         }
 
         .card-names {
             font-family: var(--font-script);
             font-weight: 400;
-            font-size: clamp(2.2rem, 8vw, 3.5rem);
-            line-height: 1.4;
+            /* Use min(vw, vh) to prevent overflow on narrow or short screens */
+            font-size: clamp(1.8rem, min(8vw, 6vh), 3.5rem);
+            line-height: 1.2;
             color: var(--charcoal);
             display: flex;
             flex-direction: column;
@@ -400,20 +430,28 @@
             color: var(--cream);
             font-size: 0.45em;
             display: block;
-            margin: 0.3em 0;
+            margin: 0.2em 0;
         }
 
         .card-date {
-            font-size: clamp(1rem, 4vw, 1.5rem);
-            margin-top: 2rem;
+            /* Responsive with both dimensions considered */
+            font-size: clamp(0.8rem, min(4vw, 3vh), 1.5rem);
+            margin-top: 0.5em;
             color: var(--cream);
         }
 
         .card-location {
-            margin-top: 0.5rem;
             color: var(--cream);
-            font-size: clamp(0.75rem, 2.5vw, 0.95rem);
+            font-size: clamp(0.55rem, min(2.5vw, 2vh), 0.95rem);
             letter-spacing: 0.05em;
+            margin: 0;
+        }
+
+        .card-information {
+            color: var(--cream);
+            font-size: clamp(0.5rem, min(2vw, 1.8vh), 0.85rem);
+            letter-spacing: 0.1em;
+            margin: 0;
         }
 
         /* Side flaps (left and right triangles) */
@@ -589,12 +627,8 @@
 
         /* Responsive adjustments */
         @media (max-width: 480px) {
-            .card {
-                padding: 1.5rem 1rem;
-            }
-
-            .card-names {
-                font-size: clamp(3rem, 12vw, 4.5rem);
+            .card-content {
+                inset: 8%; /* Slightly tighter on mobile */
             }
 
             .scroll-hint {
@@ -628,15 +662,21 @@
             <!-- Card (positioned relative to viewport, outside envelope for screen-relative sizing) -->
             <div class="card">
                 <div class="card-content">
-                    <p class="save-the-date-text">Save the Date</p>
-                    <div class="card-names">
-                        <span class="name name-1">Alina</span>
-                        <span class="card-ampersand">&</span>
-                        <span class="name name-2">Ben</span>
+                    <div class="card-content-top">
+                        <p class="save-the-date-text">Save the Date</p>
                     </div>
-                    <p class="card-date">29.08.26</p>
-                    <p class="card-location">Great Keppel Island, Australia</p>
-                    <p class="card-information">Information</p>
+                    <div class="card-content-middle">
+                        <div class="card-names">
+                            <span class="name name-1">Alina</span>
+                            <span class="card-ampersand">&</span>
+                            <span class="name name-2">Ben</span>
+                        </div>
+                        <p class="card-date">29.08.26</p>
+                    </div>
+                    <div class="card-content-bottom">
+                        <p class="card-location">Great Keppel Island, Australia</p>
+                        <p class="card-information">Information</p>
+                    </div>
                 </div>
             </div>
 
