@@ -32,8 +32,13 @@
             --envelope-flap: #f0e6dc;
             --envelope-inner: #c9b9a8;
 
-            /* Scroll length - how much to scroll through the animation */
-            --scroll-length: 500vh;
+            /* Scroll length - how much to scroll between each step */
+            --scroll-step1-to-2: 50vh;
+            --scroll-step2-to-3: 50vh;
+            --scroll-step3-to-4: 50vh;
+            --scroll-step4-to-5: 200vh;
+            /* Total scroll length calculated from all steps */
+            --scroll-length: calc(var(--scroll-step1-to-2) + var(--scroll-step2-to-3) + var(--scroll-step3-to-4) + var(--scroll-step4-to-5));
 
             /* Scroll hint position from bottom of screen */
             --scroll-hint-bottom: 10%;
@@ -128,6 +133,25 @@
             --video-step4-y: 50vh;
             --video-step4-width: 50vh;
             --video-step4-height: 90vh;
+
+            /* ==========================================
+               STEP 5: Final state (same as step 4)
+               ========================================== */
+            /* Envelope */
+            --envelope-step5-x: 50%;
+            --envelope-step5-y: 90vh;
+            --envelope-step5-width: 60vh;
+            --envelope-step5-height: 40vh;
+            /* Card */
+            --card-step5-x: 50%;
+            --card-step5-y: 50vh;
+            --card-step5-width: 50vh;
+            --card-step5-height: 90vh;
+            /* Video crop */
+            --video-step5-x: 50%;
+            --video-step5-y: 50vh;
+            --video-step5-width: 50vh;
+            --video-step5-height: 90vh;
         }
 
         * {
@@ -153,7 +177,7 @@
             position: relative;
             /* Total scroll length = 100vh (viewport) + this value */
             /* e.g., 400vh means you scroll 3x the viewport height */
-            min-height: var(--scroll-length, 400vh);
+            min-height: var(--scroll-length, 350vh);
         }
 
         /* Main container - sticky to viewport */
@@ -790,11 +814,12 @@
             const flapProgress = easeInOutCubic(getProgress(scrollProgress, CONFIG.flap.start, CONFIG.flap.end));
             envelopeTopFlap.style.setProperty('--flap-rotation', lerp(0, CONFIG.flapRotationEnd, flapProgress) + 'deg');
 
-            // --- 4-Step Animation ---
+            // --- 5-Step Animation ---
             // Step 1: Card in envelope (0 - 0.25)
             // Step 2: Envelope opens, flap z changes (0.25 - 0.50)
             // Step 3: Card pulled out, envelope moves down (0.50 - 0.75)
             // Step 4: Envelope fades, card centers and grows (0.75 - 1.0)
+            // Step 5: Final state
             const animProgress = getProgress(scrollProgress, CONFIG.card.start, CONFIG.card.end);
 
             // Get all step values from CSS
@@ -803,36 +828,56 @@
                     1: { x: getCSSVar('--envelope-step1-x'), y: getCSSVar('--envelope-step1-y'), width: getCSSVar('--envelope-step1-width'), height: getCSSVar('--envelope-step1-height') },
                     2: { x: getCSSVar('--envelope-step2-x'), y: getCSSVar('--envelope-step2-y'), width: getCSSVar('--envelope-step2-width'), height: getCSSVar('--envelope-step2-height') },
                     3: { x: getCSSVar('--envelope-step3-x'), y: getCSSVar('--envelope-step3-y'), width: getCSSVar('--envelope-step3-width'), height: getCSSVar('--envelope-step3-height') },
-                    4: { x: getCSSVar('--envelope-step4-x'), y: getCSSVar('--envelope-step4-y'), width: getCSSVar('--envelope-step4-width'), height: getCSSVar('--envelope-step4-height') }
+                    4: { x: getCSSVar('--envelope-step4-x'), y: getCSSVar('--envelope-step4-y'), width: getCSSVar('--envelope-step4-width'), height: getCSSVar('--envelope-step4-height') },
+                    5: { x: getCSSVar('--envelope-step5-x'), y: getCSSVar('--envelope-step5-y'), width: getCSSVar('--envelope-step5-width'), height: getCSSVar('--envelope-step5-height') }
                 },
                 card: {
                     1: { x: getCSSVar('--card-step1-x'), y: getCSSVar('--card-step1-y'), width: getCSSVar('--card-step1-width'), height: getCSSVar('--card-step1-height') },
                     2: { x: getCSSVar('--card-step2-x'), y: getCSSVar('--card-step2-y'), width: getCSSVar('--card-step2-width'), height: getCSSVar('--card-step2-height') },
                     3: { x: getCSSVar('--card-step3-x'), y: getCSSVar('--card-step3-y'), width: getCSSVar('--card-step3-width'), height: getCSSVar('--card-step3-height') },
-                    4: { x: getCSSVar('--card-step4-x'), y: getCSSVar('--card-step4-y'), width: getCSSVar('--card-step4-width'), height: getCSSVar('--card-step4-height') }
+                    4: { x: getCSSVar('--card-step4-x'), y: getCSSVar('--card-step4-y'), width: getCSSVar('--card-step4-width'), height: getCSSVar('--card-step4-height') },
+                    5: { x: getCSSVar('--card-step5-x'), y: getCSSVar('--card-step5-y'), width: getCSSVar('--card-step5-width'), height: getCSSVar('--card-step5-height') }
                 },
                 video: {
                     1: { x: getCSSVar('--video-step1-x'), y: getCSSVar('--video-step1-y'), width: getCSSVar('--video-step1-width'), height: getCSSVar('--video-step1-height') },
                     2: { x: getCSSVar('--video-step2-x'), y: getCSSVar('--video-step2-y'), width: getCSSVar('--video-step2-width'), height: getCSSVar('--video-step2-height') },
                     3: { x: getCSSVar('--video-step3-x'), y: getCSSVar('--video-step3-y'), width: getCSSVar('--video-step3-width'), height: getCSSVar('--video-step3-height') },
-                    4: { x: getCSSVar('--video-step4-x'), y: getCSSVar('--video-step4-y'), width: getCSSVar('--video-step4-width'), height: getCSSVar('--video-step4-height') }
+                    4: { x: getCSSVar('--video-step4-x'), y: getCSSVar('--video-step4-y'), width: getCSSVar('--video-step4-width'), height: getCSSVar('--video-step4-height') },
+                    5: { x: getCSSVar('--video-step5-x'), y: getCSSVar('--video-step5-y'), width: getCSSVar('--video-step5-width'), height: getCSSVar('--video-step5-height') }
                 }
             };
 
-            // Determine current step and interpolate
+            // Get scroll lengths for each step transition (parse vh values)
+            const parseVh = (val) => parseFloat(val) / 100;
+            const s1 = parseVh(getCSSVar('--scroll-step1-to-2'));
+            const s2 = parseVh(getCSSVar('--scroll-step2-to-3'));
+            const s3 = parseVh(getCSSVar('--scroll-step3-to-4'));
+            const s4 = parseVh(getCSSVar('--scroll-step4-to-5'));
+            const totalScroll = s1 + s2 + s3 + s4;
+
+            // Calculate step boundaries as percentages
+            const step2Start = s1 / totalScroll;
+            const step3Start = (s1 + s2) / totalScroll;
+            const step4Start = (s1 + s2 + s3) / totalScroll;
+
+            // Determine current step and interpolate (5 steps = 4 transitions)
             let fromStep, toStep, t;
-            if (animProgress <= 0.333) {
+            if (animProgress <= step2Start) {
                 // Step 1 → Step 2 (envelope opens)
                 fromStep = 1; toStep = 2;
-                t = easeInOutCubic(animProgress / 0.333);
-            } else if (animProgress <= 0.666) {
+                t = easeInOutCubic(animProgress / step2Start);
+            } else if (animProgress <= step3Start) {
                 // Step 2 → Step 3 (card pulled out)
                 fromStep = 2; toStep = 3;
-                t = easeInOutCubic((animProgress - 0.333) / 0.333);
-            } else {
+                t = easeInOutCubic((animProgress - step2Start) / (step3Start - step2Start));
+            } else if (animProgress <= step4Start) {
                 // Step 3 → Step 4 (envelope fades, card centers)
                 fromStep = 3; toStep = 4;
-                t = easeInOutCubic((animProgress - 0.666) / 0.334);
+                t = easeInOutCubic((animProgress - step3Start) / (step4Start - step3Start));
+            } else {
+                // Step 4 → Step 5 (final state)
+                fromStep = 4; toStep = 5;
+                t = easeInOutCubic((animProgress - step4Start) / (1 - step4Start));
             }
 
             // Interpolate envelope
@@ -900,14 +945,14 @@
 
             // --- Flap z-index change at step 2 ---
             // When flap is fully open (after step 1→2), change z to be behind card
-            if (animProgress > 0.333) {
+            if (animProgress > step2Start) {
                 envelopeTopFlap.style.setProperty('--flap-z', getCSSVar('--z-envelope-flap-open'));
             } else {
                 envelopeTopFlap.style.setProperty('--flap-z', getCSSVar('--z-envelope-flap-closed'));
             }
 
-            // --- Envelope fade (step 4) ---
-            const fadeProgress = getProgress(animProgress, 0.75, 1.0);
+            // --- Envelope fade (step 3→4) ---
+            const fadeProgress = getProgress(animProgress, step3Start, step4Start);
             if (fadeProgress > 0) {
                 envelope.classList.add('envelope-hidden');
                 envelopeBack.classList.add('envelope-hidden');
