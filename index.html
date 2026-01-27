@@ -50,7 +50,9 @@
             --z-card: 5;
             --z-envelope-front: 8;         /* Side flaps and front flap - in front of card */
             --z-envelope-flap-closed: 10;  /* Top flap on top when closed */
-            --z-envelope-flap-open: 1;     /* Top flap behind card when open */
+            --z-envelope-flap-open: 4;     /* Top flap behind card when open */
+            --z-seal-close: 12;           /* should be on top of the envelope */
+            --z-seal-open:-1;             /* should be under the envelope */
 
             /* ==========================================
                STEP 1: Card inside envelope
@@ -511,14 +513,14 @@
             z-index: var(--flap-z, var(--z-envelope-flap-closed));
         }
 
-        /* Wax seal - positioned independently for z-index control */
+        /* Wax seal - follows the envelope flap */
         .wax-seal {
             position: absolute;
             width: min(70px, 18vw);
             height: min(70px, 18vw);
-            /* Position at envelope center - controlled by JS */
+            /* Position at the hinge point (top edge of flap) */
             left: var(--envelope-x, var(--envelope-step1-x));
-            top: var(--envelope-y, var(--envelope-step1-y));
+            top: calc(var(--envelope-y, var(--envelope-step1-y)) - var(--envelope-height, var(--envelope-step1-height)) / 2);
             border-radius: 50%;
             background: radial-gradient(circle at 35% 35%,
                 #ff9a8b 0%,
@@ -531,10 +533,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            /* Controlled by JS */
-            transform: translate(-50%, -50%) scale(var(--seal-scale, 1)) rotate(var(--seal-rotation, 0deg));
+            /* Rotate around the hinge, then offset to flap tip */
+            transform-style: preserve-3d;
+            transform-origin: center center;
+            /* rotateX around hinge, then translateY moves seal to flap tip (spike) */
+            transform: translate(-50%, -50%) rotateX(var(--seal-rotation-x, 0deg)) translateY(calc(var(--envelope-height, var(--envelope-step1-height)) * 0.7));
             opacity: var(--seal-opacity, 1);
-            z-index: var(--z-envelope-flap-closed);
+            z-index: var(--seal-z, var(--z-envelope-flap-closed));
         }
 
         .wax-seal::before {
@@ -545,6 +550,7 @@
             letter-spacing: 0.02em;
             text-shadow: 0 1px 2px rgba(0,0,0,0.2);
             white-space: nowrap;
+            backface-visibility: hidden;
         }
 
         /* Scroll hint */
@@ -729,9 +735,7 @@
         // ==========================================
 
         const CONFIG = {
-            // Seal animation (step 1)
-            seal: { start: 0, end: 0.12 },
-            // Flap animation (step 1 to step 2)
+            // Flap animation (step 1 to step 2) - seal follows flap
             flap: { start: 0.05, end: 0.25 },
             // Hint fade
             hintFade: { start: 0, end: 0.08 },
@@ -742,12 +746,8 @@
                 end: 0.95
             },
 
-            // Flap rotation
-            flapRotationEnd: -180,
-
-            // Seal animation
-            sealScaleEnd: 0.3,
-            sealRotationEnd: 45
+            // Flap rotation (seal rotates with flap)
+            flapRotationEnd: -180
         };
 
         // ==========================================
@@ -839,15 +839,13 @@
             const maxScroll = scrollContainer.offsetHeight - window.innerHeight;
             const scrollProgress = clamp(scrollTop / maxScroll, 0, 1);
 
-            // --- Seal animation ---
-            const sealProgress = easeOutCubic(getProgress(scrollProgress, CONFIG.seal.start, CONFIG.seal.end));
-            waxSeal.style.setProperty('--seal-scale', lerp(1, CONFIG.sealScaleEnd, sealProgress));
-            waxSeal.style.setProperty('--seal-rotation', lerp(0, CONFIG.sealRotationEnd, sealProgress) + 'deg');
-            waxSeal.style.setProperty('--seal-opacity', lerp(1, 0, sealProgress));
-
             // --- Flap animation ---
             const flapProgress = easeInOutCubic(getProgress(scrollProgress, CONFIG.flap.start, CONFIG.flap.end));
-            envelopeTopFlap.style.setProperty('--flap-rotation', lerp(0, CONFIG.flapRotationEnd, flapProgress) + 'deg');
+            const flapRotation = lerp(0, CONFIG.flapRotationEnd, flapProgress);
+            envelopeTopFlap.style.setProperty('--flap-rotation', flapRotation + 'deg');
+
+            // --- Seal follows flap rotation ---
+            waxSeal.style.setProperty('--seal-rotation-x', flapRotation + 'deg');
 
             // --- 5-Step Animation ---
             // Step 1: Card in envelope (0 - 0.25)
@@ -947,9 +945,10 @@
             envelopeTopFlap.style.setProperty('--envelope-y', envY);
             envelopeTopFlap.style.setProperty('--envelope-width', envW);
             envelopeTopFlap.style.setProperty('--envelope-height', envH);
-            // Wax seal follows envelope center
+            // Wax seal follows envelope (positioned at flap tip)
             waxSeal.style.setProperty('--envelope-x', envX);
             waxSeal.style.setProperty('--envelope-y', envY);
+            waxSeal.style.setProperty('--envelope-height', envH);
 
             // Apply card properties
             card.style.setProperty('--card-x', cardX);
@@ -995,16 +994,26 @@
                 envelopeTopFlap.style.setProperty('--flap-z', getCSSVar('--z-envelope-flap-closed'));
             }
 
+            // --- Seal z-index: behind flap after halfway open ---
+            // When flap is past 90° rotation, seal goes behind the flap
+            if (flapProgress > 0.5) {
+                waxSeal.style.setProperty('--seal-z', getCSSVar('--z-seal-open'));
+            } else {
+                waxSeal.style.setProperty('--seal-z', getCSSVar('--z-seal-closed'));
+            }
+
             // --- Envelope fade (step 3→4) ---
             const fadeProgress = getProgress(animProgress, step3Start, step4Start);
             if (fadeProgress > 0) {
                 envelope.classList.add('envelope-hidden');
                 envelopeBack.classList.add('envelope-hidden');
                 envelopeTopFlap.classList.add('envelope-hidden');
+                waxSeal.style.setProperty('--seal-opacity', 1 - fadeProgress);
             } else {
                 envelope.classList.remove('envelope-hidden');
                 envelopeBack.classList.remove('envelope-hidden');
                 envelopeTopFlap.classList.remove('envelope-hidden');
+                waxSeal.style.setProperty('--seal-opacity', 1);
             }
 
             // --- Bleed shadow fade in (step 3→4) ---
