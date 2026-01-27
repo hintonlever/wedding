@@ -231,6 +231,8 @@
             pointer-events: none;
             /* Enable container queries for responsive text */
             container-type: size;
+            /* Row height = 100% / 25 rows = 4cqh per row */
+            --row-height: 4cqh;
         }
 
         .grid-row {
@@ -280,52 +282,56 @@
             filter: blur(0);
         }
 
-        /* Grid text typography - using container query units */
+        /* Grid text typography - font sizes relative to row height */
         .video-text-grid .save-the-date-text {
-            font-size: clamp(0.4rem, 3cqw, 0.8rem);
+            font-size: calc(var(--row-height) * 0.5);  /* 60% of row height */
+            color: var(--cream);
+            margin: 0;  
             letter-spacing: 0.35em;
             text-transform: uppercase;
-            color: var(--cream);
-            margin: 0;
         }
 
         .video-text-grid .date-text {
-            font-size: clamp(0.6rem, 5cqw, 1.2rem);
+            font-size: calc(var(--row-height) * 0.5);  /* 60% of row height */
             color: var(--cream);
-            margin: 0;
+            margin: 0;  
+            letter-spacing: 0.35em;
+      
         }
 
         .video-text-grid .name {
             font-family: var(--font-script);
-            font-weight: 400;
-            font-size: clamp(1.2rem, 10cqw, 2.5rem);
-            line-height: 1;
+            /* font-weight: 400; */
+            font-size: calc(var(--row-height) * 2);  /* 2 rows tall */
+            /* line-height: 1; */
             color: var(--charcoal);
         }
 
         .video-text-grid .card-ampersand {
+            font-size: calc(var(--row-height) * 0.5);  /* 60% of row height */
+            color: var(--cream);
+            margin: 0;  
             font-family: var(--font-script);
             font-style: italic;
-            color: var(--cream);
-            font-size: clamp(0.8rem, 5cqw, 1.2rem);
         }
 
         .video-text-grid .card-location {
+            font-size: calc(var(--row-height) * 0.5);  /* 60% of row height */
             color: var(--cream);
-            font-size: clamp(0.4rem, 3cqw, 0.75rem);
+            margin: 0;  
             letter-spacing: 0.35em;
             text-transform: uppercase;
-            margin: 0;
         }
 
         .video-text-grid .card-information {
+            font-size: calc(var(--row-height) * 0.5);  /* 60% of row height */
             color: var(--cream);
-            font-size: clamp(0.35rem, 2.5cqw, 0.7rem);
-            letter-spacing: 0.1em;
-            line-height: 1.4;
-            margin: 0;
-            padding: 0 5%;
+            margin: 0;  
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
         }
+
+      
 
         /* Bleed shadow overlay - fades in at step 4 */
         .card-bleed-shadow {
