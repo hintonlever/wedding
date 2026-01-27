@@ -235,6 +235,21 @@
             --row-height: 4cqh;
         }
 
+        /* Dark gradient at bottom for text legibility */
+        .video-text-grid::before {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: -10px;
+            right: -10px;
+            height: calc(25% + 10px);
+            background: linear-gradient(to top,
+             rgba(0, 0, 0, 80%) 30%, /* Bottom of the gradient */
+             rgba(0, 0, 0, 0%) 100%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
         .grid-row {
             display: flex;
             align-items: flex-end;  /* Align to bottom of row */
@@ -276,7 +291,6 @@
         .text-visible .video-text-grid .card-location,
         .text-visible .video-text-grid .card-information {
             opacity: 1;
-            transform: translateY(0);
             filter: blur(0);
         }
 
@@ -287,7 +301,7 @@
 
         /* Grid text typography - font sizes in lh (1lh = 1 row height) */
         .video-text-grid .save-the-date-text {
-            font-size: 0.6lh;  /* 0.5 rows */
+            font-size: 0.5lh;  /* 0.5 rows */
             line-height: 1;
             color: var(--cream);
             margin: 0;
@@ -296,7 +310,7 @@
         }
 
         .video-text-grid .date-text {
-            font-size: 0.6lh;  /* 0.5 rows */
+            font-size: 0.5lh;  /* 0.5 rows */
             line-height: 1;
             color: var(--cream);
             margin: 0;
@@ -323,15 +337,15 @@
 
         .video-text-grid .card-location {
             font-size: 0.5lh;  /* 0.5 rows */
+            font-weight: 400;
             line-height: 1;
             color: var(--cream);
-            margin: 0;
-            letter-spacing: 0.2em;
+            letter-spacing: 0.35em;
             text-transform: uppercase;
         }
 
         .video-text-grid .card-information {
-            font-size: 0.6lh;  /* 0.5 rows */
+            font-size: 0.5lh;  /* 0.5 rows */
             line-height: 1;
             color: var(--cream);
             margin: 0;
