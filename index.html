@@ -24,7 +24,8 @@
 
             /* Main container dimensions - computed by JavaScript */
             --main-width: 100vw;
-            --main-height: 100vh;
+            --main-height: 100svh;
+            --main-height: 100vh; /* Fallback */
 
             /* ==========================================
                SIZE RATIOS - All relative to main-container
@@ -142,7 +143,12 @@
             position: sticky;
             top: 0;
             width: 100%;
-            height: 100vh;
+            height: 100svh; /* svh = small viewport height, stable on mobile */
+            height: 100vh; /* Fallback for browsers without svh support */
+
+            @supports (height: 100svh) {
+                height: 100svh;
+            }
             display: flex;
             align-items: center;
             justify-content: center;
@@ -530,7 +536,7 @@
             align-items: center;
             gap: 8px;
             color: var(--warm-gray);
-            font-size: 0.75rem;
+            font-size: calc(var(--row-height-global) * 0.6);
             letter-spacing: 0.2em;
             text-transform: uppercase;
             opacity: var(--hint-opacity, 1);
