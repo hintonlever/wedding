@@ -653,6 +653,17 @@
             .info-box {
                 padding: 2rem 1.5rem;
             }
+
+            /* 3D perspective for video on mobile */
+            .card-video-bg {
+                perspective: 1000px;
+                transform-style: preserve-3d;
+            }
+
+            .card-video-bg video {
+                transform: translateX(-15%) rotateX(2deg) rotateY(-3deg);
+                transform-origin: center center;
+            }
         }
     </style>
 </head>
