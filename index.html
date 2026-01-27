@@ -37,7 +37,7 @@
             /* Card ratios */
             --card-width-ratio: 0.95;          /* 90% of main-container width */
             --card-height-closed-ratio: 0.32;  /* 40% of main-container height when closed */
-            --card-height-open-ratio: 0.90;    /* 90% of main-container height when fully opened */
+            --card-height-open-ratio: 0.95;    /* 90% of main-container height when fully opened */
 
             /* Video ratios */
             --video-width-ratio: 0.95;         /* 90% of main-container width */
@@ -362,7 +362,9 @@
             border: 2px solid white;
             border-radius: 4px;
             pointer-events: none;
-            box-shadow: 0 20px 40px 10px rgba(0, 0, 0, 0.5);
+            /* Shadow fades in at step 4 via --card-shadow-opacity */
+            box-shadow: 0 20px 40px 10px rgba(0, 0, 0, calc(0.5 * var(--card-shadow-opacity, 0)));
+            transition: box-shadow 0.4s ease;
         }
 
         /* Side flaps (left and right triangles) */
@@ -568,6 +570,11 @@
         .debug-overlay .step-highlight {
             color: #ff0;
             font-weight: bold;
+        }
+
+        /* Debug mode: red borders on all divs */
+        body.debug-mode div {
+            outline: 1px solid rgba(255, 0, 0, 0.5);
         }
 
         /* Responsive adjustments */
@@ -1028,8 +1035,9 @@
                 waxSeal.style.setProperty('--seal-opacity', 1);
             }
 
-            // --- Bleed shadow fade in (step 3→4) ---
+            // --- Bleed shadow and card shadow fade in (step 3→4) ---
             cardBleedShadow.style.opacity = fadeProgress;
+            card.style.setProperty('--card-shadow-opacity', fadeProgress);
 
             // --- Hint fade ---
             const hintOpacity = 1 - getProgress(scrollProgress, CONFIG.hintFade.start, CONFIG.hintFade.end);
@@ -1074,6 +1082,7 @@
         function toggleDebug() {
             DEBUG_MODE = !DEBUG_MODE;
             debugOverlay.classList.toggle('visible', DEBUG_MODE);
+            document.body.classList.toggle('debug-mode', DEBUG_MODE);
             if (DEBUG_MODE) updateAnimation(); // Refresh debug display
         }
 
