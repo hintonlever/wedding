@@ -237,9 +237,11 @@
 
         .grid-row {
             display: flex;
-            align-items: center;
+            align-items: flex-end;  /* Align to bottom of row */
             justify-content: center;
             text-align: center;
+            /* 1lh = 4cqh = 1 row height */
+            line-height: var(--row-height);
             /* Debug: uncomment to see grid lines */
             /* border-bottom: 1px solid rgba(255,255,255,0.1); */
         }
@@ -282,52 +284,50 @@
             filter: blur(0);
         }
 
-        /* Grid text typography - font sizes relative to row height */
+        /* Grid text typography - font sizes in lh (1lh = 1 row height) */
         .video-text-grid .save-the-date-text {
-            font-size: calc(var(--row-height) * 0.5);  /* 60% of row height */
+            font-size: 0.5lh;  /* 0.5 rows */
             color: var(--cream);
-            margin: 0;  
+            margin: 0;
             letter-spacing: 0.35em;
             text-transform: uppercase;
         }
 
         .video-text-grid .date-text {
-            font-size: calc(var(--row-height) * 0.5);  /* 60% of row height */
+            font-size: 0.5lh;  /* 0.5 rows */
             color: var(--cream);
-            margin: 0;  
+            margin: 0;
             letter-spacing: 0.35em;
-      
         }
 
         .video-text-grid .name {
             font-family: var(--font-script);
-            /* font-weight: 400; */
-            font-size: calc(var(--row-height) * 2);  /* 2 rows tall */
-            /* line-height: 1; */
+            font-weight: 400;
+            font-size: 2lh;  /* 2 rows */
             color: var(--charcoal);
         }
 
         .video-text-grid .card-ampersand {
-            font-size: calc(var(--row-height) * 0.5);  /* 60% of row height */
+            font-size: 0.5lh;  /* 0.5 rows */
             color: var(--cream);
-            margin: 0;  
+            margin: 0;
             font-family: var(--font-script);
             font-style: italic;
         }
 
         .video-text-grid .card-location {
-            font-size: calc(var(--row-height) * 0.5);  /* 60% of row height */
+            font-size: 1.0lh;  /* 0.5 rows */
             color: var(--cream);
-            margin: 0;  
+            margin: 0;
             letter-spacing: 0.35em;
             text-transform: uppercase;
         }
 
         .video-text-grid .card-information {
-            font-size: calc(var(--row-height) * 0.5);  /* 60% of row height */
+            font-size: 0.5lh;  /* 0.5 rows */
             color: var(--cream);
-            margin: 0;  
-            letter-spacing: 0.35em;
+            margin: 0;
+            /* letter-spacing: 0.35em;   */
             text-transform: uppercase;
         }
 
@@ -659,7 +659,7 @@
                         </div>
                         <div class="grid-row row-16"></div>
                         <div class="grid-row row-17">
-                            <p class="card-location">Great Keppel Island</p>
+                            <p class="card-location">Great Keppel</p>
                         </div>
                         <div class="grid-row row-18">
                             <p class="card-location">Australia</p>
@@ -670,13 +670,13 @@
               
                         </div>
                         <div class="grid-row row-22">
+                            <p class="card-information">We can't wait to celebrate with you!</p>
                         </div>
                         <div class="grid-row row-23">
-                                          <p class="card-information">We can't wait to celebrate with you!</p>
+                            <p class="card-information">Please hold off on booking accommodation.</p>
                         </div>
                         <div class="grid-row row-24">
-                                                        <p class="card-information">Please hold off on booking accommodation.<br>Details coming 1st Feb.</p>
-
+                           <p class="card-information">Details coming 1st Feb.</p>
                         </div>
                         <div class="grid-row row-25"></div>
                     </div>
