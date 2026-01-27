@@ -457,28 +457,27 @@
             transform-origin: center top;
             transform-style: preserve-3d;
             background: linear-gradient(180deg, var(--envelope-flap) 0%, var(--envelope-front) 100%);
-            clip-path: polygon(0 0, 100% 0, 62% 75%, 60% 80%, 58% 85%, 55% 88%, 52% 89%, 50% 90%, 48% 89%, 45% 88%, 42% 85%, 40% 80%, 38% 75%);
+            clip-path: polygon(0 0, 100% 0, 60% 80%, 59% 82%, 58% 83.6%, 57% 85.1%, 56% 86.4%, 55% 87.5%, 54% 88.4%, 53% 89.1%, 52% 89.6%, 51% 89.9%, 50% 90%, 49% 89.9%, 48% 89.6%, 47% 89.1%, 46% 88.4%, 45% 87.5%, 44% 86.4%, 43% 85.1%, 42% 83.6%, 41% 82%, 40% 80%);
             transition: opacity 0.4s ease;
             z-index: var(--flap-z, var(--z-envelope-flap-closed));
         }
 
-        /* Shadow cast by the flap as it opens */
-        .envelope-top-flap::after {
+        /* Shadow cast by the flap onto the envelope body */
+        .envelope-wrapper::before {
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            left: 10%;
+            right: 10%;
+            height: 30%;
             background: linear-gradient(180deg,
-                transparent 0%,
-                rgba(0, 0, 0, 0.15) 60%,
-                rgba(0, 0, 0, 0.25) 90%);
-            clip-path: inherit;
+                rgba(0, 0, 0, 0.25) 0%,
+                rgba(0, 0, 0, 0.1) 40%,
+                transparent 100%);
             opacity: var(--flap-shadow-opacity, 0);
-            transform: translateZ(-1px) translateY(8px);
-            filter: blur(4px);
+            filter: blur(6px);
             pointer-events: none;
+            z-index: calc(var(--z-envelope-front) - 1);
         }
 
         /* Wax seal - positioned at flap tip, rotates with flap */
@@ -725,13 +724,13 @@
                             
                         </div>
                         <div class="grid-row row-23">
-                            <p class="card-information">We can't wait to celebrate with you!</p>
+                            <p class="card-information">We are excited to celebrate with you!</p>
                         </div>
                         <div class="grid-row row-24">
                             <p class="card-information">Please hold off on booking accommodation.</p>
                         </div>
                         <div class="grid-row row-25">
-                            <p class="card-information">Details coming 1st Feb.</p>
+                            <p class="card-information">More details coming soon.</p>
                         </div>
                         <div class="grid-row row-26"></div>
                     </div>
@@ -937,6 +936,11 @@
             const flapProgress = easeInOutCubic(getProgress(scrollProgress, CONFIG.flap.start, CONFIG.flap.end));
             const flapRotation = lerp(0, CONFIG.flapRotationEnd, flapProgress);
             envelopeTopFlap.style.setProperty('--flap-rotation', flapRotation + 'deg');
+
+            // --- Flap shadow (peaks around 25-50% open, fades after) ---
+            // Shadow is strongest when flap is between 45-90 degrees
+            const flapShadowOpacity = Math.sin(flapProgress * Math.PI) * 0.8;
+            envelope.style.setProperty('--flap-shadow-opacity', flapShadowOpacity);
 
             // --- Seal rotation matches flap ---
             waxSeal.style.setProperty('--seal-rotation-x', flapRotation + 'deg');
