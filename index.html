@@ -50,6 +50,12 @@
             /* Global row height for elements outside the grid (26 rows) */
             --row-height-global: calc(var(--main-height) * 0.95 / 26);
 
+
+           
+            --font-script: 'De Lionist', cursive;
+            --font-script-secondary: 'Roboto Flex', sans-serif;
+
+
             /* ==========================================
                COLORS
                ========================================== */
@@ -60,15 +66,6 @@
 
             --color-seal: #cc5496;
 
-            /* --cream: #fdf9f3;
-            --peach: #ffb088;
-            --coral: #ff6b6b;
-            --sage: #7eb09b;
-            --lavender: #b8a9c9;
-            --charcoal: #2d2d2d;
-            --warm-gray: #6b6b6b; */
-            --font-script: 'De Lionist', cursive;
-            --font-script-secondary: 'Roboto Flex', sans-serif;
 
             /* Envelope colors - configurable */
             --envelope-back: #d4c4b5;
@@ -535,10 +532,11 @@
             flex-direction: column;
             align-items: center;
             gap: 8px;
-            color: var(--warm-gray);
+            color: var(--color-names);
             font-size: calc(var(--row-height-global) * 0.6);
             letter-spacing: 0.2em;
             text-transform: uppercase;
+            font-family: var(--font-script-secondary);
             opacity: var(--hint-opacity, 1);
             transition: opacity 0.3s ease;
         }
@@ -546,7 +544,7 @@
         .scroll-icon {
             width: 28px;
             height: 42px;
-            border: 2px solid var(--warm-gray);
+            border: 2px solid var(--color-names);
             border-radius: 14px;
             position: relative;
         }
@@ -559,7 +557,7 @@
             transform: translateX(-50%);
             width: 4px;
             height: 8px;
-            background: var(--coral);
+            background: var(--color-seal);
             border-radius: 2px;
             animation: scroll-bounce 1.5s ease-in-out infinite;
         }
@@ -767,13 +765,13 @@
                 <div class="wax-seal" id="waxSeal"></div>
             </div>
 
-            <!-- Scroll hint (positioned relative to viewport) -->
-            <div class="scroll-hint">
-                <div class="scroll-icon"></div>
-                <span>Scroll to open</span>
-            </div>
         </div>
 
+        <!-- Scroll hint (positioned relative to viewport, outside envelope-scene to avoid perspective clipping) -->
+        <div class="scroll-hint">
+            <div class="scroll-icon"></div>
+            <span>Scroll to open</span>
+        </div>
     </div>
 
     <script>
