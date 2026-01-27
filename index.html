@@ -221,12 +221,12 @@
             clip-path: var(--video-clip);
         }
 
-        /* 24-row grid overlay for text inside white rectangle */
+        /* 25-row grid overlay for text inside white rectangle */
         .video-text-grid {
             position: absolute;
             inset: 10px;
             display: grid;
-            grid-template-rows: repeat(24, minmax(0, 1fr));
+            grid-template-rows: repeat(25, minmax(0, 1fr));
             z-index: 1;
             pointer-events: none;
             /* Enable container queries for responsive text */
@@ -614,7 +614,7 @@
                     <video autoplay muted loop playsinline>
                         <source src="keppel_sunset_light.mp4" type="video/mp4">
                     </video>
-                    <!-- 24-row grid overlay for text (inside white rectangle) -->
+                    <!-- 25-row grid overlay for text (inside white rectangle) -->
                     <div class="video-text-grid">
                         <div class="grid-row row-1"></div>
                         <div class="grid-row row-2"></div>
@@ -629,18 +629,27 @@
                         <div class="grid-row row-7"></div>
                         <div class="grid-row row-8"></div>
                         <div class="grid-row row-9">
-                            <span class="name name-1">Alina</span>
+                     
                         </div>
                         <div class="grid-row row-10">
-                            <span class="card-ampersand">&</span>
+                                     <span class="name name-2">Ben</span>
                         </div>
                         <div class="grid-row row-11">
-                            <span class="name name-2">Ben</span>
+           
                         </div>
-                        <div class="grid-row row-12"></div>
-                        <div class="grid-row row-13"></div>
-                        <div class="grid-row row-14"></div>
-                        <div class="grid-row row-15"></div>
+                        <div class="grid-row row-12">
+                                                     <span class="card-ampersand">&</span>
+                        </div>
+                        <div class="grid-row row-13">
+   
+                        </div>
+                        <div class="grid-row row-14">
+                                     <span class="name name-1">Alina</span>
+                        </div>
+                        <div class="grid-row row-15">
+                   
+
+                        </div>
                         <div class="grid-row row-16"></div>
                         <div class="grid-row row-17">
                             <p class="card-location">Great Keppel Island</p>
@@ -651,13 +660,18 @@
                         <div class="grid-row row-19"></div>
                         <div class="grid-row row-20"></div>
                         <div class="grid-row row-21">
-                            <p class="card-information">We can't wait to celebrate with you!</p>
+              
                         </div>
                         <div class="grid-row row-22">
-                            <p class="card-information">Please hold off on booking accommodation.<br>Details coming 1st Feb.</p>
                         </div>
-                        <div class="grid-row row-23"></div>
-                        <div class="grid-row row-24"></div>
+                        <div class="grid-row row-23">
+                                          <p class="card-information">We can't wait to celebrate with you!</p>
+                        </div>
+                        <div class="grid-row row-24">
+                                                        <p class="card-information">Please hold off on booking accommodation.<br>Details coming 1st Feb.</p>
+
+                        </div>
+                        <div class="grid-row row-25"></div>
                     </div>
                 </div>
 
