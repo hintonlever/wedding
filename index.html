@@ -518,9 +518,9 @@
             position: absolute;
             width: min(70px, 18vw);
             height: min(70px, 18vw);
-            /* Position at the hinge point (top edge of flap) */
+            /* Position at the flap tip (spike) */
             left: var(--envelope-x, var(--envelope-step1-x));
-            top: calc(var(--envelope-y, var(--envelope-step1-y)) - var(--envelope-height, var(--envelope-step1-height)) / 2);
+            top: calc(var(--envelope-y, var(--envelope-step1-y)) - var(--envelope-height, var(--envelope-step1-height)) / 2 + var(--envelope-height, var(--envelope-step1-height)) * 0.7);
             border-radius: 50%;
             background: radial-gradient(circle at 35% 35%,
                 #ff9a8b 0%,
@@ -533,11 +533,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            /* Rotate around the hinge, then offset to flap tip */
             transform-style: preserve-3d;
-            transform-origin: center center;
-            /* rotateX around hinge, then translateY moves seal to flap tip (spike) */
-            transform: translate(-50%, -50%) rotateX(var(--seal-rotation-x, 0deg)) translateY(calc(var(--envelope-height, var(--envelope-step1-height)) * 0.7));
+            /* Transform-origin at flap hinge (0.7 * envelope height above the seal) */
+            transform-origin: center calc(50% - var(--envelope-height, var(--envelope-step1-height)) * 0.7);
+            /* Swing with the flap from the hinge point, scale for perspective effect */
+            transform: translate(-50%, -50%) rotateX(var(--seal-rotation-x, 0deg)) scale(var(--seal-scale, 1)) translateY(var(--seal-scale-offset, 0px));
             opacity: var(--seal-opacity, 1);
             z-index: var(--seal-z, var(--z-envelope-flap-closed));
         }
@@ -844,8 +844,11 @@
             const flapRotation = lerp(0, CONFIG.flapRotationEnd, flapProgress);
             envelopeTopFlap.style.setProperty('--flap-rotation', flapRotation + 'deg');
 
-            // --- Seal follows flap rotation ---
+            // --- Seal follows flap rotation with perspective scale ---
             waxSeal.style.setProperty('--seal-rotation-x', flapRotation + 'deg');
+            // Scale peaks at halfway (90°) to simulate moving towards viewer
+            const sealScale = 1 + 0.4 * Math.sin(flapProgress * Math.PI);
+            waxSeal.style.setProperty('--seal-scale', sealScale);
 
             // --- 5-Step Animation ---
             // Step 1: Card in envelope (0 - 0.25)
@@ -949,6 +952,10 @@
             waxSeal.style.setProperty('--envelope-x', envX);
             waxSeal.style.setProperty('--envelope-y', envY);
             waxSeal.style.setProperty('--envelope-height', envH);
+            // Compensate for scale offset to keep seal centered on flap tip
+            const envHPx = parseFloat(envH);
+            const scaleOffset = (sealScale - 1) * 0.7 * envHPx;
+            waxSeal.style.setProperty('--seal-scale-offset', -scaleOffset + 'px');
 
             // Apply card properties
             card.style.setProperty('--card-x', cardX);
