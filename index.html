@@ -269,8 +269,7 @@
         .video-text-grid .name-2 { transition-delay: 0.4s; }
         .video-text-grid .card-location { transition-delay: 0.5s; }
         .row-18 .card-location { transition-delay: 0.6s; }
-        .row-21 .card-information { transition-delay: 0.7s; }
-        .row-22 .card-information { transition-delay: 0.8s; }
+        .video-text-grid .card-information { transition-delay: 0.7s; }
 
         /* Text visible state */
         .text-visible .video-text-grid .save-the-date-text,
@@ -287,6 +286,7 @@
         /* Grid text typography - font sizes in lh (1lh = 1 row height) */
         .video-text-grid .save-the-date-text {
             font-size: 0.5lh;  /* 0.5 rows */
+            line-height: 1;
             color: var(--cream);
             margin: 0;
             letter-spacing: 0.35em;
@@ -295,6 +295,7 @@
 
         .video-text-grid .date-text {
             font-size: 0.5lh;  /* 0.5 rows */
+            line-height: 1;
             color: var(--cream);
             margin: 0;
             letter-spacing: 0.35em;
@@ -304,11 +305,13 @@
             font-family: var(--font-script);
             font-weight: 400;
             font-size: 2lh;  /* 2 rows */
+            line-height: 1;
             color: var(--charcoal);
         }
 
         .video-text-grid .card-ampersand {
             font-size: 0.5lh;  /* 0.5 rows */
+            line-height: 1;
             color: var(--cream);
             margin: 0;
             font-family: var(--font-script);
@@ -316,7 +319,8 @@
         }
 
         .video-text-grid .card-location {
-            font-size: 1.0lh;  /* 0.5 rows */
+            font-size: 0.5lh;  /* 0.5 rows */
+            line-height: 1;
             color: var(--cream);
             margin: 0;
             letter-spacing: 0.35em;
@@ -325,9 +329,10 @@
 
         .video-text-grid .card-information {
             font-size: 0.5lh;  /* 0.5 rows */
+            line-height: 1;
             color: var(--cream);
             margin: 0;
-            /* letter-spacing: 0.35em;   */
+            letter-spacing: 0.1em;  
             text-transform: uppercase;
         }
 
