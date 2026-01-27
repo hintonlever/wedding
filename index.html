@@ -1021,23 +1021,17 @@
                 waxSeal.style.setProperty('--seal-z', getCSSVar('--z-seal-closed'));
             }
 
-            // --- Envelope fade (step 3→4) ---
-            const fadeProgress = getProgress(animProgress, step3Start, step4Start);
-            if (fadeProgress > 0) {
-                envelope.classList.add('envelope-hidden');
-                envelopeBack.classList.add('envelope-hidden');
-                envelopeTopFlap.classList.add('envelope-hidden');
-                waxSeal.style.setProperty('--seal-opacity', 1 - fadeProgress);
-            } else {
-                envelope.classList.remove('envelope-hidden');
-                envelopeBack.classList.remove('envelope-hidden');
-                envelopeTopFlap.classList.remove('envelope-hidden');
-                waxSeal.style.setProperty('--seal-opacity', 1);
-            }
+            // --- Envelope fade (step 2→3) - fades as card pulls out ---
+            const envelopeFadeProgress = getProgress(animProgress, step2Start, step3Start);
+            envelope.style.opacity = 1 - envelopeFadeProgress;
+            envelopeBack.style.opacity = 1 - envelopeFadeProgress;
+            envelopeTopFlap.style.opacity = 1 - envelopeFadeProgress;
+            waxSeal.style.setProperty('--seal-opacity', 1 - envelopeFadeProgress);
 
             // --- Bleed shadow and card shadow fade in (step 3→4) ---
-            cardBleedShadow.style.opacity = fadeProgress;
-            card.style.setProperty('--card-shadow-opacity', fadeProgress);
+            const shadowFadeProgress = getProgress(animProgress, step3Start, step4Start);
+            cardBleedShadow.style.opacity = shadowFadeProgress;
+            card.style.setProperty('--card-shadow-opacity', shadowFadeProgress);
 
             // --- Hint fade ---
             const hintOpacity = 1 - getProgress(scrollProgress, CONFIG.hintFade.start, CONFIG.hintFade.end);
