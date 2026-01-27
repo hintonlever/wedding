@@ -16,6 +16,36 @@
         }
 
         :root {
+            /* ==========================================
+               ASPECT RATIO - Defines main-container shape
+               ========================================== */
+            --w: 9;
+            --h: 16;
+
+            /* Main container dimensions - computed by JavaScript */
+            --main-width: 100vw;
+            --main-height: 100vh;
+
+            /* ==========================================
+               SIZE RATIOS - All relative to main-container
+               Easy to adjust these values
+               ========================================== */
+            /* Envelope ratios */
+            --envelope-width-ratio: 0.98;      /* 95% of main-container width */
+            --envelope-height-ratio: 0.35;     /* 40% of main-container height when closed */
+
+            /* Card ratios */
+            --card-width-ratio: 0.95;          /* 90% of main-container width */
+            --card-height-closed-ratio: 0.32;  /* 40% of main-container height when closed */
+            --card-height-open-ratio: 0.90;    /* 90% of main-container height when fully opened */
+
+            /* Video ratios */
+            --video-width-ratio: 0.95;         /* 90% of main-container width */
+            --video-height-ratio: 0.95;        /* 90% of main-container height */
+
+            /* ==========================================
+               COLORS
+               ========================================== */
             --cream: #fdf9f3;
             --peach: #ffb088;
             --coral: #ff6b6b;
@@ -32,13 +62,9 @@
             --envelope-flap: #f0e6dc;
             --envelope-inner: #c9b9a8;
 
-            /* Scroll length - how much to scroll between each step */
-            --scroll-step1-to-2: 50vh;
-            --scroll-step2-to-3: 50vh;
-            --scroll-step3-to-4: 50vh;
-            --scroll-step4-to-5: 200vh;
-            /* Total scroll length calculated from all steps */
-            --scroll-length: calc(var(--scroll-step1-to-2) + var(--scroll-step2-to-3) + var(--scroll-step3-to-4) + var(--scroll-step4-to-5));
+            /* Scroll length - computed by JavaScript based on main-container height */
+            /* Ratios: step1→2: 0.5, step2→3: 0.5, step3→4: 0.5, step4→5: 2.0 = 3.5 total */
+            --scroll-length: 350vh; /* Fallback, overridden by JS */
 
             /* Scroll hint position from bottom of screen */
             --scroll-hint-bottom: 10%;
@@ -55,105 +81,21 @@
             --z-seal-open:-1;             /* should be under the envelope */
 
             /* ==========================================
-               STEP 1: Card inside envelope
-               Envelope closed, card hidden inside
+               INITIAL POSITIONS (CSS fallbacks)
+               JavaScript computes and overrides these
                ========================================== */
-            /* Envelope */
             --envelope-step1-x: 50%;
-            --envelope-step1-y: 50vh;
-            --envelope-step1-width: min(90vw, 60vh);
-            --envelope-step1-height: min(90vw, 40vh);
-
-            /* Card */
+            --envelope-step1-y: 50%;
+            --envelope-step1-width: 95%;
+            --envelope-step1-height: 40%;
             --card-step1-x: 50%;
-            --card-step1-y: 50vh;
-            --card-step1-width: min(90vw, 50vh);
-            --card-step1-height: 35vh;
-
-            /* Video crop (position and size) */
+            --card-step1-y: 50%;
+            --card-step1-width: 90%;
+            --card-step1-height: 40%;
             --video-step1-x: 50%;
-            --video-step1-y: 50vh;
-            --video-step1-width: min(90vw, 50vh);
-            --video-step1-height: 90vh;
-
-            /* ==========================================
-               STEP 2: Envelope opens (flap z changes)
-               Card and envelope don't move
-               ========================================== */
-            /* Envelope */
-            --envelope-step2-x: 50%;
-            --envelope-step2-y: 50vh;
-            --envelope-step2-width: min(90vw, 60vh);
-            --envelope-step2-height: 40vh;
-            /* Card */
-            --card-step2-x: 50%;
-            --card-step2-y: 50vh;
-            --card-step2-width: min(90vw, 50vh);
-            --card-step2-height: 35vh;
-            /* Video crop */
-            --video-step2-x: 50%;
-            --video-step2-y: 50vh; 
-            --video-step2-width: min(90vw, 50vh);
-            --video-step2-height: 90vh;
-
-            /* ==========================================
-               STEP 3: Card pulled out
-               Card at 35vh, envelope at 75vh
-               ========================================== */
-            /* Envelope */
-            --envelope-step3-x: 50%;
-            --envelope-step3-y: 75vh;
-            --envelope-step3-width: min(90vw, 60vh);
-            --envelope-step3-height: 40vh;
-            /* Card */
-            --card-step3-x: 50%;
-            --card-step3-y: 35vh;
-            --card-step3-width: min(90vw, 50vh);
-            --card-step3-height: 35vh;
-            /* Video crop */
-            --video-step3-x: 50%;
-            --video-step3-y: 50vh;
-            --video-step3-width: min(90vw, 50vh);
-            --video-step3-height: 90vh;
-
-            /* ==========================================
-               STEP 4: Card centered, envelope fades
-               Card grows and centers
-               ========================================== */
-            /* Envelope */
-            --envelope-step4-x: 50%;
-            --envelope-step4-y: 90vh;
-            --envelope-step4-width: min(90vw, 60vh);
-            --envelope-step4-height: 40vh;
-            /* Card */
-            --card-step4-x: 50%;
-            --card-step4-y: 50vh;  /* Center position: 5vh top margin + 45vh (half of 90vh height) */
-            --card-step4-width: min(90vw, 50vh);
-            --card-step4-height: 90vh;
-            /* Video crop */
-            --video-step4-x: 50%;
-            --video-step4-y: 50vh;
-            --video-step4-width: min(90vw, 50vh);
-            --video-step4-height: 90vh;
-
-            /* ==========================================
-               STEP 5: Final state (same as step 4)
-               ========================================== */
-            /* Envelope */
-            --envelope-step5-x: 50%;
-            --envelope-step5-y: 90vh;
-            --envelope-step5-width: min(90vw, 60vh);
-            --envelope-step5-height: 40vh;
-            /* Card */
-            --card-step5-x: 50%;
-            --card-step5-y: 50vh;
-            --card-step5-width: min(90vw, 50vh);
-            --card-step5-height: 90vh;
-            /* Video crop */
-            --video-step5-x: 50%;
-            --video-step5-y: 50vh;
-            --video-step5-width: min(90vw, 50vh);
-            --video-step5-height: 90vh;
+            --video-step1-y: 50%;
+            --video-step1-width: 90%;
+            --video-step1-height: 90%;
         }
 
         * {
@@ -182,14 +124,26 @@
             min-height: var(--scroll-length, 350vh);
         }
 
-        /* Main container - sticky to viewport */
+        /* Envelope scene - sticky viewport container that centers main-container */
         .envelope-scene {
             position: sticky;
             top: 0;
             width: 100%;
             height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             perspective: 1500px;
             overflow: hidden;
+        }
+
+        /* Main container - aspect ratio constrained box */
+        .main-container {
+            position: relative;
+            width: var(--main-width);
+            height: var(--main-height);
+            /* Debug: uncomment to see bounds */
+            /* outline: 2px dashed rgba(255,0,0,0.3); */
         }
 
         /* ==========================================
@@ -240,7 +194,7 @@
             z-index: var(--flap-z, var(--z-envelope-flap-closed));
         }
 
-        /* The card - positioned relative to viewport */
+        /* Card - decorative border frame that overlays the video */
         .card {
             position: absolute;
             width: var(--card-width, var(--card-step1-width));
@@ -249,16 +203,13 @@
             top: var(--card-y, var(--card-step1-y));
             transform: translate(-50%, -50%);
             border-radius: 6px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-            z-index: var(--z-card);
-            overflow: hidden;
-            /* Enable container queries - fonts will scale relative to card width */
-            container-type: inline-size;
+            z-index: calc(var(--z-card) + 1);
+            pointer-events: none;
         }
 
         .card-video-bg {
-            position: fixed;
-            /* Video position relative to screen - card acts as clip window */
+            position: absolute;
+            /* Video position relative to main-container - card acts as clip window */
             left: var(--video-x, var(--video-step1-x));
             top: var(--video-y, var(--video-step1-y));
             width: var(--video-width, var(--video-step1-width));
@@ -270,9 +221,115 @@
             clip-path: var(--video-clip);
         }
 
+        /* 12-row grid overlay for text inside video */
+        .video-text-grid {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            grid-template-rows: repeat(12, 1fr);
+            z-index: 1;
+            pointer-events: none;
+            /* Enable container queries for responsive text */
+            container-type: size;
+        }
+
+        .grid-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            /* Debug: uncomment to see grid lines */
+            /* border-bottom: 1px solid rgba(255,255,255,0.1); */
+        }
+
+        /* Text styles for grid - hidden initially, fade in with card */
+        .video-text-grid .save-the-date-text,
+        .video-text-grid .date-text,
+        .video-text-grid .name,
+        .video-text-grid .card-ampersand,
+        .video-text-grid .card-location,
+        .video-text-grid .card-information {
+            opacity: 0;
+            transform: translateY(15px);
+            filter: blur(6px);
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                        filter 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Staggered delays */
+        .video-text-grid .save-the-date-text { transition-delay: 0s; }
+        .video-text-grid .date-text { transition-delay: 0.1s; }
+        .video-text-grid .name-1 { transition-delay: 0.2s; }
+        .video-text-grid .card-ampersand { transition-delay: 0.3s; }
+        .video-text-grid .name-2 { transition-delay: 0.4s; }
+        .video-text-grid .card-location { transition-delay: 0.5s; }
+        .row-10 .card-location { transition-delay: 0.6s; }
+        .row-11 .card-information { transition-delay: 0.7s; }
+        .row-12 .card-information { transition-delay: 0.8s; }
+
+        /* Text visible state */
+        .text-visible .video-text-grid .save-the-date-text,
+        .text-visible .video-text-grid .date-text,
+        .text-visible .video-text-grid .name,
+        .text-visible .video-text-grid .card-ampersand,
+        .text-visible .video-text-grid .card-location,
+        .text-visible .video-text-grid .card-information {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
+        }
+
+        /* Grid text typography - using container query units */
+        .video-text-grid .save-the-date-text {
+            font-size: clamp(0.4rem, 3cqw, 0.8rem);
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: var(--cream);
+            margin: 0;
+        }
+
+        .video-text-grid .date-text {
+            font-size: clamp(0.6rem, 5cqw, 1.2rem);
+            color: var(--cream);
+            margin: 0;
+        }
+
+        .video-text-grid .name {
+            font-family: var(--font-script);
+            font-weight: 400;
+            font-size: clamp(1.2rem, 10cqw, 2.5rem);
+            line-height: 1;
+            color: var(--charcoal);
+        }
+
+        .video-text-grid .card-ampersand {
+            font-family: var(--font-script);
+            font-style: italic;
+            color: var(--cream);
+            font-size: clamp(0.8rem, 5cqw, 1.2rem);
+        }
+
+        .video-text-grid .card-location {
+            color: var(--cream);
+            font-size: clamp(0.4rem, 3cqw, 0.75rem);
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        .video-text-grid .card-information {
+            color: var(--cream);
+            font-size: clamp(0.35rem, 2.5cqw, 0.7rem);
+            letter-spacing: 0.1em;
+            line-height: 1.4;
+            margin: 0;
+            padding: 0 5%;
+        }
+
         /* Bleed shadow overlay - fades in at step 4 */
         .card-bleed-shadow {
-            position: fixed;
+            position: absolute;
             left: var(--card-x, var(--card-step4-x));
             top: var(--card-y, var(--card-step4-y));
             width: var(--card-width, var(--card-step4-width));
@@ -294,7 +351,7 @@
             object-fit: cover;
         }
 
-        /* Card decorative border */
+        /* Card decorative border - now positioned over video */
         .card::after {
             content: '';
             position: absolute;
@@ -306,157 +363,6 @@
             border-radius: 4px;
             pointer-events: none;
             box-shadow: 0 20px 40px 10px rgba(0, 0, 0, 0.5);
-        }
-
-        .card-content {
-            position: absolute;
-            inset: 10%; /* 10% padding from card edges */
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            text-align: center;
-        }
-
-        /* Group for top section - Save the Date */
-        .card-content-top {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* Group for middle section - Names, Date, Location */
-        .card-content-middle {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2em;
-        }
-
-        /* Group for bottom section - Information (multi-line) */
-        .card-content-bottom {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        /* Card text elements - hidden initially, fancy fade in */
-        .card-content .save-the-date-text,
-        .card-content .card-date,
-        .card-content .card-location,
-        .card-content .card-information,
-        .card-content .name,
-        .card-content .card-ampersand {
-            opacity: 0;
-            transform: translateY(25px);
-            filter: blur(8px);
-            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-                        transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-                        filter 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Staggered delays for each text element */
-        .card-content .save-the-date-text {
-            transition-delay: 0s;
-        }
-
-        .card-content .card-names {
-            opacity: 1;
-            transform: none;
-            filter: none;
-        }
-
-        .card-content .name-1 {
-            transition-delay: 0.2s;
-        }
-
-        .card-content .card-ampersand {
-            transition-delay: 0.4s;
-        }
-
-        .card-content .name-2 {
-            transition-delay: 0.6s;
-        }
-
-        .card-content .card-date {
-            transition-delay: 0.8s;
-        }
-
-        .card-content .card-location {
-            transition-delay: 1s;
-        }
-
-        .card-content .card-information {
-            transition-delay: 1.2s;
-        }
-
-        /* Text visible state */
-        .card.text-visible .card-content .save-the-date-text,
-        .card.text-visible .card-content .card-date,
-        .card.text-visible .card-content .card-location,
-        .card.text-visible .card-content .card-information,
-        .card.text-visible .card-content .name,
-        .card.text-visible .card-content .card-ampersand {
-            opacity: 1;
-            transform: translateY(0);
-            filter: blur(0);
-        }
-
-        .save-the-date-text {
-            /* cqw = container query width (relative to card) */
-            font-size: clamp(0.5rem, 4cqw, 0.9rem);
-            letter-spacing: 0.35em;
-            text-transform: uppercase;
-            color: var(--cream);
-            margin: 0;
-        }
-
-        .card-names {
-            font-family: var(--font-script);
-            font-weight: 400;
-            /* Smaller names - relative to card width */
-            font-size: clamp(1.5rem, 12cqw, 2.8rem);
-            line-height: 1;
-            color: var(--charcoal);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.4em;
-        }
-
-        .card-names .name {
-            display: block;
-        }
-
-        .card-ampersand {
-            font-family: var(--font-script);
-            font-style: italic;
-            color: var(--cream);
-            font-size: 0.5em;
-            display: block;
-        }
-
-        .card-date {
-            font-size: clamp(0.8rem, 6cqw, 1.4rem);
-            color: var(--cream);
-        }
-
-        .card-location {
-            color: var(--cream);
-            font-size: clamp(0.5rem, 4cqw, 0.9rem);
-            letter-spacing: 0.35em;
-            text-transform: uppercase;
-        }
-
-        .card-information {
-            color: var(--cream);
-            font-size: clamp(0.5rem, 3.5cqw, 0.85rem);
-            letter-spacing: 0.1em;
-            line-height: 1.5;
-            margin: 0;
-            text-align: center;
         }
 
         /* Side flaps (left and right triangles) */
@@ -694,59 +600,72 @@
     <div class="scroll-container">
         <!-- Envelope scene (sticky) -->
         <div class="envelope-scene">
-            <!-- Video layer - fixed position, clipped to card bounds -->
-            <div class="card-video-bg" id="videoBg">
-                <video autoplay muted loop playsinline>
-                    <source src="keppel_sunset_light.mp4" type="video/mp4">
-                </video>
-            </div>
-
-            <!-- Bleed shadow for card (fades in at step 4) -->
-            <div class="card-bleed-shadow" id="cardBleedShadow"></div>
-
-            <!-- Card (positioned relative to viewport, outside envelope for screen-relative sizing) -->
-            <div class="card">
-                <div class="card-content">
-                    <div class="card-content-top">
-                        <p class="save-the-date-text">Save the Date<br>29.08.2026</p>
-                    </div>
-                    <div class="card-content-middle">
-                        <div class="card-names">
+            <!-- Main container - aspect ratio constrained -->
+            <div class="main-container" id="mainContainer">
+                <!-- Video layer - clipped to card bounds -->
+                <div class="card-video-bg" id="videoBg">
+                    <video autoplay muted loop playsinline>
+                        <source src="keppel_sunset_light.mp4" type="video/mp4">
+                    </video>
+                    <!-- 12-row grid overlay for text -->
+                    <div class="video-text-grid">
+                        <div class="grid-row row-1"></div>
+                        <div class="grid-row row-2">
+                            <p class="save-the-date-text">Save the Date</p>
+                        </div>
+                        <div class="grid-row row-3">
+                            <p class="date-text">29.08.2026</p>
+                        </div>
+                        <div class="grid-row row-4"></div>
+                        <div class="grid-row row-5">
                             <span class="name name-1">Alina</span>
+                        </div>
+                        <div class="grid-row row-6">
                             <span class="card-ampersand">&</span>
+                        </div>
+                        <div class="grid-row row-7">
                             <span class="name name-2">Ben</span>
                         </div>
-                        <p class="card-location">Great Keppel Island<br>Australia</p>
-                    </div>
-                    <div class="card-content-bottom">
-                        <p class="card-information">We can't wait to celebrate with you!<br>
-                            <br>
-                            Please hold off on booking accomodation for now. 
-                            We have reserved rooms and will share full details on this page 
-                            on 1st Feb.
-                             </p>
+                        <div class="grid-row row-8"></div>
+                        <div class="grid-row row-9">
+                            <p class="card-location">Great Keppel Island</p>
+                        </div>
+                        <div class="grid-row row-10">
+                            <p class="card-location">Australia</p>
+                        </div>
+                        <div class="grid-row row-11">
+                            <p class="card-information">We can't wait to celebrate with you!</p>
+                        </div>
+                        <div class="grid-row row-12">
+                            <p class="card-information">Please hold off on booking accommodation.<br>Details coming 1st Feb.</p>
+                        </div>
                     </div>
                 </div>
+
+                <!-- Bleed shadow for card (fades in at step 4) -->
+                <div class="card-bleed-shadow" id="cardBleedShadow"></div>
+
+                <!-- Card (clip mask for video) -->
+                <div class="card" id="card"></div>
+
+                <!-- Envelope back layer (separate for z-index control) -->
+                <div class="envelope-back-layer" id="envelopeBack"></div>
+
+                <div class="envelope-wrapper" id="envelope">
+                    <!-- Side flaps -->
+                    <div class="envelope-side-left"></div>
+                    <div class="envelope-side-right"></div>
+
+                    <!-- Front flap (bottom V) -->
+                    <div class="envelope-front-flap"></div>
+                </div>
+
+                <!-- Top flap (separate for independent z-index control) -->
+                <div class="envelope-top-flap" id="envelopeTopFlap"></div>
+
+                <!-- Wax seal (separate for independent z-index control) -->
+                <div class="wax-seal" id="waxSeal"></div>
             </div>
-
-            <!-- Envelope back layer (separate for z-index control) -->
-            <div class="envelope-back-layer" id="envelopeBack"></div>
-
-            <div class="envelope-wrapper" id="envelope">
-
-                <!-- Side flaps -->
-                <div class="envelope-side-left"></div>
-                <div class="envelope-side-right"></div>
-
-                <!-- Front flap (bottom V) -->
-                <div class="envelope-front-flap"></div>
-            </div>
-
-            <!-- Top flap (separate for independent z-index control) -->
-            <div class="envelope-top-flap" id="envelopeTopFlap"></div>
-
-            <!-- Wax seal (separate for independent z-index control) -->
-            <div class="wax-seal" id="waxSeal"></div>
 
             <!-- Scroll hint (positioned relative to viewport) -->
             <div class="scroll-hint">
@@ -793,15 +712,58 @@
             return start + (end - start) * t;
         }
 
-        // Parse a CSS value to pixels (handles simple units and min/max)
-        function cssToPixels(value) {
+        // Cache for CSS variable ratios (read once, reuse)
+        let cachedRatios = null;
+        function getRatios() {
+            if (!cachedRatios) {
+                cachedRatios = {
+                    envelopeWidth: parseFloat(getCSSVar('--envelope-width-ratio')) || 0.95,
+                    envelopeHeight: parseFloat(getCSSVar('--envelope-height-ratio')) || 0.40,
+                    cardWidth: parseFloat(getCSSVar('--card-width-ratio')) || 0.90,
+                    cardHeightClosed: parseFloat(getCSSVar('--card-height-closed-ratio')) || 0.40,
+                    cardHeightOpen: parseFloat(getCSSVar('--card-height-open-ratio')) || 0.90,
+                    videoWidth: parseFloat(getCSSVar('--video-width-ratio')) || 0.90,
+                    videoHeight: parseFloat(getCSSVar('--video-height-ratio')) || 0.90
+                };
+            }
+            return cachedRatios;
+        }
+
+        // Parse a CSS value to pixels (handles simple units, min/max, and calc with CSS vars)
+        function cssToPixels(value, containerWidth, containerHeight) {
             const str = String(value).trim();
+            const ratios = getRatios();
+
+            // Handle calc() expressions with CSS variables
+            if (str.startsWith('calc(')) {
+                // Extract the expression inside calc()
+                let expr = str.slice(5, -1);
+
+                // Replace CSS variables with actual values
+                expr = expr.replace(/var\(--main-width\)/g, containerWidth);
+                expr = expr.replace(/var\(--main-height\)/g, containerHeight);
+                expr = expr.replace(/var\(--envelope-width-ratio\)/g, ratios.envelopeWidth);
+                expr = expr.replace(/var\(--envelope-height-ratio\)/g, ratios.envelopeHeight);
+                expr = expr.replace(/var\(--card-width-ratio\)/g, ratios.cardWidth);
+                expr = expr.replace(/var\(--card-height-closed-ratio\)/g, ratios.cardHeightClosed);
+                expr = expr.replace(/var\(--card-height-open-ratio\)/g, ratios.cardHeightOpen);
+                expr = expr.replace(/var\(--video-width-ratio\)/g, ratios.videoWidth);
+                expr = expr.replace(/var\(--video-height-ratio\)/g, ratios.videoHeight);
+
+                // Evaluate the expression
+                try {
+                    return eval(expr);
+                } catch (e) {
+                    console.warn('Failed to evaluate calc:', str, e);
+                    return 0;
+                }
+            }
 
             // Handle min() or max()
             const minMaxMatch = str.match(/^(min|max)\((.+)\)$/);
             if (minMaxMatch) {
                 const fn = minMaxMatch[1];
-                const args = minMaxMatch[2].split(',').map(s => cssToPixels(s.trim()));
+                const args = minMaxMatch[2].split(',').map(s => cssToPixels(s.trim(), containerWidth, containerHeight));
                 return fn === 'min' ? Math.min(...args) : Math.max(...args);
             }
 
@@ -815,16 +777,16 @@
             switch(unit) {
                 case 'vw': return num / 100 * window.innerWidth;
                 case 'vh': return num / 100 * window.innerHeight;
-                case '%': return num / 100 * window.innerWidth; // assume % is viewport width
+                case '%': return num / 100 * containerWidth; // % relative to container width
                 case 'px': return num;
                 default: return num;
             }
         }
 
-        function lerpUnits(start, end, t) {
+        function lerpUnits(start, end, t, containerWidth, containerHeight) {
             // Convert both values to pixels, interpolate, return as px
-            const startPx = cssToPixels(start);
-            const endPx = cssToPixels(end);
+            const startPx = cssToPixels(start, containerWidth, containerHeight);
+            const endPx = cssToPixels(end, containerWidth, containerHeight);
             const resultPx = lerp(startPx, endPx, t);
             return resultPx + 'px';
         }
@@ -864,9 +826,10 @@
         const envelopeBack = document.getElementById('envelopeBack');
         const envelopeTopFlap = document.getElementById('envelopeTopFlap');
         const waxSeal = document.getElementById('waxSeal');
-        const card = document.querySelector('.card');
+        const card = document.getElementById('card');
         const videoBg = document.getElementById('videoBg');
         const cardBleedShadow = document.getElementById('cardBleedShadow');
+        const mainContainer = document.getElementById('mainContainer');
         const scrollContainer = document.querySelector('.scroll-container');
         const scrollHint = document.querySelector('.scroll-hint');
 
@@ -886,60 +849,66 @@
             const sealScale = 1 + 0.4 * Math.sin(flapProgress * Math.PI);
             waxSeal.style.setProperty('--seal-scale', sealScale);
 
+            // --- Compute main-container dimensions from aspect ratio ---
+            const aspectW = parseFloat(getCSSVar('--w')) || 9;
+            const aspectH = parseFloat(getCSSVar('--h')) || 16;
+            const vw = window.innerWidth;
+            const vh = window.innerHeight;
+
+            // Fit container in viewport while maintaining aspect ratio
+            const mainWidth = Math.min(vw, vh * aspectW / aspectH);
+            const mainHeight = mainWidth * aspectH / aspectW;
+
+            // Update CSS variables for main-container and scroll length
+            document.documentElement.style.setProperty('--main-width', mainWidth + 'px');
+            document.documentElement.style.setProperty('--main-height', mainHeight + 'px');
+            // Scroll length: 0.5 + 0.5 + 0.5 + 2.0 = 3.5 * mainHeight
+            document.documentElement.style.setProperty('--scroll-length', (mainHeight * 3.5) + 'px');
+
+            // --- Get ratios from CSS ---
+            const ratios = getRatios();
+
             // --- 5-Step Animation ---
-            // Step 1: Card in envelope (0 - 0.25)
-            // Step 2: Envelope opens, flap z changes (0.25 - 0.50)
-            // Step 3: Card pulled out, envelope moves down (0.50 - 0.75)
-            // Step 4: Envelope fades, card centers and grows (0.75 - 1.0)
-            // Step 5: Final state
             const animProgress = getProgress(scrollProgress, CONFIG.card.start, CONFIG.card.end);
 
-            // Get all step values from CSS
+            // Compute step values directly from ratios (all in pixels)
             const steps = {
                 envelope: {
-                    1: { x: getCSSVar('--envelope-step1-x'), y: getCSSVar('--envelope-step1-y'), width: getCSSVar('--envelope-step1-width'), height: getCSSVar('--envelope-step1-height') },
-                    2: { x: getCSSVar('--envelope-step2-x'), y: getCSSVar('--envelope-step2-y'), width: getCSSVar('--envelope-step2-width'), height: getCSSVar('--envelope-step2-height') },
-                    3: { x: getCSSVar('--envelope-step3-x'), y: getCSSVar('--envelope-step3-y'), width: getCSSVar('--envelope-step3-width'), height: getCSSVar('--envelope-step3-height') },
-                    4: { x: getCSSVar('--envelope-step4-x'), y: getCSSVar('--envelope-step4-y'), width: getCSSVar('--envelope-step4-width'), height: getCSSVar('--envelope-step4-height') },
-                    5: { x: getCSSVar('--envelope-step5-x'), y: getCSSVar('--envelope-step5-y'), width: getCSSVar('--envelope-step5-width'), height: getCSSVar('--envelope-step5-height') }
+                    1: { x: mainWidth * 0.5, y: mainHeight * 0.5, w: mainWidth * ratios.envelopeWidth, h: mainHeight * ratios.envelopeHeight },
+                    2: { x: mainWidth * 0.5, y: mainHeight * 0.5, w: mainWidth * ratios.envelopeWidth, h: mainHeight * ratios.envelopeHeight },
+                    3: { x: mainWidth * 0.5, y: mainHeight * 0.75, w: mainWidth * ratios.envelopeWidth, h: mainHeight * ratios.envelopeHeight },
+                    4: { x: mainWidth * 0.5, y: mainHeight * 0.9, w: mainWidth * ratios.envelopeWidth, h: mainHeight * ratios.envelopeHeight },
+                    5: { x: mainWidth * 0.5, y: mainHeight * 0.9, w: mainWidth * ratios.envelopeWidth, h: mainHeight * ratios.envelopeHeight }
                 },
                 card: {
-                    1: { x: getCSSVar('--card-step1-x'), y: getCSSVar('--card-step1-y'), width: getCSSVar('--card-step1-width'), height: getCSSVar('--card-step1-height') },
-                    2: { x: getCSSVar('--card-step2-x'), y: getCSSVar('--card-step2-y'), width: getCSSVar('--card-step2-width'), height: getCSSVar('--card-step2-height') },
-                    3: { x: getCSSVar('--card-step3-x'), y: getCSSVar('--card-step3-y'), width: getCSSVar('--card-step3-width'), height: getCSSVar('--card-step3-height') },
-                    4: { x: getCSSVar('--card-step4-x'), y: getCSSVar('--card-step4-y'), width: getCSSVar('--card-step4-width'), height: getCSSVar('--card-step4-height') },
-                    5: { x: getCSSVar('--card-step5-x'), y: getCSSVar('--card-step5-y'), width: getCSSVar('--card-step5-width'), height: getCSSVar('--card-step5-height') }
+                    1: { x: mainWidth * 0.5, y: mainHeight * 0.5, w: mainWidth * ratios.cardWidth, h: mainHeight * ratios.cardHeightClosed },
+                    2: { x: mainWidth * 0.5, y: mainHeight * 0.5, w: mainWidth * ratios.cardWidth, h: mainHeight * ratios.cardHeightClosed },
+                    3: { x: mainWidth * 0.5, y: mainHeight * 0.35, w: mainWidth * ratios.cardWidth, h: mainHeight * ratios.cardHeightClosed },
+                    4: { x: mainWidth * 0.5, y: mainHeight * 0.5, w: mainWidth * ratios.cardWidth, h: mainHeight * ratios.cardHeightOpen },
+                    5: { x: mainWidth * 0.5, y: mainHeight * 0.5, w: mainWidth * ratios.cardWidth, h: mainHeight * ratios.cardHeightOpen }
                 },
                 video: {
-                    1: { x: getCSSVar('--video-step1-x'), y: getCSSVar('--video-step1-y'), width: getCSSVar('--video-step1-width'), height: getCSSVar('--video-step1-height') },
-                    2: { x: getCSSVar('--video-step2-x'), y: getCSSVar('--video-step2-y'), width: getCSSVar('--video-step2-width'), height: getCSSVar('--video-step2-height') },
-                    3: { x: getCSSVar('--video-step3-x'), y: getCSSVar('--video-step3-y'), width: getCSSVar('--video-step3-width'), height: getCSSVar('--video-step3-height') },
-                    4: { x: getCSSVar('--video-step4-x'), y: getCSSVar('--video-step4-y'), width: getCSSVar('--video-step4-width'), height: getCSSVar('--video-step4-height') },
-                    5: { x: getCSSVar('--video-step5-x'), y: getCSSVar('--video-step5-y'), width: getCSSVar('--video-step5-width'), height: getCSSVar('--video-step5-height') }
+                    1: { x: mainWidth * 0.5, y: mainHeight * 0.5, w: mainWidth * ratios.videoWidth, h: mainHeight * ratios.videoHeight },
+                    2: { x: mainWidth * 0.5, y: mainHeight * 0.5, w: mainWidth * ratios.videoWidth, h: mainHeight * ratios.videoHeight },
+                    3: { x: mainWidth * 0.5, y: mainHeight * 0.5, w: mainWidth * ratios.videoWidth, h: mainHeight * ratios.videoHeight },
+                    4: { x: mainWidth * 0.5, y: mainHeight * 0.5, w: mainWidth * ratios.videoWidth, h: mainHeight * ratios.videoHeight },
+                    5: { x: mainWidth * 0.5, y: mainHeight * 0.5, w: mainWidth * ratios.videoWidth, h: mainHeight * ratios.videoHeight }
                 }
             };
 
-            // Get scroll lengths for each step transition (parse vh values)
-            const parseVh = (val) => parseFloat(val) / 100;
-            const s1 = parseVh(getCSSVar('--scroll-step1-to-2'));
-            const s2 = parseVh(getCSSVar('--scroll-step2-to-3'));
-            const s3 = parseVh(getCSSVar('--scroll-step3-to-4'));
-            const s4 = parseVh(getCSSVar('--scroll-step4-to-5'));
+            // Step boundaries (ratios of total scroll)
+            const s1 = 0.5, s2 = 0.5, s3 = 0.5, s4 = 2.0;
             const totalScroll = s1 + s2 + s3 + s4;
-
-            // Calculate step boundaries as percentages
             const step2Start = s1 / totalScroll;
             const step3Start = (s1 + s2) / totalScroll;
             const step4Start = (s1 + s2 + s3) / totalScroll;
 
-            // Determine current step and interpolate (5 steps = 4 transitions)
+            // Determine current step and interpolation
             let fromStep, toStep, t;
             if (animProgress <= step2Start) {
-                // Step 1 → Step 2 (envelope opens)
                 fromStep = 1; toStep = 2;
                 t = easeInOutCubic(animProgress / step2Start);
             } else if (animProgress <= step3Start) {
-                // Step 2 → Step 3 (card pulled out)
                 fromStep = 2; toStep = 3;
                 t = easeInOutCubic((animProgress - step2Start) / (step3Start - step2Start));
             } else if (animProgress <= step4Start) {
@@ -952,23 +921,23 @@
                 t = easeInOutCubic((animProgress - step4Start) / (1 - step4Start));
             }
 
-            // Interpolate envelope
-            const envX = lerpUnits(steps.envelope[fromStep].x, steps.envelope[toStep].x, t);
-            const envY = lerpUnits(steps.envelope[fromStep].y, steps.envelope[toStep].y, t);
-            const envW = lerpUnits(steps.envelope[fromStep].width, steps.envelope[toStep].width, t);
-            const envH = lerpUnits(steps.envelope[fromStep].height, steps.envelope[toStep].height, t);
+            // Interpolate envelope (values already in pixels)
+            const envX = lerp(steps.envelope[fromStep].x, steps.envelope[toStep].x, t) + 'px';
+            const envY = lerp(steps.envelope[fromStep].y, steps.envelope[toStep].y, t) + 'px';
+            const envW = lerp(steps.envelope[fromStep].w, steps.envelope[toStep].w, t) + 'px';
+            const envH = lerp(steps.envelope[fromStep].h, steps.envelope[toStep].h, t) + 'px';
 
             // Interpolate card
-            const cardX = lerpUnits(steps.card[fromStep].x, steps.card[toStep].x, t);
-            const cardY = lerpUnits(steps.card[fromStep].y, steps.card[toStep].y, t);
-            const cardW = lerpUnits(steps.card[fromStep].width, steps.card[toStep].width, t);
-            const cardH = lerpUnits(steps.card[fromStep].height, steps.card[toStep].height, t);
+            const cardX = lerp(steps.card[fromStep].x, steps.card[toStep].x, t) + 'px';
+            const cardY = lerp(steps.card[fromStep].y, steps.card[toStep].y, t) + 'px';
+            const cardW = lerp(steps.card[fromStep].w, steps.card[toStep].w, t) + 'px';
+            const cardH = lerp(steps.card[fromStep].h, steps.card[toStep].h, t) + 'px';
 
-            // Interpolate video (screen coordinates - where video CENTER should be on screen)
-            const vidX = lerpUnits(steps.video[fromStep].x, steps.video[toStep].x, t);
-            const vidY = lerpUnits(steps.video[fromStep].y, steps.video[toStep].y, t);
-            const vidW = lerpUnits(steps.video[fromStep].width, steps.video[toStep].width, t);
-            const vidH = lerpUnits(steps.video[fromStep].height, steps.video[toStep].height, t);
+            // Interpolate video
+            const vidX = lerp(steps.video[fromStep].x, steps.video[toStep].x, t) + 'px';
+            const vidY = lerp(steps.video[fromStep].y, steps.video[toStep].y, t) + 'px';
+            const vidW = lerp(steps.video[fromStep].w, steps.video[toStep].w, t) + 'px';
+            const vidH = lerp(steps.video[fromStep].h, steps.video[toStep].h, t) + 'px';
 
             // Apply envelope properties to all envelope layers
             envelope.style.left = envX;
@@ -1069,9 +1038,9 @@
             // --- Card text fade in (halfway between step 3 and 4) ---
             const textTrigger = step3Start + (step4Start - step3Start) * 0.5;
             if (animProgress > textTrigger) {
-                card.classList.add('text-visible');
+                videoBg.classList.add('text-visible');
             } else {
-                card.classList.remove('text-visible');
+                videoBg.classList.remove('text-visible');
             }
 
             // --- Update debug overlay ---
@@ -1117,6 +1086,9 @@
 
         // Listen to scroll
         window.addEventListener('scroll', updateAnimation, { passive: true });
+
+        // Listen to resize (recalculate on viewport change)
+        window.addEventListener('resize', updateAnimation, { passive: true });
 
         // Initial state
         updateAnimation();
