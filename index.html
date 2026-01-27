@@ -724,13 +724,13 @@
                             
                         </div>
                         <div class="grid-row row-23">
-                            <p class="card-information">We are excited to celebrate with you!</p>
+                 
                         </div>
                         <div class="grid-row row-24">
-                            <p class="card-information">Please hold off on booking accommodation.</p>
+                            <p class="card-information">We are excited to celebrate with you!</p>
                         </div>
                         <div class="grid-row row-25">
-                            <p class="card-information">More details coming soon.</p>
+                            <p class="card-information">Rooms are being held, booking details to come soon.</p>
                         </div>
                         <div class="grid-row row-26"></div>
                     </div>
@@ -1111,6 +1111,15 @@
             const clipBottom = `calc(${vidY} + ${vidH} / 2 - ${cardY} - ${cardH} / 2)`;
             const clipLeft = `calc(${cardX} - ${cardW} / 2 - ${vidX} + ${vidW} / 2)`;
             videoBg.style.setProperty('--video-clip', `inset(${clipTop} ${clipRight} ${clipBottom} ${clipLeft} round 6px)`);
+
+            // --- Video/card z-index: highest during step 3 (card pulling out) ---
+            if (animProgress > step3Start && animProgress <= step4Start) {
+                videoBg.style.zIndex = '20';
+                card.style.zIndex = '21';
+            } else {
+                videoBg.style.zIndex = '';
+                card.style.zIndex = '';
+            }
 
             // --- Flap z-index change at step 2 ---
             // When flap is fully open (after step 1→2), change z to be behind card
