@@ -634,6 +634,36 @@
             right: 5%;
         }
 
+        /* Debug overlay */
+        .debug-overlay {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #0f0;
+            font-family: monospace;
+            font-size: 12px;
+            padding: 10px 15px;
+            border-radius: 4px;
+            z-index: 9999;
+            pointer-events: none;
+            line-height: 1.6;
+            display: none;
+        }
+
+        .debug-overlay.visible {
+            display: block;
+        }
+
+        .debug-overlay .label {
+            color: #888;
+        }
+
+        .debug-overlay .step-highlight {
+            color: #ff0;
+            font-weight: bold;
+        }
+
         /* Responsive adjustments */
         @media (max-width: 480px) {
             .card-content {
@@ -652,7 +682,13 @@
     </style>
 </head>
 <body>
-    
+    <!-- Debug overlay (toggle with 'D' key) -->
+    <div class="debug-overlay" id="debugOverlay">
+        <div><span class="label">Step:</span> <span class="step-highlight" id="debugStep">1</span> → <span id="debugToStep">2</span> (<span id="debugT">0%</span>)</div>
+        <div><span class="label">Scroll:</span> <span id="debugScroll">0%</span></div>
+        <div><span class="label">Anim:</span> <span id="debugAnim">0%</span></div>
+        <div><span class="label">Flap:</span> <span id="debugFlap">0°</span></div>
+    </div>
 
     <!-- Scroll container -->
     <div class="scroll-container">
@@ -1037,7 +1073,47 @@
             } else {
                 card.classList.remove('text-visible');
             }
+
+            // --- Update debug overlay ---
+            updateDebug(scrollProgress, animProgress, fromStep, toStep, t, flapRotation);
         }
+
+        // ==========================================
+        // DEBUG MODE
+        // ==========================================
+        // Set to true to show debug overlay, or press 'D' to toggle
+        let DEBUG_MODE = false;
+
+        const debugOverlay = document.getElementById('debugOverlay');
+        const debugStep = document.getElementById('debugStep');
+        const debugToStep = document.getElementById('debugToStep');
+        const debugT = document.getElementById('debugT');
+        const debugScroll = document.getElementById('debugScroll');
+        const debugAnim = document.getElementById('debugAnim');
+        const debugFlap = document.getElementById('debugFlap');
+
+        function updateDebug(scrollProgress, animProgress, fromStep, toStep, t, flapRotation) {
+            if (!DEBUG_MODE) return;
+            debugStep.textContent = fromStep;
+            debugToStep.textContent = toStep;
+            debugT.textContent = (t * 100).toFixed(0) + '%';
+            debugScroll.textContent = (scrollProgress * 100).toFixed(1) + '%';
+            debugAnim.textContent = (animProgress * 100).toFixed(1) + '%';
+            debugFlap.textContent = flapRotation.toFixed(0) + '°';
+        }
+
+        function toggleDebug() {
+            DEBUG_MODE = !DEBUG_MODE;
+            debugOverlay.classList.toggle('visible', DEBUG_MODE);
+            if (DEBUG_MODE) updateAnimation(); // Refresh debug display
+        }
+
+        // Toggle with 'D' key
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'd' || e.key === 'D') {
+                toggleDebug();
+            }
+        });
 
         // Listen to scroll
         window.addEventListener('scroll', updateAnimation, { passive: true });
