@@ -254,7 +254,6 @@
         .video-text-grid .card-location,
         .video-text-grid .card-information {
             opacity: 0;
-            transform: translateY(15px);
             filter: blur(6px);
             transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
                         transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
@@ -268,14 +267,12 @@
         .video-text-grid .card-ampersand { transition-delay: 0.3s; }
         .video-text-grid .name-2 { transition-delay: 0.4s; }
         .video-text-grid .card-location { transition-delay: 0.5s; }
-        .row-18 .card-location { transition-delay: 0.6s; }
-        .video-text-grid .card-information { transition-delay: 0.7s; }
+        .video-text-grid .card-information { transition-delay: 0.6s; }
 
         /* Text visible state */
         .text-visible .video-text-grid .save-the-date-text,
         .text-visible .video-text-grid .date-text,
         .text-visible .video-text-grid .name,
-        .text-visible .video-text-grid .card-ampersand,
         .text-visible .video-text-grid .card-location,
         .text-visible .video-text-grid .card-information {
             opacity: 1;
@@ -283,9 +280,14 @@
             filter: blur(0);
         }
 
+        .text-visible .video-text-grid .card-ampersand {
+            opacity: 1;
+            filter: blur(0);
+        }
+
         /* Grid text typography - font sizes in lh (1lh = 1 row height) */
         .video-text-grid .save-the-date-text {
-            font-size: 0.5lh;  /* 0.5 rows */
+            font-size: 0.6lh;  /* 0.5 rows */
             line-height: 1;
             color: var(--cream);
             margin: 0;
@@ -294,7 +296,7 @@
         }
 
         .video-text-grid .date-text {
-            font-size: 0.5lh;  /* 0.5 rows */
+            font-size: 0.6lh;  /* 0.5 rows */
             line-height: 1;
             color: var(--cream);
             margin: 0;
@@ -307,15 +309,16 @@
             font-size: 2lh;  /* 2 rows */
             line-height: 1;
             color: var(--charcoal);
+  
         }
 
         .video-text-grid .card-ampersand {
-            font-size: 0.5lh;  /* 0.5 rows */
+            font-family: var(--font-script);
+            font-size: 0.7lh;
             line-height: 1;
             color: var(--cream);
-            margin: 0;
-            font-family: var(--font-script);
             font-style: italic;
+            align-self: center;
         }
 
         .video-text-grid .card-location {
@@ -323,17 +326,16 @@
             line-height: 1;
             color: var(--cream);
             margin: 0;
-            letter-spacing: 0.35em;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
         }
 
         .video-text-grid .card-information {
-            font-size: 0.5lh;  /* 0.5 rows */
+            font-size: 0.6lh;  /* 0.5 rows */
             line-height: 1;
             color: var(--cream);
             margin: 0;
-            letter-spacing: 0.1em;  
-            text-transform: uppercase;
+            /* letter-spacing: 0.1em;   */
         }
 
       
@@ -644,32 +646,32 @@
                      
                         </div>
                         <div class="grid-row row-10">
-                                     <span class="name name-2">Ben</span>
+                            <span class="name name-1">Alina</span>
                         </div>
                         <div class="grid-row row-11">
-           
                         </div>
                         <div class="grid-row row-12">
-                                                     <span class="card-ampersand">&</span>
+                                <span class="card-ampersand">&</span>
                         </div>
                         <div class="grid-row row-13">
-   
                         </div>
                         <div class="grid-row row-14">
-                                     <span class="name name-1">Alina</span>
                         </div>
                         <div class="grid-row row-15">
-                   
-
+                                 <span class="name name-2">Ben</span>
                         </div>
-                        <div class="grid-row row-16"></div>
+                        <div class="grid-row row-16">
+                       
+                        </div>
                         <div class="grid-row row-17">
-                            <p class="card-location">Great Keppel</p>
+                            
                         </div>
                         <div class="grid-row row-18">
+                        <p class="card-location">Great Keppel Island</p>
+                        </div>
+                        <div class="grid-row row-19">
                             <p class="card-location">Australia</p>
                         </div>
-                        <div class="grid-row row-19"></div>
                         <div class="grid-row row-20"></div>
                         <div class="grid-row row-21">
               
