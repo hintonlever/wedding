@@ -60,10 +60,10 @@
                COLORS
                ========================================== */
 
+            --color-background: #fef9f6;
             --color-information: #fef9f6;
-            --color-names: #21131d ;
+            --color-names: #21131d;
             --color-ampersand: #21131d;
-
             --color-seal: #cc5496;
 
 
@@ -122,8 +122,8 @@
         body {
             font-family: var(--font-script-secondary);
             font-weight: 200;
-            background: #fdf9f3;
-            color: var(--charcoal);
+            background: var(--color-background);
+            color: var(--color-names);
             min-height: 100%;
         }
 
@@ -402,7 +402,7 @@
             left: 10px;
             right: 10px;
             bottom: 10px;
-            border: 2px solid white;
+            border: 2px solid var(--color-information);
             border-radius: 4px;
             pointer-events: none;
             /* Shadow fades in at step 4 via --card-shadow-opacity */
@@ -442,7 +442,7 @@
             height: 75%;
             bottom: 0;
             left: 0;
-            background: linear-gradient(0deg, var(--envelope-front) 0%, #efe5db 100%);
+            background: linear-gradient(0deg, var(--envelope-front) 0%, var(--envelope-flap) 100%);
             clip-path: polygon(0 100%, 50% 15%, 100% 100%);
             border-radius: 0 0 4px 4px;
             transition: opacity 0.4s ease;
@@ -497,7 +497,7 @@
                 var(--color-seal) 40%,
                 var(--color-seal) 100%);
             box-shadow:
-                0 3px 12px rgba(196, 69, 54, 0.4),
+                0 3px 12px rgba(0, 0, 0, 0.3),
                 inset 0 2px 4px rgba(255,255,255,0.3),
                 inset 0 -2px 4px rgba(0,0,0,0.1);
             display: flex;
@@ -533,10 +533,11 @@
             align-items: center;
             gap: 8px;
             color: var(--color-names);
-            font-size: calc(var(--row-height-global) * 0.6);
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
             font-family: var(--font-script-secondary);
+            font-size: calc(var(--row-height-global) * 0.5);
+            line-height: 1;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
             opacity: var(--hint-opacity, 1);
             transition: opacity 0.3s ease;
         }
@@ -577,31 +578,6 @@
         .envelope-back-layer.envelope-hidden,
         .envelope-top-flap.envelope-hidden {
             opacity: 0;
-        }
-
-  
-        .shape-1 {
-            width: 300px;
-            height: 300px;
-            background: linear-gradient(135deg, var(--peach), var(--coral));
-            top: -100px;
-            right: -80px;
-        }
-
-        .shape-2 {
-            width: 200px;
-            height: 200px;
-            background: linear-gradient(135deg, var(--sage), var(--lavender));
-            bottom: 10%;
-            left: -60px;
-        }
-
-        .shape-3 {
-            width: 150px;
-            height: 150px;
-            background: linear-gradient(135deg, var(--lavender), var(--peach));
-            top: 30%;
-            right: 5%;
         }
 
         /* Debug overlay */
@@ -656,13 +632,14 @@
 
             /* 3D perspective for video on mobile */
             .card-video-bg {
-                perspective: 1000px;
+                perspective: 800px;
                 transform-style: preserve-3d;
             }
 
             .card-video-bg video {
-                transform: translateX(-15%) rotateX(2deg) rotateY(-3deg);
+                transform: translateX(-15%) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
                 transform-origin: center center;
+                transition: transform 0.15s ease-out;
             }
         }
     </style>
@@ -1224,6 +1201,52 @@
 
         // Initial state
         updateAnimation();
+
+        // ==========================================
+        // DEVICE ORIENTATION (3D tilt on mobile)
+        // ==========================================
+        function handleOrientation(event) {
+            const video = document.querySelector('.card-video-bg video');
+            if (!video) return;
+
+            // beta: front-to-back tilt (-180 to 180), gamma: left-to-right tilt (-90 to 90)
+            let beta = event.beta || 0;
+            let gamma = event.gamma || 0;
+
+            // Clamp and scale the values for a subtle effect
+            const maxTilt = 10; // max degrees of rotation
+            const tiltX = Math.max(-maxTilt, Math.min(maxTilt, beta * 0.15));
+            const tiltY = Math.max(-maxTilt, Math.min(maxTilt, gamma * 0.2));
+
+            video.style.setProperty('--tilt-x', tiltX + 'deg');
+            video.style.setProperty('--tilt-y', tiltY + 'deg');
+        }
+
+        // Check if mobile and request permission (iOS 13+ requires permission)
+        function initDeviceOrientation() {
+            if (window.innerWidth > 480) return; // Only on mobile
+
+            if (typeof DeviceOrientationEvent !== 'undefined' &&
+                typeof DeviceOrientationEvent.requestPermission === 'function') {
+                // iOS 13+ requires permission
+                document.body.addEventListener('click', function requestPermission() {
+                    DeviceOrientationEvent.requestPermission()
+                        .then(response => {
+                            if (response === 'granted') {
+                                window.addEventListener('deviceorientation', handleOrientation, true);
+                            }
+                        })
+                        .catch(console.error);
+                    document.body.removeEventListener('click', requestPermission);
+                }, { once: true });
+            } else if ('DeviceOrientationEvent' in window) {
+                // Non-iOS or older iOS
+                window.addEventListener('deviceorientation', handleOrientation, true);
+            }
+        }
+
+        initDeviceOrientation();
+        window.addEventListener('resize', initDeviceOrientation);
     </script>
 </body>
 </html>
