@@ -23,7 +23,8 @@
             --h: 16;
 
             /* Main container dimensions - computed by JavaScript */
-            --main-width: 100vw;
+            --main-width: 100svw;
+            --main-width: 100vw; /* Fallback */
             --main-height: 100svh;
             --main-height: 100vh; /* Fallback */
 
@@ -76,7 +77,8 @@
 
             /* Scroll length - computed by JavaScript based on main-container height */
             /* Ratios: step1→2: 0.5, step2→3: 0.5, step3→4: 0.5, step4→5: 2.0 = 3.5 total */
-            --scroll-length: 350vh; /* Fallback, overridden by JS */
+            --scroll-length: 350svh; /* Fallback, overridden by JS */
+            --scroll-length: 350vh; /* Fallback for browsers without svh */
 
             /* Scroll hint position from bottom of screen */
             --scroll-hint-bottom: 10%;
@@ -222,6 +224,7 @@
             border-radius: 6px;
             z-index: calc(var(--z-card) + 1);
             pointer-events: none;
+            overflow: hidden;
         }
 
         .card-video-bg {
@@ -406,9 +409,7 @@
             border: 2px solid var(--color-information);
             border-radius: 4px;
             pointer-events: none;
-            /* Shadow fades in at step 4 via --card-shadow-opacity */
-            box-shadow: 0 20px 40px 10px rgba(0, 0, 0, calc(0.5 * var(--card-shadow-opacity, 0)));
-            transition: box-shadow 0.4s ease;
+            box-shadow: 0 0 8px 10px rgba(0, 0, 0, 0.4);
         }
 
         /* Side flaps (left and right triangles) */
@@ -1124,9 +1125,8 @@
             envelopeTopFlap.style.opacity = 1 - envelopeFadeProgress;
             waxSeal.style.setProperty('--seal-opacity', 1 - envelopeFadeProgress);
 
-            // --- Bleed shadow and card shadow fade in (step 3→4) ---
+            // --- Bleed shadow fade in (step 3→4) ---
             cardBleedShadow.style.opacity = envelopeFadeProgress;
-            card.style.setProperty('--card-shadow-opacity', envelopeFadeProgress);
 
             // --- Hint fade ---
             const hintOpacity = 1 - getProgress(scrollProgress, CONFIG.hintFade.start, CONFIG.hintFade.end);
