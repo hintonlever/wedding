@@ -2,8 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Save the Date | Alina & Ben</title>
+
+    <!-- iOS/Safari compatibility -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Alina & Ben">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- Theme color for browser chrome -->
+    <meta name="theme-color" content="#fef9f6">
+
+    <!-- Open Graph tags for Messenger/Facebook link previews -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Save the Date | Alina & Ben">
+    <meta property="og:description" content="Join us for our wedding celebration on 29.08.2026 at Great Keppel Island, Australia">
+    <meta property="og:image" content="preview.jpg">
+    <meta property="og:url" content="https://alinaandben.com">
+
+    <!-- Twitter Card tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Save the Date | Alina & Ben">
+    <meta name="twitter:description" content="Join us for our wedding celebration on 29.08.2026 at Great Keppel Island, Australia">
+    <meta name="twitter:image" content="preview.jpg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500&family=Roboto+Flex:wght@200;300;400&display=swap" rel="stylesheet">
@@ -120,6 +142,8 @@
 
         html {
             height: 100%;
+            /* iOS smooth scrolling */
+            -webkit-overflow-scrolling: touch;
         }
 
         body {
@@ -128,6 +152,10 @@
             background: var(--color-background);
             color: var(--color-names);
             min-height: 100%;
+            /* Prevent iOS text size adjustment */
+            -webkit-text-size-adjust: 100%;
+            /* Safe area padding for notched iPhones */
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
 
         /* Scroll container - creates scroll space */
@@ -136,6 +164,9 @@
             /* Total scroll length = 100vh (viewport) + this value */
             /* e.g., 400vh means you scroll 3x the viewport height */
             min-height: var(--scroll-length, 350vh);
+            /* iOS touch scrolling */
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
         }
 
         /* Envelope scene - sticky viewport container that centers main-container */
@@ -152,6 +183,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            -webkit-perspective: 1500px;
             perspective: 1500px;
             overflow: hidden;
         }
@@ -238,6 +270,7 @@
             z-index: var(--z-card);
             border-radius: 6px;
             /* Clip path calculated by JS to match card bounds */
+            -webkit-clip-path: var(--video-clip);
             clip-path: var(--video-clip);
         }
 
@@ -396,6 +429,10 @@
             height: 100%;
             object-fit: cover;
             transform: translateX(-15%);
+            /* iOS video fixes */
+            -webkit-transform: translateX(-15%);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
         /* Card decorative border - now positioned over video */
@@ -460,6 +497,7 @@
             top: calc(var(--envelope-y, var(--envelope-step1-y)) - var(--envelope-height, var(--envelope-step1-height)) / 2);
             transform: translateX(-50%) rotateX(var(--flap-rotation, 0deg));
             transform-origin: center top;
+            -webkit-transform-style: preserve-3d;
             transform-style: preserve-3d;
             background: linear-gradient(180deg, var(--envelope-flap) 0%, var(--envelope-front) 100%);
             clip-path: polygon(0 0, 100% 0, 60% 80%, 59% 82%, 58% 83.6%, 57% 85.1%, 56% 86.4%, 55% 87.5%, 54% 88.4%, 53% 89.1%, 52% 89.6%, 51% 89.9%, 50% 90%, 49% 89.9%, 48% 89.6%, 47% 89.1%, 46% 88.4%, 45% 87.5%, 44% 86.4%, 43% 85.1%, 42% 83.6%, 41% 82%, 40% 80%);
@@ -505,6 +543,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            -webkit-transform-style: preserve-3d;
             transform-style: preserve-3d;
             transform-origin: center center;
             /* Rotate to match flap angle, scale for perspective */
@@ -521,6 +560,7 @@
             /* letter-spacing: 0.02em; */
             text-shadow: 0 1px 2px rgba(0,0,0,0.2);
             white-space: nowrap;
+            -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
         }
 
@@ -1182,11 +1222,33 @@
             }
         });
 
-        // Listen to scroll
-        window.addEventListener('scroll', updateAnimation, { passive: true });
+        // Listen to scroll with requestAnimationFrame for smoother iOS performance
+        let ticking = false;
+        window.addEventListener('scroll', function() {
+            if (!ticking) {
+                window.requestAnimationFrame(function() {
+                    updateAnimation();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
 
         // Listen to resize (recalculate on viewport change)
         window.addEventListener('resize', updateAnimation, { passive: true });
+
+        // iOS video autoplay fix - ensure video plays on user interaction
+        const video = document.querySelector('video');
+        if (video) {
+            // Attempt to play video (may fail on iOS without interaction)
+            video.play().catch(function() {
+                // If autoplay fails, play on first touch
+                document.addEventListener('touchstart', function playVideo() {
+                    video.play();
+                    document.removeEventListener('touchstart', playVideo);
+                }, { once: true, passive: true });
+            });
+        }
 
         // Initial state
         updateAnimation();
