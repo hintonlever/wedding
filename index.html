@@ -1200,6 +1200,21 @@
                 const gridRect = videoTextGrid.getBoundingClientRect();
                 const rowHeightPx = gridRect.height / 26;
                 videoTextGrid.style.setProperty('--row-height', rowHeightPx + 'px');
+
+                // Force font sizes with !important to override WebView minimums
+                const fontSize06 = (rowHeightPx * 0.6) + 'px';
+                const fontSize075 = (rowHeightPx * 0.75) + 'px';
+                const fontSize2 = (rowHeightPx * 2) + 'px';
+
+                document.querySelectorAll('.save-the-date-text, .date-text, .card-location, .card-information').forEach(el => {
+                    el.style.setProperty('font-size', fontSize06, 'important');
+                });
+                document.querySelectorAll('.card-ampersand').forEach(el => {
+                    el.style.setProperty('font-size', fontSize075, 'important');
+                });
+                document.querySelectorAll('.name').forEach(el => {
+                    el.style.setProperty('font-size', fontSize2, 'important');
+                });
             }
 
             // --- Update debug overlay ---
@@ -1210,7 +1225,7 @@
         // DEBUG MODE
         // ==========================================
         // Version number - update this when deploying changes
-        const VERSION = 'v1.0.8';
+        const VERSION = 'v1.1.3';
 
         // Set to true to show debug overlay, or press 'D' to toggle, or triple-tap on mobile
         let DEBUG_MODE = false;
