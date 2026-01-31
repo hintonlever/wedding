@@ -352,9 +352,9 @@
             filter: blur(0);
         }
 
-        /* Grid text typography - font sizes in lh (1lh = 1 row height) */
+        /* Grid text typography - using calc with --row-height for better browser compatibility */
         .video-text-grid .save-the-date-text {
-            font-size: 0.60lh;  /* 0.5 rows */
+            font-size: calc(var(--row-height) * 0.6);
             line-height: 1;
             color: var(--color-information);
             letter-spacing: 0.35em;
@@ -362,7 +362,7 @@
         }
 
         .video-text-grid .date-text {
-            font-size: 0.60lh;  /* 0.5 rows */
+            font-size: calc(var(--row-height) * 0.6);
             line-height: 1;
             color: var(--color-information);
             letter-spacing: 0.35em;
@@ -371,15 +371,15 @@
         .video-text-grid .name {
             font-family: var(--font-script);
             font-weight: 400;
-            font-size: 2lh;  /* 2 rows */
+            font-size: calc(var(--row-height) * 2);
             line-height: 1;
             color: var(--color-names);
-  
+
         }
 
         .video-text-grid .card-ampersand {
             font-family: var(--font-script);
-            font-size: 0.75lh;
+            font-size: calc(var(--row-height) * 0.75);
             line-height: 1;
             color: var(--color-ampersand);
             font-style: italic;
@@ -389,7 +389,7 @@
         }
 
         .video-text-grid .card-location {
-            font-size: 0.60lh;  /* 0.5 rows */
+            font-size: calc(var(--row-height) * 0.6);
             line-height: 1;
             color: var(--color-location);
             letter-spacing: 0.35em;
@@ -397,11 +397,11 @@
         }
 
         .video-text-grid .card-information {
-            font-size: 0.60lh;  /* 0.5 rows */
+            font-size: calc(var(--row-height) * 0.6);
             line-height: 1;
             color: var(--color-information);
             margin: 0;
-      
+
         }
 
       
