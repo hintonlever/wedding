@@ -690,6 +690,8 @@
         <div><span class="label">Anim:</span> <span id="debugAnim">0%</span></div>
         <div><span class="label">Flap:</span> <span id="debugFlap">0°</span></div>
         <div><span class="label">Viewport:</span> <span id="debugViewport">0x0</span></div>
+        <div><span class="label">Container:</span> <span id="debugContainer">0x0</span></div>
+        <div><span class="label">Row-H:</span> <span id="debugRowHeight">0px</span></div>
     </div>
 
     <!-- Scroll container -->
@@ -1189,6 +1191,15 @@
                 videoBg.classList.remove('text-visible');
             }
 
+            // --- Set row height from JavaScript for cross-browser consistency ---
+            // This overrides CSS calculations which may vary between browsers
+            const videoTextGrid = document.querySelector('.video-text-grid');
+            if (videoTextGrid) {
+                const gridRect = videoTextGrid.getBoundingClientRect();
+                const rowHeightPx = gridRect.height / 26;
+                videoTextGrid.style.setProperty('--row-height', rowHeightPx + 'px');
+            }
+
             // --- Update debug overlay ---
             updateDebug(scrollProgress, animProgress, fromStep, toStep, t, flapRotation);
         }
@@ -1197,7 +1208,7 @@
         // DEBUG MODE
         // ==========================================
         // Version number - update this when deploying changes
-        const VERSION = 'v1.0.1';
+        const VERSION = 'v1.0.2';
 
         // Set to true to show debug overlay, or press 'D' to toggle, or triple-tap on mobile
         let DEBUG_MODE = false;
@@ -1211,6 +1222,9 @@
         const debugFlap = document.getElementById('debugFlap');
         const debugVersion = document.getElementById('debugVersion');
         const debugViewport = document.getElementById('debugViewport');
+        const debugContainer = document.getElementById('debugContainer');
+        const debugRowHeight = document.getElementById('debugRowHeight');
+        const videoTextGrid = document.querySelector('.video-text-grid');
 
         // Set version on load
         debugVersion.textContent = VERSION;
@@ -1224,6 +1238,12 @@
             debugAnim.textContent = (animProgress * 100).toFixed(1) + '%';
             debugFlap.textContent = flapRotation.toFixed(0) + '°';
             debugViewport.textContent = window.innerWidth + 'x' + window.innerHeight;
+            // Show actual main container dimensions
+            const containerRect = mainContainer.getBoundingClientRect();
+            debugContainer.textContent = Math.round(containerRect.width) + 'x' + Math.round(containerRect.height);
+            // Show computed row height
+            const computedRowHeight = getComputedStyle(videoTextGrid).getPropertyValue('--row-height');
+            debugRowHeight.textContent = computedRowHeight || 'N/A';
         }
 
         function toggleDebug() {
