@@ -688,6 +688,7 @@
         <div><span class="label">Viewport:</span> <span id="debugViewport">0x0</span></div>
         <div><span class="label">Card:</span> <span id="debugCard">0x0</span> <span id="debugCardRatio"></span></div>
         <div><span class="label">Row-H:</span> <span id="debugRowHeight">0px</span></div>
+        <div><span class="label">Font:</span> <span id="debugFont">0px</span> <span id="debugFontExpected"></span></div>
         <div><span class="label">Step:</span> <span class="step-highlight" id="debugStep">1</span> → <span id="debugToStep">2</span> (<span id="debugT">0%</span>)</div>
     </div>
 
@@ -1205,7 +1206,7 @@
         // DEBUG MODE
         // ==========================================
         // Version number - update this when deploying changes
-        const VERSION = 'v1.0.3';
+        const VERSION = 'v1.0.5';
 
         // Set to true to show debug overlay, or press 'D' to toggle, or triple-tap on mobile
         let DEBUG_MODE = false;
@@ -1219,7 +1220,10 @@
         const debugCard = document.getElementById('debugCard');
         const debugCardRatio = document.getElementById('debugCardRatio');
         const debugRowHeight = document.getElementById('debugRowHeight');
+        const debugFont = document.getElementById('debugFont');
+        const debugFontExpected = document.getElementById('debugFontExpected');
         const videoTextGrid = document.querySelector('.video-text-grid');
+        const infoText = document.querySelector('.card-information');
 
         // Set version on load
         debugVersion.textContent = VERSION;
@@ -1241,6 +1245,14 @@
             // Show computed row height
             const computedRowHeight = getComputedStyle(videoTextGrid).getPropertyValue('--row-height');
             debugRowHeight.textContent = computedRowHeight || 'N/A';
+            // Show actual vs expected font size to detect min-font clamping
+            if (infoText) {
+                const actualFont = getComputedStyle(infoText).fontSize;
+                const rowHeightNum = parseFloat(computedRowHeight);
+                const expectedFont = (rowHeightNum * 0.6).toFixed(1) + 'px';
+                debugFont.textContent = actualFont;
+                debugFontExpected.textContent = '(exp: ' + expectedFont + ')';
+            }
         }
 
         function toggleDebug() {
