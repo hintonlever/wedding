@@ -682,12 +682,14 @@
     </style>
 </head>
 <body>
-    <!-- Debug overlay (toggle with 'D' key) -->
+    <!-- Debug overlay (toggle with 'D' key or triple-tap) -->
     <div class="debug-overlay" id="debugOverlay">
+        <div><span class="label">Version:</span> <span id="debugVersion">v1.0.0</span></div>
         <div><span class="label">Step:</span> <span class="step-highlight" id="debugStep">1</span> → <span id="debugToStep">2</span> (<span id="debugT">0%</span>)</div>
         <div><span class="label">Scroll:</span> <span id="debugScroll">0%</span></div>
         <div><span class="label">Anim:</span> <span id="debugAnim">0%</span></div>
         <div><span class="label">Flap:</span> <span id="debugFlap">0°</span></div>
+        <div><span class="label">Viewport:</span> <span id="debugViewport">0x0</span></div>
     </div>
 
     <!-- Scroll container -->
@@ -1194,7 +1196,10 @@
         // ==========================================
         // DEBUG MODE
         // ==========================================
-        // Set to true to show debug overlay, or press 'D' to toggle
+        // Version number - update this when deploying changes
+        const VERSION = 'v1.0.1';
+
+        // Set to true to show debug overlay, or press 'D' to toggle, or triple-tap on mobile
         let DEBUG_MODE = false;
 
         const debugOverlay = document.getElementById('debugOverlay');
@@ -1204,6 +1209,11 @@
         const debugScroll = document.getElementById('debugScroll');
         const debugAnim = document.getElementById('debugAnim');
         const debugFlap = document.getElementById('debugFlap');
+        const debugVersion = document.getElementById('debugVersion');
+        const debugViewport = document.getElementById('debugViewport');
+
+        // Set version on load
+        debugVersion.textContent = VERSION;
 
         function updateDebug(scrollProgress, animProgress, fromStep, toStep, t, flapRotation) {
             if (!DEBUG_MODE) return;
@@ -1213,6 +1223,7 @@
             debugScroll.textContent = (scrollProgress * 100).toFixed(1) + '%';
             debugAnim.textContent = (animProgress * 100).toFixed(1) + '%';
             debugFlap.textContent = flapRotation.toFixed(0) + '°';
+            debugViewport.textContent = window.innerWidth + 'x' + window.innerHeight;
         }
 
         function toggleDebug() {
@@ -1228,6 +1239,24 @@
                 toggleDebug();
             }
         });
+
+        // Triple-tap to toggle debug on mobile
+        let tapCount = 0;
+        let tapTimeout = null;
+        document.addEventListener('touchend', (e) => {
+            // Only count single-finger taps
+            if (e.changedTouches.length !== 1) return;
+
+            tapCount++;
+            if (tapCount === 3) {
+                toggleDebug();
+                tapCount = 0;
+                clearTimeout(tapTimeout);
+            } else {
+                clearTimeout(tapTimeout);
+                tapTimeout = setTimeout(() => { tapCount = 0; }, 400);
+            }
+        }, { passive: true });
 
         // Listen to scroll with requestAnimationFrame for smoother iOS performance
         let ticking = false;
