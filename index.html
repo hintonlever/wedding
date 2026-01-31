@@ -685,13 +685,10 @@
     <!-- Debug overlay (toggle with 'D' key or triple-tap) -->
     <div class="debug-overlay" id="debugOverlay">
         <div><span class="label">Version:</span> <span id="debugVersion">v1.0.0</span></div>
-        <div><span class="label">Step:</span> <span class="step-highlight" id="debugStep">1</span> → <span id="debugToStep">2</span> (<span id="debugT">0%</span>)</div>
-        <div><span class="label">Scroll:</span> <span id="debugScroll">0%</span></div>
-        <div><span class="label">Anim:</span> <span id="debugAnim">0%</span></div>
-        <div><span class="label">Flap:</span> <span id="debugFlap">0°</span></div>
         <div><span class="label">Viewport:</span> <span id="debugViewport">0x0</span></div>
-        <div><span class="label">Container:</span> <span id="debugContainer">0x0</span></div>
+        <div><span class="label">Card:</span> <span id="debugCard">0x0</span> <span id="debugCardRatio"></span></div>
         <div><span class="label">Row-H:</span> <span id="debugRowHeight">0px</span></div>
+        <div><span class="label">Step:</span> <span class="step-highlight" id="debugStep">1</span> → <span id="debugToStep">2</span> (<span id="debugT">0%</span>)</div>
     </div>
 
     <!-- Scroll container -->
@@ -1208,7 +1205,7 @@
         // DEBUG MODE
         // ==========================================
         // Version number - update this when deploying changes
-        const VERSION = 'v1.0.2';
+        const VERSION = 'v1.0.3';
 
         // Set to true to show debug overlay, or press 'D' to toggle, or triple-tap on mobile
         let DEBUG_MODE = false;
@@ -1217,12 +1214,10 @@
         const debugStep = document.getElementById('debugStep');
         const debugToStep = document.getElementById('debugToStep');
         const debugT = document.getElementById('debugT');
-        const debugScroll = document.getElementById('debugScroll');
-        const debugAnim = document.getElementById('debugAnim');
-        const debugFlap = document.getElementById('debugFlap');
         const debugVersion = document.getElementById('debugVersion');
         const debugViewport = document.getElementById('debugViewport');
-        const debugContainer = document.getElementById('debugContainer');
+        const debugCard = document.getElementById('debugCard');
+        const debugCardRatio = document.getElementById('debugCardRatio');
         const debugRowHeight = document.getElementById('debugRowHeight');
         const videoTextGrid = document.querySelector('.video-text-grid');
 
@@ -1234,13 +1229,15 @@
             debugStep.textContent = fromStep;
             debugToStep.textContent = toStep;
             debugT.textContent = (t * 100).toFixed(0) + '%';
-            debugScroll.textContent = (scrollProgress * 100).toFixed(1) + '%';
-            debugAnim.textContent = (animProgress * 100).toFixed(1) + '%';
-            debugFlap.textContent = flapRotation.toFixed(0) + '°';
             debugViewport.textContent = window.innerWidth + 'x' + window.innerHeight;
-            // Show actual main container dimensions
-            const containerRect = mainContainer.getBoundingClientRect();
-            debugContainer.textContent = Math.round(containerRect.width) + 'x' + Math.round(containerRect.height);
+            // Show actual card dimensions and aspect ratio
+            const cardRect = card.getBoundingClientRect();
+            const cardW = Math.round(cardRect.width);
+            const cardH = Math.round(cardRect.height);
+            debugCard.textContent = cardW + 'x' + cardH;
+            // Calculate and show aspect ratio (w:h simplified)
+            const ratio = cardH / cardW;
+            debugCardRatio.textContent = '(1:' + ratio.toFixed(2) + ')';
             // Show computed row height
             const computedRowHeight = getComputedStyle(videoTextGrid).getPropertyValue('--row-height');
             debugRowHeight.textContent = computedRowHeight || 'N/A';
