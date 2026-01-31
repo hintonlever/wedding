@@ -404,7 +404,10 @@
         }
 
         .video-text-grid .card-information {
-            font-size: calc(var(--row-height) * 0.6);
+            /* Use a larger base font then scale down to bypass min-font-size restrictions */
+            font-size: calc(var(--row-height) * 1.2);
+            transform: scale(0.5);
+            transform-origin: center center;
             line-height: 1;
             color: var(--color-information);
             margin: 0;
@@ -1206,7 +1209,7 @@
         // DEBUG MODE
         // ==========================================
         // Version number - update this when deploying changes
-        const VERSION = 'v1.0.5';
+        const VERSION = 'v1.0.6';
 
         // Set to true to show debug overlay, or press 'D' to toggle, or triple-tap on mobile
         let DEBUG_MODE = false;
