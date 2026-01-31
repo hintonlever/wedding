@@ -286,6 +286,10 @@
             container-type: size;
             /* Row height fallback for browsers without container query support */
             --row-height: calc((100vh * 0.95 - 20px) / 26);
+            /* Prevent WebView text size adjustment */
+            -webkit-text-size-adjust: none;
+            -moz-text-size-adjust: none;
+            text-size-adjust: none;
         }
 
         /* Override with container query units when supported */
@@ -1206,7 +1210,7 @@
         // DEBUG MODE
         // ==========================================
         // Version number - update this when deploying changes
-        const VERSION = 'v1.0.7';
+        const VERSION = 'v1.0.8';
 
         // Set to true to show debug overlay, or press 'D' to toggle, or triple-tap on mobile
         let DEBUG_MODE = false;
