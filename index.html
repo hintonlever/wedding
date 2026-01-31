@@ -284,8 +284,15 @@
             pointer-events: none;
             /* Enable container queries for responsive text */
             container-type: size;
-            /* Row height = 100% / 26 rows */
-            --row-height: calc(100cqh / 26);
+            /* Row height fallback for browsers without container query support */
+            --row-height: calc((100vh * 0.95 - 20px) / 26);
+        }
+
+        /* Override with container query units when supported */
+        @supports (height: 1cqh) {
+            .video-text-grid {
+                --row-height: calc(100cqh / 26);
+            }
         }
 
         /* Dark gradient at bottom for text legibility */
