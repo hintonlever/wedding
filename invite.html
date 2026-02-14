@@ -288,7 +288,7 @@
 
                         navLinks.forEach(link => {
                             const href = link.getAttribute('href').slice(1);
-                            link.classList.toggle('active', href === mappedSection);
+                            link.classList.toggle('active', href === id || href === mappedSection);
                         });
 
                         quickNavItems.forEach(item => {
@@ -566,6 +566,28 @@
 
             lightbox.addEventListener('click', () => {
                 lightbox.classList.remove('active');
+            });
+
+            // ==========================================
+            // ACCOMMODATION MAP LIGHTBOX
+            // ==========================================
+            window.openAccommodationMap = function() {
+                document.getElementById('accommodationLightbox').classList.add('active');
+                document.body.style.overflow = 'hidden';
+            };
+
+            window.closeAccommodationMap = function() {
+                document.getElementById('accommodationLightbox').classList.remove('active');
+                document.body.style.overflow = '';
+            };
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    const mapLightbox = document.getElementById('accommodationLightbox');
+                    if (mapLightbox && mapLightbox.classList.contains('active')) {
+                        window.closeAccommodationMap();
+                    }
+                }
             });
 
             // ==========================================

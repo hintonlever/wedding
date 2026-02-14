@@ -7,5 +7,16 @@
                 <h2 class="section-title">Accommodation</h2>
 
                 <p class="section-text">We've secured rooms at the Island Hideaway. Book early! Camping and glamping options are also available for the adventurous.</p>
+
+                <div class="accommodation-map-container" onclick="openAccommodationMap()">
+                    <img src="resources/accomodation_map.jpg" alt="Accommodation Map" class="accommodation-map-img">
+                    <div class="map-zoom-hint">Click to enlarge</div>
+                </div>
             </div>
         </section>
+
+        <!-- Accommodation Map Lightbox -->
+        <div class="accommodation-lightbox" id="accommodationLightbox" onclick="closeAccommodationMap()">
+            <span class="lightbox-close">&times;</span>
+            <img src="resources/accomodation_map.jpg" alt="Accommodation Map" class="accommodation-lightbox-img">
+        </div>
