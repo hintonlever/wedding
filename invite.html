@@ -98,7 +98,6 @@
             'accommodation',
             'faq',
             'timeline',
-            'gallery',
             'footer'
         ];
 
@@ -274,31 +273,36 @@
                 'getting-there': 'getting-there',
                 'accommodation': 'accommodation',
                 'faq': 'faq',
-                'timeline': 'our-story',
-                'gallery': 'our-story'
+                'timeline': 'our-story'
             };
 
-            const sectionObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const id = entry.target.id;
-                        const mappedSection = sectionMapping[id] || id;
+            function updateActiveSection() {
+                const scrollY = window.scrollY + 150;
+                let currentId = null;
 
-                        if (DEBUG_MODE) debugSection.textContent = id;
-
-                        navLinks.forEach(link => {
-                            const href = link.getAttribute('href').slice(1);
-                            link.classList.toggle('active', href === id || href === mappedSection);
-                        });
-
-                        quickNavItems.forEach(item => {
-                            item.classList.toggle('active', item.dataset.section === mappedSection);
-                        });
+                sections.forEach(section => {
+                    if (section.offsetTop <= scrollY) {
+                        currentId = section.id;
                     }
                 });
-            }, { threshold: 0.3 });
 
-            sections.forEach(section => sectionObserver.observe(section));
+                if (currentId) {
+                    const mappedSection = sectionMapping[currentId] || currentId;
+                    if (DEBUG_MODE) debugSection.textContent = currentId;
+
+                    navLinks.forEach(link => {
+                        const href = link.getAttribute('href').slice(1);
+                        link.classList.toggle('active', href === currentId || href === mappedSection);
+                    });
+
+                    quickNavItems.forEach(item => {
+                        item.classList.toggle('active', item.dataset.section === mappedSection);
+                    });
+                }
+            }
+
+            window.addEventListener('scroll', updateActiveSection);
+            updateActiveSection();
 
             // ==========================================
             // FAQ ACCORDION
