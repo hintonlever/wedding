@@ -76,9 +76,9 @@
         /* Typography */
         .section-title {
             font-family: var(--font-script);
-            font-size: clamp(2rem, 8vw, 3.5rem);
+            font-size: clamp(1.25rem, 4vw, 1.75rem);
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             color: var(--color-text);
         }
 
@@ -108,18 +108,18 @@
 
         .hero-names {
             font-family: var(--font-script);
-            font-size: clamp(3rem, 12vw, 5rem);
+            font-size: clamp(1.75rem, 6vw, 2.5rem);
             line-height: 1.1;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
         }
 
         .hero-ampersand {
             font-family: var(--font-script);
-            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            font-size: clamp(1rem, 4vw, 1.5rem);
             color: var(--color-accent);
             font-style: italic;
-            display: block;
-            margin: 0.5rem 0;
+            display: inline;
+            margin: 0 0.25rem;
         }
 
         .hero-date {
