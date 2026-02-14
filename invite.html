@@ -22,7 +22,7 @@
     <!-- Debug overlay -->
     <div class="debug-overlay" id="debugOverlay">
         <div><span class="label">Version:</span> <span class="highlight" id="debugVersion">v0.2.0</span></div>
-        <div><span class="label">Section:</span> <span id="debugSection">hero</span></div>
+        <div><span class="label">Section:</span> <span id="debugSection">Section</span></div>
         <div><span class="label">Scroll:</span> <span id="debugScroll">0%</span></div>
         <div><span class="label">Viewport:</span> <span id="debugViewport">0x0</span></div>
         <div><span class="label">Container:</span> <span id="debugContainer">0x0</span></div>
@@ -34,12 +34,12 @@
     <!-- Main Navigation -->
     <nav class="main-nav" id="mainNav">
         <div class="nav-container">
-            <a href="#hero" class="nav-logo">A <span>&</span> B</a>
+            <!-- This the default section -->
+            <a href="#rsvp" class="nav-logo">A <span>&</span> B</a>
             <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
                 <span></span>
             </button>
             <div class="nav-menu" id="navMenu">
-                <a href="#hero" class="nav-link active"><span class="nav-link-icon">&#127965;</span>Wedding</a>
                 <a href="#rsvp" class="nav-link"><span class="nav-link-icon">&#128140;</span>RSVP</a>
                 <a href="#accommodation" class="nav-link"><span class="nav-link-icon">&#127968;</span>Accommodation</a>
                 <a href="#getting-there" class="nav-link"><span class="nav-link-icon">&#9992;&#65039;</span>Getting There</a>
@@ -51,10 +51,6 @@
 
     <!-- Quick nav for mobile (bottom bar) -->
     <nav class="quick-nav" id="quickNav">
-        <a href="#hero" class="quick-nav-item active" data-section="hero">
-            <span class="quick-nav-icon">&#127965;</span>
-            Wedding
-        </a>
         <a href="#rsvp" class="quick-nav-item" data-section="rsvp">
             <span class="quick-nav-icon">&#128140;</span>
             RSVP
@@ -93,7 +89,6 @@
         // SECTION LOADER
         // ==========================================
         const SECTIONS = [
-            'hero',
             'rsvp',
             'accommodation',
             'getting-there',
@@ -285,7 +280,6 @@
             // ==========================================
             const sections = document.querySelectorAll('.section[id]');
             const sectionMapping = {
-                'hero': 'hero',
                 'rsvp': 'rsvp',
                 'accommodation': 'accommodation',
                 'getting-there': 'getting-there',
