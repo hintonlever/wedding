@@ -16,1383 +16,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500&family=Roboto+Flex:wght@200;300;400&display=swap" rel="stylesheet">
 
-    <style>
-        @font-face {
-            font-family: 'De Lionist';
-            src: url('de-lionist.otf') format('opentype');
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        :root {
-            /* Aspect ratio matching index.html */
-            --w: 9;
-            --h: 16;
-            --main-width: 100vw;
-            --main-height: 100vh;
-
-            /* Colors from index.html */
-            --color-background: #fef9f6;
-            --color-text: #21131d;
-            --color-accent: #cc5496;
-            --color-border: #d4c4b5;
-            --color-input-bg: #fff;
-            --color-section-alt: #f5ebe4;
-
-            /* Fonts */
-            --font-script: 'De Lionist', cursive;
-            --font-sans: 'Roboto Flex', sans-serif;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: var(--font-sans);
-            font-weight: 200;
-            background: var(--color-background);
-            color: var(--color-text);
-            -webkit-text-size-adjust: 100%;
-            line-height: 1.6;
-            display: flex;
-            justify-content: center;
-        }
-
-        /* Main container - matches index.html width constraints */
-        .page-container {
-            width: var(--main-width);
-            max-width: 100%;
-            overflow-x: hidden;
-        }
-
-        /* Section styling */
-        .section {
-            min-height: 100vh;
-            padding: 4rem 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .section-alt {
-            background: var(--color-section-alt);
-        }
-
-        .section-content {
-            width: 100%;
-            max-width: 500px;
-        }
-
-        /* Typography */
-        .section-title {
-            font-family: var(--font-script);
-            font-size: clamp(2rem, 8vw, 3.5rem);
-            text-align: center;
-            margin-bottom: 2rem;
-            color: var(--color-text);
-        }
-
-        .section-subtitle {
-            font-size: 0.75rem;
-            letter-spacing: 0.35em;
-            text-transform: uppercase;
-            text-align: center;
-            margin-bottom: 1rem;
-            color: var(--color-accent);
-        }
-
-        .section-text {
-            text-align: center;
-            font-size: 1rem;
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
-        }
-
-        /* ==========================================
-           HERO / COUNTDOWN SECTION
-           ========================================== */
-        .hero-section {
-            background: linear-gradient(180deg, var(--color-background) 0%, var(--color-section-alt) 100%);
-            text-align: center;
-        }
-
-        .hero-names {
-            font-family: var(--font-script);
-            font-size: clamp(3rem, 12vw, 5rem);
-            line-height: 1.1;
-            margin-bottom: 1rem;
-        }
-
-        .hero-ampersand {
-            font-family: var(--font-script);
-            font-size: clamp(1.5rem, 5vw, 2.5rem);
-            color: var(--color-accent);
-            font-style: italic;
-            display: block;
-            margin: 0.5rem 0;
-        }
-
-        .hero-date {
-            font-size: 0.85rem;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            margin: 2rem 0;
-        }
-
-        /* Countdown */
-        .countdown {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin: 3rem 0;
-            flex-wrap: wrap;
-        }
-
-        .countdown-item {
-            text-align: center;
-            min-width: 70px;
-        }
-
-        .countdown-number {
-            font-family: var(--font-script);
-            font-size: clamp(2.5rem, 10vw, 4rem);
-            line-height: 1;
-            color: var(--color-accent);
-        }
-
-        .countdown-label {
-            font-size: 0.65rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            margin-top: 0.5rem;
-        }
-
-        /* ==========================================
-           LOVE STORY TIMELINE
-           ========================================== */
-        .timeline {
-            position: relative;
-            padding: 2rem 0;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 2px;
-            height: 100%;
-            background: var(--color-border);
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 3rem;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
-        }
-
-        .timeline-item.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .timeline-item:nth-child(odd) {
-            text-align: right;
-            padding-right: calc(50% + 2rem);
-        }
-
-        .timeline-item:nth-child(even) {
-            text-align: left;
-            padding-left: calc(50% + 2rem);
-        }
-
-        .timeline-dot {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 16px;
-            height: 16px;
-            background: var(--color-accent);
-            border-radius: 50%;
-            border: 3px solid var(--color-background);
-            box-shadow: 0 0 0 3px var(--color-accent);
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .timeline-dot:hover {
-            transform: translateX(-50%) scale(1.3);
-        }
-
-        .timeline-date {
-            font-size: 0.7rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--color-accent);
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-title {
-            font-family: var(--font-script);
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-text {
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-
-        .timeline-photo {
-            width: 100%;
-            max-width: 200px;
-            height: 150px;
-            background: var(--color-border);
-            border-radius: 8px;
-            margin-top: 1rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-            color: var(--color-text);
-            opacity: 0.5;
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .timeline-photo:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        }
-
-        .timeline-photo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* ==========================================
-           FUN FACTS SECTION
-           ========================================== */
-        .fun-facts {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-        }
-
-        .fun-fact {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .fun-fact:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-        }
-
-        .fun-fact-icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .fun-fact-number {
-            font-family: var(--font-script);
-            font-size: 2rem;
-            color: var(--color-accent);
-        }
-
-        .fun-fact-label {
-            font-size: 0.7rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            opacity: 0.7;
-        }
-
-        /* Flip card effect */
-        .fun-fact-inner {
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.6s ease;
-        }
-
-        .fun-fact.flipped .fun-fact-inner {
-            transform: rotateY(180deg);
-        }
-
-        .fun-fact-front, .fun-fact-back {
-            backface-visibility: hidden;
-        }
-
-        .fun-fact-back {
-            position: absolute;
-            inset: 0;
-            transform: rotateY(180deg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.85rem;
-            padding: 1rem;
-        }
-
-        /* ==========================================
-           WHO SAID IT GAME
-           ========================================== */
-        .game-card {
-            background: linear-gradient(135deg, var(--color-accent) 0%, #e87fb9 100%);
-            color: white;
-            border-radius: 12px;
-            padding: 2rem;
-            text-align: center;
-        }
-
-        .game-card h3 {
-            font-family: var(--font-script);
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-        }
-
-        .game-quote {
-            font-size: 1.1rem;
-            font-style: italic;
-            margin: 1.5rem 0;
-            padding: 1rem;
-            background: rgba(255,255,255,0.1);
-            border-radius: 8px;
-        }
-
-        .game-options {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin: 1.5rem 0;
-        }
-
-        .game-option {
-            padding: 0.75rem 1.5rem;
-            background: white;
-            color: var(--color-accent);
-            border: none;
-            border-radius: 25px;
-            font-family: var(--font-sans);
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-
-        .game-option:hover {
-            transform: scale(1.05);
-        }
-
-        .game-option.correct {
-            background: #4CAF50;
-            color: white;
-        }
-
-        .game-option.wrong {
-            background: #f44336;
-            color: white;
-        }
-
-        .game-score {
-            font-size: 0.85rem;
-            opacity: 0.8;
-        }
-
-        .game-controls {
-            margin-top: 1rem;
-        }
-
-        /* ==========================================
-           PHOTO GALLERY
-           ========================================== */
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.5rem;
-        }
-
-        .gallery-item {
-            aspect-ratio: 1;
-            background: var(--color-border);
-            border-radius: 8px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.65rem;
-            color: var(--color-text);
-            opacity: 0.5;
-        }
-
-        .gallery-item:hover {
-            transform: scale(1.05);
-            z-index: 1;
-        }
-
-        .gallery-item.large {
-            grid-column: span 2;
-            grid-row: span 2;
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Lightbox */
-        .lightbox {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.9);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            cursor: pointer;
-        }
-
-        .lightbox.active {
-            display: flex;
-        }
-
-        .lightbox-content {
-            max-width: 90%;
-            max-height: 90%;
-            text-align: center;
-            color: white;
-        }
-
-        .lightbox-close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 2rem;
-            color: white;
-            cursor: pointer;
-        }
-
-        /* ==========================================
-           DRESS CODE VISUALIZER
-           ========================================== */
-        .dress-code {
-            background: white;
-            border-radius: 12px;
-            padding: 2rem;
-            text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        }
-
-        .dress-examples {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin: 1.5rem 0;
-            flex-wrap: wrap;
-        }
-
-        .dress-example {
-            width: 80px;
-            height: 120px;
-            background: var(--color-section-alt);
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            cursor: pointer;
-            transition: transform 0.3s ease, background 0.3s ease;
-        }
-
-        .dress-example:hover {
-            transform: scale(1.1);
-        }
-
-        .dress-example.do {
-            border: 2px solid #4CAF50;
-        }
-
-        .dress-example.dont {
-            border: 2px solid #f44336;
-            opacity: 0.6;
-        }
-
-        .dress-example span {
-            font-size: 0.6rem;
-            margin-top: 0.5rem;
-            letter-spacing: 0.1em;
-        }
-
-        .dress-tip {
-            font-size: 0.85rem;
-            font-style: italic;
-            color: var(--color-accent);
-            margin-top: 1rem;
-        }
-
-        /* ==========================================
-           WEATHER WIDGET
-           ========================================== */
-        .weather-widget {
-            background: linear-gradient(135deg, #87CEEB 0%, #48D1CC 100%);
-            border-radius: 12px;
-            padding: 2rem;
-            color: white;
-            text-align: center;
-        }
-
-        .weather-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .weather-temp {
-            font-family: var(--font-script);
-            font-size: 3rem;
-        }
-
-        .weather-desc {
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-            opacity: 0.9;
-        }
-
-        .weather-note {
-            font-size: 0.75rem;
-            margin-top: 1rem;
-            opacity: 0.7;
-        }
-
-        /* ==========================================
-           RSVP PROGRESS
-           ========================================== */
-        .rsvp-progress {
-            background: white;
-            border-radius: 12px;
-            padding: 2rem;
-            text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        }
-
-        .progress-bar {
-            height: 20px;
-            background: var(--color-section-alt);
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 1.5rem 0;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--color-accent), #e87fb9);
-            border-radius: 10px;
-            transition: width 1s ease;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 10px;
-            color: white;
-            font-size: 0.75rem;
-            font-weight: 400;
-        }
-
-        .progress-stats {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 1rem;
-        }
-
-        .progress-stat {
-            text-align: center;
-        }
-
-        .progress-stat-number {
-            font-family: var(--font-script);
-            font-size: 2rem;
-            color: var(--color-accent);
-        }
-
-        .progress-stat-label {
-            font-size: 0.65rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            opacity: 0.7;
-        }
-
-        /* ==========================================
-           SPOTIFY PLAYLIST
-           ========================================== */
-        .playlist-card {
-            background: #1DB954;
-            border-radius: 12px;
-            padding: 2rem;
-            color: white;
-            text-align: center;
-        }
-
-        .playlist-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .playlist-card h3 {
-            font-family: var(--font-script);
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .playlist-card p {
-            font-size: 0.85rem;
-            opacity: 0.9;
-            margin-bottom: 1.5rem;
-        }
-
-        .playlist-card .btn {
-            background: white;
-            color: #1DB954;
-        }
-
-        /* ==========================================
-           MAD LIBS GAME
-           ========================================== */
-        .madlibs-card {
-            background: white;
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        }
-
-        .madlibs-story {
-            font-size: 1rem;
-            line-height: 2;
-            margin: 1.5rem 0;
-        }
-
-        .madlibs-blank {
-            display: inline-block;
-            min-width: 80px;
-            border-bottom: 2px dashed var(--color-accent);
-            color: var(--color-accent);
-            font-weight: 400;
-            padding: 0 0.25rem;
-            cursor: pointer;
-            transition: background 0.2s ease;
-        }
-
-        .madlibs-blank:hover {
-            background: rgba(204, 84, 150, 0.1);
-        }
-
-        .madlibs-blank.filled {
-            border-bottom-style: solid;
-            background: rgba(204, 84, 150, 0.1);
-        }
-
-        .madlibs-inputs {
-            display: none;
-            flex-direction: column;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .madlibs-inputs.active {
-            display: flex;
-        }
-
-        /* ==========================================
-           FAQ SECTION
-           ========================================== */
-        .faq-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .faq-item {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-        }
-
-        .faq-question {
-            width: 100%;
-            padding: 1.25rem 1.5rem;
-            background: none;
-            border: none;
-            text-align: left;
-            font-family: var(--font-sans);
-            font-size: 0.95rem;
-            font-weight: 300;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background 0.2s ease;
-        }
-
-        .faq-question:hover {
-            background: var(--color-section-alt);
-        }
-
-        .faq-icon {
-            font-size: 1.5rem;
-            color: var(--color-accent);
-            transition: transform 0.3s ease;
-        }
-
-        .faq-item.open .faq-icon {
-            transform: rotate(45deg);
-        }
-
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease, padding 0.3s ease;
-        }
-
-        .faq-item.open .faq-answer {
-            max-height: 500px;
-        }
-
-        .faq-answer-inner {
-            padding: 0 1.5rem 1.5rem;
-            font-size: 0.9rem;
-            line-height: 1.7;
-        }
-
-        /* ==========================================
-           RSVP FORM SECTION
-           ========================================== */
-        .rsvp-form {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .form-label {
-            font-size: 0.7rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--color-text);
-        }
-
-        .form-label .required {
-            color: var(--color-accent);
-            letter-spacing: 0;
-        }
-
-        .form-input,
-        .form-select,
-        .form-textarea {
-            font-family: var(--font-sans);
-            font-weight: 300;
-            font-size: 1rem;
-            padding: 0.875rem 1rem;
-            border: 1px solid var(--color-border);
-            border-radius: 8px;
-            background: var(--color-input-bg);
-            color: var(--color-text);
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            -webkit-appearance: none;
-            appearance: none;
-        }
-
-        .form-input:focus,
-        .form-select:focus,
-        .form-textarea:focus {
-            outline: none;
-            border-color: var(--color-accent);
-            box-shadow: 0 0 0 3px rgba(204, 84, 150, 0.1);
-        }
-
-        .form-textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .form-select {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2321131d' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            padding-right: 2.5rem;
-        }
-
-        /* Attendance toggle */
-        .attendance-options {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .attendance-option {
-            flex: 1;
-            position: relative;
-        }
-
-        .attendance-option input {
-            position: absolute;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-        }
-
-        .attendance-option label {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-            border: 1px solid var(--color-border);
-            border-radius: 8px;
-            background: var(--color-input-bg);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 0.8rem;
-            letter-spacing: 0.1em;
-        }
-
-        .attendance-option input:checked + label {
-            border-color: var(--color-accent);
-            background: var(--color-accent);
-            color: #fff;
-        }
-
-        /* Submit button */
-        .btn {
-            font-family: var(--font-sans);
-            font-weight: 300;
-            font-size: 0.8rem;
-            letter-spacing: 0.25em;
-            text-transform: uppercase;
-            padding: 1.25rem 2rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary {
-            background: var(--color-text);
-            color: var(--color-background);
-        }
-
-        .btn-primary:hover {
-            background: var(--color-accent);
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--color-text);
-            border: 1px solid var(--color-border);
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--color-accent);
-            color: var(--color-accent);
-        }
-
-        /* Conditional fields */
-        .conditional-fields {
-            display: none;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .conditional-fields.visible {
-            display: flex;
-        }
-
-        /* Success message */
-        .success-message {
-            display: none;
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .success-message.visible {
-            display: block;
-        }
-
-        .success-message h2 {
-            font-family: var(--font-script);
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--color-accent);
-        }
-
-        /* ==========================================
-           CONFETTI BUTTON
-           ========================================== */
-        .confetti-area {
-            position: relative;
-            overflow: hidden;
-            padding: 2rem;
-            background: white;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        }
-
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            pointer-events: none;
-        }
-
-        /* ==========================================
-           SHAKE TO REVEAL
-           ========================================== */
-        .shake-reveal {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 12px;
-            padding: 2rem;
-            color: white;
-            text-align: center;
-        }
-
-        .shake-icon {
-            font-size: 3rem;
-            animation: shake-hint 2s ease-in-out infinite;
-        }
-
-        @keyframes shake-hint {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(-15deg); }
-            75% { transform: rotate(15deg); }
-        }
-
-        .shake-reveal .hidden-content {
-            display: none;
-            margin-top: 1rem;
-            padding: 1rem;
-            background: rgba(255,255,255,0.2);
-            border-radius: 8px;
-        }
-
-        .shake-reveal.revealed .hidden-content {
-            display: block;
-        }
-
-        .shake-reveal.revealed .shake-icon {
-            animation: none;
-        }
-
-        /* ==========================================
-           DEBUG OVERLAY
-           ========================================== */
-        .debug-overlay {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            background: rgba(0, 0, 0, 0.8);
-            color: #0f0;
-            font-family: monospace;
-            font-size: 11px;
-            padding: 10px 15px;
-            border-radius: 4px;
-            z-index: 9999;
-            pointer-events: none;
-            line-height: 1.6;
-            display: none;
-        }
-
-        .debug-overlay.visible {
-            display: block;
-        }
-
-        .debug-overlay .label {
-            color: #888;
-        }
-
-        .debug-overlay .highlight {
-            color: #ff0;
-        }
-
-        body.debug-mode div {
-            outline: 1px solid rgba(255, 0, 0, 0.3);
-        }
-
-        /* ==========================================
-           SCROLL ANIMATIONS
-           ========================================== */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Parallax effect */
-        .parallax-bg {
-            position: absolute;
-            inset: 0;
-            overflow: hidden;
-            z-index: -1;
-        }
-
-        .parallax-element {
-            position: absolute;
-            font-size: 3rem;
-            opacity: 0.1;
-            transition: transform 0.1s ease-out;
-        }
-
-        /* ==========================================
-           RESPONSIVE
-           ========================================== */
-        @media (max-width: 600px) {
-            .section {
-                padding: 3rem 1.5rem;
-            }
-
-            .timeline::before {
-                left: 20px;
-            }
-
-            .timeline-item:nth-child(odd),
-            .timeline-item:nth-child(even) {
-                text-align: left;
-                padding-left: 50px;
-                padding-right: 0;
-            }
-
-            .timeline-dot {
-                left: 20px;
-            }
-
-            .countdown {
-                gap: 1rem;
-            }
-
-            .countdown-item {
-                min-width: 60px;
-            }
-
-            .fun-facts {
-                grid-template-columns: 1fr;
-            }
-
-            .gallery {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .gallery-item.large {
-                grid-column: span 2;
-                grid-row: span 1;
-            }
-
-            .game-options {
-                flex-direction: column;
-            }
-        }
-
-        /* Version badge */
-        .version-badge {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.5);
-            color: white;
-            font-family: monospace;
-            font-size: 10px;
-            padding: 4px 8px;
-            border-radius: 4px;
-            z-index: 100;
-        }
-
-        /* ==========================================
-           NAVIGATION
-           ========================================== */
-        .main-nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: var(--color-background);
-            z-index: 1000;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .main-nav.scrolled {
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-        }
-
-        .main-nav.hidden {
-            transform: translateY(-100%);
-        }
-
-        .nav-container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 1rem 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .nav-logo {
-            font-family: var(--font-script);
-            font-size: 1.5rem;
-            color: var(--color-text);
-            text-decoration: none;
-        }
-
-        .nav-logo span {
-            color: var(--color-accent);
-        }
-
-        /* Hamburger button */
-        .nav-toggle {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 40px;
-            height: 40px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0;
-            z-index: 1001;
-        }
-
-        .nav-toggle span {
-            display: block;
-            width: 24px;
-            height: 2px;
-            background: var(--color-text);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-toggle span::before,
-        .nav-toggle span::after {
-            content: '';
-            position: absolute;
-            width: 24px;
-            height: 2px;
-            background: var(--color-text);
-            transition: all 0.3s ease;
-        }
-
-        .nav-toggle span::before {
-            top: -8px;
-        }
-
-        .nav-toggle span::after {
-            top: 8px;
-        }
-
-        /* Hamburger animation when open */
-        .nav-toggle.active span {
-            background: transparent;
-        }
-
-        .nav-toggle.active span::before {
-            top: 0;
-            transform: rotate(45deg);
-        }
-
-        .nav-toggle.active span::after {
-            top: 0;
-            transform: rotate(-45deg);
-        }
-
-        /* Mobile menu overlay */
-        .nav-menu {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--color-background);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            z-index: 999;
-        }
-
-        .nav-menu.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .nav-link {
-            font-family: var(--font-sans);
-            font-size: 1.1rem;
-            font-weight: 300;
-            color: var(--color-text);
-            text-decoration: none;
-            padding: 0.75rem 1.5rem;
-            letter-spacing: 0.1em;
-            transition: color 0.2s ease, transform 0.2s ease;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        .nav-menu.active .nav-link {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Stagger animation for menu items */
-        .nav-link:nth-child(1) { transition-delay: 0.05s; }
-        .nav-link:nth-child(2) { transition-delay: 0.1s; }
-        .nav-link:nth-child(3) { transition-delay: 0.15s; }
-        .nav-link:nth-child(4) { transition-delay: 0.2s; }
-        .nav-link:nth-child(5) { transition-delay: 0.25s; }
-        .nav-link:nth-child(6) { transition-delay: 0.3s; }
-        .nav-link:nth-child(7) { transition-delay: 0.35s; }
-        .nav-link:nth-child(8) { transition-delay: 0.4s; }
-
-        .nav-link:hover {
-            color: var(--color-accent);
-        }
-
-        .nav-link.active {
-            color: var(--color-accent);
-        }
-
-        .nav-link-icon {
-            margin-right: 0.5rem;
-        }
-
-        /* Desktop nav (horizontal) */
-        @media (min-width: 768px) {
-            .nav-toggle {
-                display: none;
-            }
-
-            .nav-menu {
-                position: static;
-                flex-direction: row;
-                background: none;
-                opacity: 1;
-                visibility: visible;
-                gap: 0;
-                flex-wrap: wrap;
-                justify-content: flex-end;
-            }
-
-            .nav-link {
-                font-size: 0.7rem;
-                padding: 0.5rem 0.75rem;
-                opacity: 1;
-                transform: none;
-                letter-spacing: 0.15em;
-                text-transform: uppercase;
-            }
-
-            .nav-link-icon {
-                display: none;
-            }
-
-            .nav-container {
-                max-width: 900px;
-            }
-        }
-
-        /* Offset for fixed nav */
-        .section {
-            scroll-margin-top: 70px;
-        }
-
-        /* Quick nav pills (bottom of screen on mobile) */
-        .quick-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: var(--color-background);
-            box-shadow: 0 -2px 20px rgba(0,0,0,0.1);
-            z-index: 100;
-            display: flex;
-            justify-content: space-around;
-            padding: 0.5rem;
-            padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
-        }
-
-        .quick-nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: var(--color-text);
-            font-size: 0.6rem;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            padding: 0.5rem;
-            opacity: 0.6;
-            transition: opacity 0.2s ease, color 0.2s ease;
-        }
-
-        .quick-nav-item.active {
-            opacity: 1;
-            color: var(--color-accent);
-        }
-
-        .quick-nav-icon {
-            font-size: 1.25rem;
-            margin-bottom: 0.25rem;
-        }
-
-        @media (min-width: 768px) {
-            .quick-nav {
-                display: none;
-            }
-        }
-
-        /* Add bottom padding for quick nav on mobile */
-        @media (max-width: 767px) {
-            footer.section {
-                padding-bottom: 5rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Debug overlay -->
@@ -1420,6 +44,7 @@
                 <a href="#accommodation" class="nav-link"><span class="nav-link-icon">&#127968;</span>Accommodation</a>
                 <a href="#getting-there" class="nav-link"><span class="nav-link-icon">&#9992;&#65039;</span>Getting There</a>
                 <a href="#faq" class="nav-link"><span class="nav-link-icon">&#10067;</span>Questions</a>
+                <a href="#our-story" class="nav-link"><span class="nav-link-icon">&#128149;</span>Our Story</a>
             </div>
         </div>
     </nav>
@@ -1446,6 +71,10 @@
             <span class="quick-nav-icon">&#10067;</span>
             FAQ
         </a>
+        <a href="#our-story" class="quick-nav-item" data-section="our-story">
+            <span class="quick-nav-icon">&#128149;</span>
+            Story
+        </a>
     </nav>
 
     <!-- Lightbox -->
@@ -1470,7 +99,7 @@
                     <span class="hero-ampersand">&</span>
                     Ben
                 </h1>
-                <p class="hero-date">29 August 2026 &bull; Great Keppel Island</p>
+                <p class="hero-date">29 August 2026 &bull; Ceremony at 4pm<br>Great Keppel Island</p>
 
                 <div class="countdown" id="countdown">
                     <div class="countdown-item">
@@ -1492,6 +121,192 @@
                 </div>
 
                 <p class="section-text">We can't wait to celebrate with you!</p>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             RSVP SECTION
+             ========================================== -->
+        <section class="section" id="rsvp">
+            <div class="section-content">
+                <p class="section-subtitle">We'd Love to Have You</p>
+                <h2 class="section-title">RSVP</h2>
+
+                <p class="section-text">Please respond by <strong>YYYYYYYYYYY</strong></p>
+
+                <form class="rsvp-form" id="rsvpForm">
+                    <div class="form-group">
+                        <label class="form-label" for="name">Your Name<span class="required">*</span></label>
+                        <input type="text" class="form-input" id="name" name="name" required placeholder="Full name">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email<span class="required">*</span></label>
+                        <input type="email" class="form-input" id="email" name="email" required placeholder="your@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Will you be joining us?<span class="required">*</span></label>
+                        <div class="attendance-options">
+                            <div class="attendance-option">
+                                <input type="radio" id="attending-yes" name="attending" value="yes" required>
+                                <label for="attending-yes">Joyfully Accept</label>
+                            </div>
+                            <div class="attendance-option">
+                                <input type="radio" id="attending-no" name="attending" value="no">
+                                <label for="attending-no">Regretfully Decline</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="conditional-fields" id="conditionalFields">
+                        <div class="form-group">
+                            <label class="form-label" for="guestnames">Names of Guests</label>
+                            <textarea class="form-textarea" id="guestnames" name="guestnames" placeholder="For the placecard."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="dietary">Dietary Requirements<span class="required">*</span></label>
+                            <textarea class="form-textarea" id="dietary" name="dietary" placeholder="Any allergies, intolerances, or dietary preferences we should know about?"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Are you interested in sharing a taxi from the airport to the ferry?<span class="required">*</span></label>
+                            <div class="attendance-options">
+                                <div class="attendance-option">
+                                    <input type="radio" id="taxi-yes" name="taxi" value="Yes">
+                                    <label for="taxi-yes">Yes</label>
+                                </div>
+                                <div class="attendance-option">
+                                    <input type="radio" id="taxi-no" name="taxi" value="No">
+                                    <label for="taxi-no">No</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="song">Song Request &#127925;</label>
+                            <input type="text" class="form-input" id="song" name="song" placeholder="What song will get you on the dance floor?">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="advice">Advice for the Couple<span class="required">*</span></label>
+                            <textarea class="form-textarea" id="advice" name="advice" placeholder="Any words of wisdom for the newlyweds?"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="funfact">Fun Fact<span class="required">*</span></label>
+                            <textarea class="form-textarea" id="funfact" name="funfact" placeholder="Tell us something about you and/or your guests."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="otherquestion">Any Other Questions?</label>
+                            <textarea class="form-textarea" id="otherquestion" name="otherquestion" placeholder="Anything else you'd like to ask or share..."></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Send RSVP</button>
+                </form>
+
+                <div class="success-message" id="successMessage">
+                    <h2>Thank You!</h2>
+                    <p>Your RSVP has been received.<br>We can't wait to celebrate with you on the island!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             ACCOMMODATION
+             ========================================== -->
+        <section class="section section-alt" id="accommodation">
+            <div class="section-content">
+                <p class="section-subtitle">Where to Stay</p>
+                <h2 class="section-title">Accommodation</h2>
+
+                <p class="section-text">We've secured rooms at the Island Hideaway. Book early! Camping and glamping options are also available for the adventurous.</p>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             GETTING THERE
+             ========================================== -->
+        <section class="section" id="getting-there">
+            <div class="section-content">
+                <p class="section-subtitle">Travel Info</p>
+                <h2 class="section-title">Getting There</h2>
+
+                <p class="section-text">Fly to Rockhampton, then drive to Rosslyn Bay Marina (45 mins). Ferries depart regularly to Great Keppel Island - we'll coordinate group bookings!</p>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             QUESTIONS
+             ========================================== -->
+        <section class="section section-alt" id="faq">
+            <div class="section-content">
+                <p class="section-subtitle">Questions?</p>
+                <h2 class="section-title">Questions</h2>
+
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>What should I wear?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                Think "island chic" - light, flowy fabrics in soft colours. Ladies, skip the heels as the ceremony is on sand! Gents, linen shirts are perfect.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>Can I bring my kids?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                Absolutely! We love your little ones. The island is very family-friendly, and we'll have activities planned for children.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>What about dietary requirements?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                Please let us know in your RSVP! We'll have vegetarian, vegan, and gluten-free options available.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>Do you have a gift registry?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                Your presence is our present! But if you'd like to contribute, we have a honeymoon fund. Details coming soon.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             OUR STORY SECTION
+             ========================================== -->
+        <section class="section" id="our-story">
+            <div class="section-content">
+                <p class="section-subtitle">Get to Know Us</p>
+                <h2 class="section-title">Our Story</h2>
+                <p class="section-text">Scroll down to explore our journey together!</p>
             </div>
         </section>
 
@@ -1748,212 +563,6 @@
         </section>
 
         <!-- ==========================================
-             RSVP PROGRESS
-             ========================================== -->
-        <section class="section" id="progress">
-            <div class="section-content">
-                <p class="section-subtitle">Guest Count</p>
-                <h2 class="section-title">RSVP Status</h2>
-
-                <div class="rsvp-progress fade-in">
-                    <p>Help us reach our guest goal!</p>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 65%;">65%</div>
-                    </div>
-                    <div class="progress-stats">
-                        <div class="progress-stat">
-                            <div class="progress-stat-number">78</div>
-                            <div class="progress-stat-label">Confirmed</div>
-                        </div>
-                        <div class="progress-stat">
-                            <div class="progress-stat-number">12</div>
-                            <div class="progress-stat-label">Pending</div>
-                        </div>
-                        <div class="progress-stat">
-                            <div class="progress-stat-number">120</div>
-                            <div class="progress-stat-label">Invited</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==========================================
-             RSVP SECTION
-             ========================================== -->
-        <section class="section" id="rsvp">
-            <div class="section-content">
-                <p class="section-subtitle">We'd Love to Have You</p>
-                <h2 class="section-title">RSVP</h2>
-
-                <p class="section-text">Please respond by <strong>YYYYYYYYYYY</strong></p>
-
-                <form class="rsvp-form" id="rsvpForm">
-                    <div class="form-group">
-                        <label class="form-label" for="name">Your Name<span class="required">*</span></label>
-                        <input type="text" class="form-input" id="name" name="name" required placeholder="Full name">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="email">Email<span class="required">*</span></label>
-                        <input type="email" class="form-input" id="email" name="email" required placeholder="your@email.com">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Will you be joining us?<span class="required">*</span></label>
-                        <div class="attendance-options">
-                            <div class="attendance-option">
-                                <input type="radio" id="attending-yes" name="attending" value="yes" required>
-                                <label for="attending-yes">Joyfully Accept</label>
-                            </div>
-                            <div class="attendance-option">
-                                <input type="radio" id="attending-no" name="attending" value="no">
-                                <label for="attending-no">Regretfully Decline</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="conditional-fields" id="conditionalFields">
-                        <div class="form-group">
-                            <label class="form-label" for="guestnames">Names of Guests</label>
-                            <textarea class="form-textarea" id="guestnames" name="guestnames" placeholder="For the placecard."></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label" for="dietary">Dietary Requirements<span class="required">*</span></label>
-                            <textarea class="form-textarea" id="dietary" name="dietary" placeholder="Any allergies, intolerances, or dietary preferences we should know about?"></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Are you interested in sharing a taxi from the airport to the ferry?<span class="required">*</span></label>
-                            <div class="attendance-options">
-                                <div class="attendance-option">
-                                    <input type="radio" id="taxi-yes" name="taxi" value="Yes">
-                                    <label for="taxi-yes">Yes</label>
-                                </div>
-                                <div class="attendance-option">
-                                    <input type="radio" id="taxi-no" name="taxi" value="No">
-                                    <label for="taxi-no">No</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label" for="song">Song Request &#127925;</label>
-                            <input type="text" class="form-input" id="song" name="song" placeholder="What song will get you on the dance floor?">
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label" for="advice">Advice for the Couple<span class="required">*</span></label>
-                            <textarea class="form-textarea" id="advice" name="advice" placeholder="Any words of wisdom for the newlyweds?"></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label" for="funfact">Fun Fact<span class="required">*</span></label>
-                            <textarea class="form-textarea" id="funfact" name="funfact" placeholder="Tell us something about you and/or your guests."></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label" for="otherquestion">Any Other Questions?</label>
-                            <textarea class="form-textarea" id="otherquestion" name="otherquestion" placeholder="Anything else you'd like to ask or share..."></textarea>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Send RSVP</button>
-                </form>
-
-                <div class="success-message" id="successMessage">
-                    <h2>Thank You!</h2>
-                    <p>Your RSVP has been received.<br>We can't wait to celebrate with you on the island!</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==========================================
-             ACCOMMODATION
-             ========================================== -->
-        <section class="section section-alt" id="accommodation">
-            <div class="section-content">
-                <p class="section-subtitle">Where to Stay</p>
-                <h2 class="section-title">Accommodation</h2>
-
-                <p class="section-text">We've secured rooms at the Island Hideaway. Book early! Camping and glamping options are also available for the adventurous.</p>
-            </div>
-        </section>
-
-        <!-- ==========================================
-             GETTING THERE
-             ========================================== -->
-        <section class="section" id="getting-there">
-            <div class="section-content">
-                <p class="section-subtitle">Travel Info</p>
-                <h2 class="section-title">Getting There</h2>
-
-                <p class="section-text">Fly to Rockhampton, then drive to Rosslyn Bay Marina (45 mins). Ferries depart regularly to Great Keppel Island - we'll coordinate group bookings!</p>
-            </div>
-        </section>
-
-        <!-- ==========================================
-             QUESTIONS
-             ========================================== -->
-        <section class="section section-alt" id="faq">
-            <div class="section-content">
-                <p class="section-subtitle">Questions?</p>
-                <h2 class="section-title">Questions</h2>
-
-                <div class="faq-list">
-                    <div class="faq-item">
-                        <button class="faq-question">
-                            <span>What should I wear?</span>
-                            <span class="faq-icon">+</span>
-                        </button>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Think "island chic" - light, flowy fabrics in soft colours. Ladies, skip the heels as the ceremony is on sand! Gents, linen shirts are perfect.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <button class="faq-question">
-                            <span>Can I bring my kids?</span>
-                            <span class="faq-icon">+</span>
-                        </button>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Absolutely! We love your little ones. The island is very family-friendly, and we'll have activities planned for children.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <button class="faq-question">
-                            <span>What about dietary requirements?</span>
-                            <span class="faq-icon">+</span>
-                        </button>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Please let us know in your RSVP! We'll have vegetarian, vegan, and gluten-free options available.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <button class="faq-question">
-                            <span>Do you have a gift registry?</span>
-                            <span class="faq-icon">+</span>
-                        </button>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Your presence is our present! But if you'd like to contribute, we have a honeymoon fund. Details coming soon.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==========================================
              FOOTER
              ========================================== -->
         <footer class="section" style="min-height: auto; padding: 2rem;">
@@ -2138,20 +747,20 @@
         // Map subsections to main nav sections
         const sectionMapping = {
             'hero': 'hero',
-            'story': 'hero',
-            'funfacts': 'hero',
-            'game': 'hero',
-            'gallery': 'hero',
-            'dress': 'hero',
-            'weather': 'hero',
-            'playlist': 'hero',
-            'surprise': 'hero',
-            'confetti-section': 'hero',
-            'progress': 'hero',
             'rsvp': 'rsvp',
             'accommodation': 'accommodation',
             'getting-there': 'getting-there',
-            'faq': 'faq'
+            'faq': 'faq',
+            'our-story': 'our-story',
+            'story': 'our-story',
+            'funfacts': 'our-story',
+            'game': 'our-story',
+            'gallery': 'our-story',
+            'dress': 'our-story',
+            'weather': 'our-story',
+            'playlist': 'our-story',
+            'surprise': 'our-story',
+            'confetti-section': 'our-story'
         };
 
         const sectionObserver = new IntersectionObserver((entries) => {

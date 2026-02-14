@@ -1,0 +1,90 @@
+<!-- ==========================================
+             RSVP SECTION
+             ========================================== -->
+        <section class="section" id="rsvp">
+            <div class="section-content">
+                <p class="section-subtitle">We'd Love to Have You</p>
+                <h2 class="section-title">RSVP</h2>
+
+                <p class="section-text">Please respond by <strong>YYYYYYYYYYY</strong></p>
+
+                <form class="rsvp-form" id="rsvpForm">
+                    <div class="form-group">
+                        <label class="form-label" for="name">Your Name<span class="required">*</span></label>
+                        <input type="text" class="form-input" id="name" name="name" required placeholder="Full name">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email<span class="required">*</span></label>
+                        <input type="email" class="form-input" id="email" name="email" required placeholder="your@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Will you be joining us?<span class="required">*</span></label>
+                        <div class="attendance-options">
+                            <div class="attendance-option">
+                                <input type="radio" id="attending-yes" name="attending" value="yes" required>
+                                <label for="attending-yes">Joyfully Accept</label>
+                            </div>
+                            <div class="attendance-option">
+                                <input type="radio" id="attending-no" name="attending" value="no">
+                                <label for="attending-no">Regretfully Decline</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="conditional-fields" id="conditionalFields">
+                        <div class="form-group">
+                            <label class="form-label" for="guestnames">Names of Guests</label>
+                            <textarea class="form-textarea" id="guestnames" name="guestnames" placeholder="For the placecard."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="dietary">Dietary Requirements<span class="required">*</span></label>
+                            <textarea class="form-textarea" id="dietary" name="dietary" placeholder="Any allergies, intolerances, or dietary preferences we should know about?"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Are you interested in sharing a taxi from the airport to the ferry?<span class="required">*</span></label>
+                            <div class="attendance-options">
+                                <div class="attendance-option">
+                                    <input type="radio" id="taxi-yes" name="taxi" value="Yes">
+                                    <label for="taxi-yes">Yes</label>
+                                </div>
+                                <div class="attendance-option">
+                                    <input type="radio" id="taxi-no" name="taxi" value="No">
+                                    <label for="taxi-no">No</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="song">Song Request &#127925;</label>
+                            <input type="text" class="form-input" id="song" name="song" placeholder="What song will get you on the dance floor?">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="advice">Advice for the Couple<span class="required">*</span></label>
+                            <textarea class="form-textarea" id="advice" name="advice" placeholder="Any words of wisdom for the newlyweds?"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="funfact">Fun Fact<span class="required">*</span></label>
+                            <textarea class="form-textarea" id="funfact" name="funfact" placeholder="Tell us something about you and/or your guests."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="otherquestion">Any Other Questions?</label>
+                            <textarea class="form-textarea" id="otherquestion" name="otherquestion" placeholder="Anything else you'd like to ask or share..."></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Send RSVP</button>
+                </form>
+
+                <div class="success-message" id="successMessage">
+                    <h2>Thank You!</h2>
+                    <p>Your RSVP has been received.<br>We can't wait to celebrate with you on the island!</p>
+                </div>
+            </div>
+        </section>
