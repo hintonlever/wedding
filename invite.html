@@ -38,16 +38,16 @@
     <nav class="main-nav" id="mainNav">
         <div class="nav-container">
             <!-- This the default section -->
-            <a href="#rsvp" class="nav-logo">A <span>&</span> B</a>
+            <a href="#wedding" class="nav-logo">A <span>&</span> B</a>
             <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
                 <span></span>
             </button>
             <div class="nav-menu" id="navMenu">
                 <a href="#wedding" class="nav-link"><span class="nav-link-icon">&#128141;</span>Wedding</a>
-                <a href="#rsvp" class="nav-link"><span class="nav-link-icon">&#128140;</span>RSVP</a>
                 <a href="#getting-there" class="nav-link"><span class="nav-link-icon">&#9992;&#65039;</span>Getting There</a>
                 <a href="#accommodation" class="nav-link"><span class="nav-link-icon">&#127968;</span>Accommodation</a>
                 <a href="#on-the-day" class="nav-link"><span class="nav-link-icon">&#128197;</span>On The Day</a>
+                <a href="#rsvp" class="nav-link"><span class="nav-link-icon">&#128140;</span>RSVP</a>
                 <a href="#faq" class="nav-link"><span class="nav-link-icon">&#10067;</span>Questions</a>
                 <a href="#timeline" class="nav-link"><span class="nav-link-icon">&#128149;</span>Our Story</a>
             </div>
@@ -59,10 +59,6 @@
         <a href="#wedding" class="quick-nav-item" data-section="wedding">
             <span class="quick-nav-icon">&#128141;</span>
             Wedding
-        </a>
-        <a href="#rsvp" class="quick-nav-item" data-section="rsvp">
-            <span class="quick-nav-icon">&#128140;</span>
-            RSVP
         </a>
         <a href="#getting-there" class="quick-nav-item" data-section="getting-there">
             <span class="quick-nav-icon">&#9992;&#65039;</span>
@@ -76,6 +72,11 @@
             <span class="quick-nav-icon">&#128197;</span>
             Day
         </a>
+        <a href="#rsvp" class="quick-nav-item" data-section="rsvp">
+            <span class="quick-nav-icon">&#128140;</span>
+            RSVP
+        </a>
+    
         <a href="#faq" class="quick-nav-item" data-section="faq">
             <span class="quick-nav-icon">&#10067;</span>
             FAQ
@@ -103,10 +104,10 @@
         // ==========================================
         const SECTIONS = [
             'wedding',
-            'rsvp',
             'getting-there',
             'accommodation',
             'on-the-day',
+            'rsvp',
             'faq',
             'timeline',
             'footer'
@@ -298,9 +299,11 @@
             // ==========================================
             const sections = document.querySelectorAll('.section[id]');
             const sectionMapping = {
-                'rsvp': 'rsvp',
+                'wedding' : 'wedding',
                 'getting-there': 'getting-there',
                 'accommodation': 'accommodation',
+                'on-the-day': 'on-the-day',
+                'rsvp': 'rsvp',
                 'faq': 'faq',
                 'timeline': 'our-story'
             };
