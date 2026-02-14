@@ -41,8 +41,8 @@
             </button>
             <div class="nav-menu" id="navMenu">
                 <a href="#rsvp" class="nav-link"><span class="nav-link-icon">&#128140;</span>RSVP</a>
-                <a href="#accommodation" class="nav-link"><span class="nav-link-icon">&#127968;</span>Accommodation</a>
                 <a href="#getting-there" class="nav-link"><span class="nav-link-icon">&#9992;&#65039;</span>Getting There</a>
+                <a href="#accommodation" class="nav-link"><span class="nav-link-icon">&#127968;</span>Accommodation</a>
                 <a href="#faq" class="nav-link"><span class="nav-link-icon">&#10067;</span>Questions</a>
                 <a href="#our-story" class="nav-link"><span class="nav-link-icon">&#128149;</span>Our Story</a>
             </div>
@@ -55,13 +55,13 @@
             <span class="quick-nav-icon">&#128140;</span>
             RSVP
         </a>
-        <a href="#accommodation" class="quick-nav-item" data-section="accommodation">
-            <span class="quick-nav-icon">&#127968;</span>
-            Stay
-        </a>
         <a href="#getting-there" class="quick-nav-item" data-section="getting-there">
             <span class="quick-nav-icon">&#9992;&#65039;</span>
             Travel
+        </a>
+        <a href="#accommodation" class="quick-nav-item" data-section="accommodation">
+            <span class="quick-nav-icon">&#127968;</span>
+            Stay
         </a>
         <a href="#faq" class="quick-nav-item" data-section="faq">
             <span class="quick-nav-icon">&#10067;</span>
@@ -90,8 +90,8 @@
         // ==========================================
         const SECTIONS = [
             'rsvp',
-            'accommodation',
             'getting-there',
+            'accommodation',
             'faq',
             'our-story',
             'story',
@@ -281,8 +281,8 @@
             const sections = document.querySelectorAll('.section[id]');
             const sectionMapping = {
                 'rsvp': 'rsvp',
-                'accommodation': 'accommodation',
                 'getting-there': 'getting-there',
+                'accommodation': 'accommodation',
                 'faq': 'faq',
                 'our-story': 'our-story',
                 'story': 'our-story',
