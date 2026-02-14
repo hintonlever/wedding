@@ -39,7 +39,6 @@
         <div class="nav-container">
             <!-- This the default section -->
             <a href="#rsvp" class="nav-logo">A <span>&</span> B</a>
-            <span class="nav-countdown" id="navDaysToGo"></span>
             <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
                 <span></span>
             </button>
@@ -199,20 +198,38 @@
             // ==========================================
             // COUNTDOWN TIMER
             // ==========================================
-            const weddingDate = new Date('2026-08-29T16:00:00+10:00');
+            const weddingDate = new Date('2026-08-29T13:30:00+10:00');
 
             function updateCountdown() {
                 const now = new Date();
                 const diff = weddingDate - now;
-                const navDaysEl = document.getElementById('navDaysToGo');
                 const footerDaysEl = document.getElementById('days');
 
-                const days = diff <= 0 ? 0 : Math.floor(diff / (1000 * 60 * 60 * 24));
-
-                // Update nav banner countdown
-                if (navDaysEl) {
-                    navDaysEl.textContent = days + ' days to go';
+                if (diff <= 0) {
+                    // Wedding day or past
+                    document.getElementById('countdownDays').textContent = '0';
+                    document.getElementById('countdownHours').textContent = '0';
+                    document.getElementById('countdownMinutes').textContent = '0';
+                    document.getElementById('countdownSeconds').textContent = '0';
+                    if (footerDaysEl) footerDaysEl.textContent = '0';
+                    return;
                 }
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                // Update hero countdown
+                const daysEl = document.getElementById('countdownDays');
+                const hoursEl = document.getElementById('countdownHours');
+                const minutesEl = document.getElementById('countdownMinutes');
+                const secondsEl = document.getElementById('countdownSeconds');
+
+                if (daysEl) daysEl.textContent = days;
+                if (hoursEl) hoursEl.textContent = hours;
+                if (minutesEl) minutesEl.textContent = minutes;
+                if (secondsEl) secondsEl.textContent = seconds;
 
                 // Update footer countdown (days only)
                 if (footerDaysEl) {
@@ -221,7 +238,7 @@
             }
 
             updateCountdown();
-            setInterval(updateCountdown, 60000); // Update every minute (days don't change often)
+            setInterval(updateCountdown, 1000); // Update every second
 
             // ==========================================
             // SCROLL ANIMATIONS
