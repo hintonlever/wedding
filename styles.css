@@ -1373,3 +1373,20 @@
                 padding-bottom: 5rem;
             }
         }
+
+        /* ==========================================
+           JOURNEY MAP (Animated SVG Path)
+           ========================================== */
+        .journey-map {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .journey-svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
