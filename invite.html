@@ -29,7 +29,7 @@
     </div>
 
     <!-- Version badge (always visible) -->
-    <div class="version-badge" id="versionBadge">v0.3.0</div>
+    <div class="version-badge" id="versionBadge">v0.4.0</div>
 
     <!-- Main Navigation -->
     <nav class="main-nav" id="mainNav">
@@ -83,997 +83,529 @@
         <div class="lightbox-content" id="lightboxContent"></div>
     </div>
 
+    <!-- Sections are dynamically loaded here -->
     <div class="page-container" id="pageContainer">
-        <!-- ==========================================
-             HERO / COUNTDOWN SECTION
-             ========================================== -->
-        <section class="section hero-section" id="hero">
-            <div class="parallax-bg">
-                <span class="parallax-element" style="top: 10%; left: 10%;">&#10084;</span>
-                <span class="parallax-element" style="top: 30%; right: 15%;">&#10084;</span>
-                <span class="parallax-element" style="bottom: 20%; left: 20%;">&#10084;</span>
-            </div>
-            <div class="section-content">
-                <h1 class="hero-names">
-                    Alina
-                    <span class="hero-ampersand">&</span>
-                    Ben
-                </h1>
-                <p class="hero-date">29 August 2026 &bull; Ceremony at 4pm<br>Great Keppel Island</p>
-
-                <div class="countdown" id="countdown">
-                    <div class="countdown-item">
-                        <div class="countdown-number" id="days">---</div>
-                        <div class="countdown-label">Days</div>
-                    </div>
-                    <div class="countdown-item">
-                        <div class="countdown-number" id="hours">--</div>
-                        <div class="countdown-label">Hours</div>
-                    </div>
-                    <div class="countdown-item">
-                        <div class="countdown-number" id="minutes">--</div>
-                        <div class="countdown-label">Minutes</div>
-                    </div>
-                    <div class="countdown-item">
-                        <div class="countdown-number" id="seconds">--</div>
-                        <div class="countdown-label">Seconds</div>
-                    </div>
-                </div>
-
-                <p class="section-text">We can't wait to celebrate with you!</p>
-            </div>
-        </section>
-
-        <!-- ==========================================
-             RSVP SECTION
-             ========================================== -->
-        <section class="section" id="rsvp">
-            <div class="section-content">
-                <p class="section-subtitle">We'd Love to Have You</p>
-                <h2 class="section-title">RSVP</h2>
-
-                <p class="section-text">Please respond by <strong>YYYYYYYYYYY</strong></p>
-
-                <form class="rsvp-form" id="rsvpForm">
-                    <div class="form-group">
-                        <label class="form-label" for="name">Your Name<span class="required">*</span></label>
-                        <input type="text" class="form-input" id="name" name="name" required placeholder="Full name">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="email">Email<span class="required">*</span></label>
-                        <input type="email" class="form-input" id="email" name="email" required placeholder="your@email.com">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Will you be joining us?<span class="required">*</span></label>
-                        <div class="attendance-options">
-                            <div class="attendance-option">
-                                <input type="radio" id="attending-yes" name="attending" value="yes" required>
-                                <label for="attending-yes">Joyfully Accept</label>
-                            </div>
-                            <div class="attendance-option">
-                                <input type="radio" id="attending-no" name="attending" value="no">
-                                <label for="attending-no">Regretfully Decline</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="conditional-fields" id="conditionalFields">
-                        <div class="form-group">
-                            <label class="form-label" for="guestnames">Names of Guests</label>
-                            <textarea class="form-textarea" id="guestnames" name="guestnames" placeholder="For the placecard."></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label" for="dietary">Dietary Requirements<span class="required">*</span></label>
-                            <textarea class="form-textarea" id="dietary" name="dietary" placeholder="Any allergies, intolerances, or dietary preferences we should know about?"></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Are you interested in sharing a taxi from the airport to the ferry?<span class="required">*</span></label>
-                            <div class="attendance-options">
-                                <div class="attendance-option">
-                                    <input type="radio" id="taxi-yes" name="taxi" value="Yes">
-                                    <label for="taxi-yes">Yes</label>
-                                </div>
-                                <div class="attendance-option">
-                                    <input type="radio" id="taxi-no" name="taxi" value="No">
-                                    <label for="taxi-no">No</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label" for="song">Song Request &#127925;</label>
-                            <input type="text" class="form-input" id="song" name="song" placeholder="What song will get you on the dance floor?">
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label" for="advice">Advice for the Couple<span class="required">*</span></label>
-                            <textarea class="form-textarea" id="advice" name="advice" placeholder="Any words of wisdom for the newlyweds?"></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label" for="funfact">Fun Fact<span class="required">*</span></label>
-                            <textarea class="form-textarea" id="funfact" name="funfact" placeholder="Tell us something about you and/or your guests."></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label" for="otherquestion">Any Other Questions?</label>
-                            <textarea class="form-textarea" id="otherquestion" name="otherquestion" placeholder="Anything else you'd like to ask or share..."></textarea>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Send RSVP</button>
-                </form>
-
-                <div class="success-message" id="successMessage">
-                    <h2>Thank You!</h2>
-                    <p>Your RSVP has been received.<br>We can't wait to celebrate with you on the island!</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==========================================
-             ACCOMMODATION
-             ========================================== -->
-        <section class="section section-alt" id="accommodation">
-            <div class="section-content">
-                <p class="section-subtitle">Where to Stay</p>
-                <h2 class="section-title">Accommodation</h2>
-
-                <p class="section-text">We've secured rooms at the Island Hideaway. Book early! Camping and glamping options are also available for the adventurous.</p>
-            </div>
-        </section>
-
-        <!-- ==========================================
-             GETTING THERE
-             ========================================== -->
-        <section class="section" id="getting-there">
-            <div class="section-content">
-                <p class="section-subtitle">Travel Info</p>
-                <h2 class="section-title">Getting There</h2>
-
-                <p class="section-text">Fly to Rockhampton, then drive to Rosslyn Bay Marina (45 mins). Ferries depart regularly to Great Keppel Island - we'll coordinate group bookings!</p>
-            </div>
-        </section>
-
-        <!-- ==========================================
-             QUESTIONS
-             ========================================== -->
-        <section class="section section-alt" id="faq">
-            <div class="section-content">
-                <p class="section-subtitle">Questions?</p>
-                <h2 class="section-title">Questions</h2>
-
-                <div class="faq-list">
-                    <div class="faq-item">
-                        <button class="faq-question">
-                            <span>What should I wear?</span>
-                            <span class="faq-icon">+</span>
-                        </button>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Think "island chic" - light, flowy fabrics in soft colours. Ladies, skip the heels as the ceremony is on sand! Gents, linen shirts are perfect.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <button class="faq-question">
-                            <span>Can I bring my kids?</span>
-                            <span class="faq-icon">+</span>
-                        </button>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Absolutely! We love your little ones. The island is very family-friendly, and we'll have activities planned for children.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <button class="faq-question">
-                            <span>What about dietary requirements?</span>
-                            <span class="faq-icon">+</span>
-                        </button>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Please let us know in your RSVP! We'll have vegetarian, vegan, and gluten-free options available.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <button class="faq-question">
-                            <span>Do you have a gift registry?</span>
-                            <span class="faq-icon">+</span>
-                        </button>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Your presence is our present! But if you'd like to contribute, we have a honeymoon fund. Details coming soon.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==========================================
-             OUR STORY SECTION
-             ========================================== -->
-        <section class="section" id="our-story">
-            <div class="section-content">
-                <p class="section-subtitle">Get to Know Us</p>
-                <h2 class="section-title">Our Story</h2>
-                <p class="section-text">Scroll down to explore our journey together!</p>
-            </div>
-        </section>
-
-        <!-- ==========================================
-             LOVE STORY TIMELINE
-             ========================================== -->
-        <section class="section section-alt" id="story">
-            <div class="section-content">
-                <p class="section-subtitle">Our Journey</p>
-                <h2 class="section-title">Love Story</h2>
-
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-date">2018</div>
-                        <h3 class="timeline-title">First Meeting</h3>
-                        <p class="timeline-text">We met at a mutual friend's party. Ben spilled his drink, Alina laughed, and the rest is history.</p>
-                        <div class="timeline-photo">[Add photo]</div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-date">2019</div>
-                        <h3 class="timeline-title">First Trip Together</h3>
-                        <p class="timeline-text">Our first adventure to Bali - where we discovered our shared love for sunsets and bad jokes.</p>
-                        <div class="timeline-photo">[Add photo]</div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-date">2021</div>
-                        <h3 class="timeline-title">Moving In</h3>
-                        <p class="timeline-text">We took the plunge and got our first apartment together (and our first plant, RIP Gerald).</p>
-                        <div class="timeline-photo">[Add photo]</div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-date">2024</div>
-                        <h3 class="timeline-title">The Proposal</h3>
-                        <p class="timeline-text">On a quiet beach at sunset, Ben got down on one knee. She said yes!</p>
-                        <div class="timeline-photo">[Add photo]</div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-date">2026</div>
-                        <h3 class="timeline-title">The Wedding!</h3>
-                        <p class="timeline-text">And now, we're getting married on a beautiful island with all of you!</p>
-                        <div class="timeline-photo">[Add photo]</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==========================================
-             FUN FACTS (Interactive flip cards)
-             ========================================== -->
-        <section class="section" id="funfacts">
-            <div class="section-content">
-                <p class="section-subtitle">By the Numbers</p>
-                <h2 class="section-title">Fun Facts</h2>
-                <p class="section-text">Tap to reveal more!</p>
-
-                <div class="fun-facts">
-                    <div class="fun-fact" onclick="this.classList.toggle('flipped')">
-                        <div class="fun-fact-inner">
-                            <div class="fun-fact-front">
-                                <div class="fun-fact-icon">&#128149;</div>
-                                <div class="fun-fact-number">2,920</div>
-                                <div class="fun-fact-label">Days Together</div>
-                            </div>
-                            <div class="fun-fact-back">That's 8 years of adventures!</div>
-                        </div>
-                    </div>
-
-                    <div class="fun-fact" onclick="this.classList.toggle('flipped')">
-                        <div class="fun-fact-inner">
-                            <div class="fun-fact-front">
-                                <div class="fun-fact-icon">&#127758;</div>
-                                <div class="fun-fact-number">15</div>
-                                <div class="fun-fact-label">Countries Visited</div>
-                            </div>
-                            <div class="fun-fact-back">From Iceland to Indonesia!</div>
-                        </div>
-                    </div>
-
-                    <div class="fun-fact" onclick="this.classList.toggle('flipped')">
-                        <div class="fun-fact-inner">
-                            <div class="fun-fact-front">
-                                <div class="fun-fact-icon">&#127828;</div>
-                                <div class="fun-fact-number">547</div>
-                                <div class="fun-fact-label">Pizzas Eaten</div>
-                            </div>
-                            <div class="fun-fact-back">Our love language is cheese.</div>
-                        </div>
-                    </div>
-
-                    <div class="fun-fact" onclick="this.classList.toggle('flipped')">
-                        <div class="fun-fact-inner">
-                            <div class="fun-fact-front">
-                                <div class="fun-fact-icon">&#127909;</div>
-                                <div class="fun-fact-number">312</div>
-                                <div class="fun-fact-label">Movies Watched</div>
-                            </div>
-                            <div class="fun-fact-back">Still fighting over what's next!</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==========================================
-             WHO SAID IT GAME
-             ========================================== -->
-        <section class="section section-alt" id="game">
-            <div class="section-content">
-                <div class="game-card fade-in">
-                    <h3>Who Said It?</h3>
-                    <p class="game-score">Score: <span id="gameScore">0</span> / <span id="gameTotal">0</span></p>
-
-                    <div class="game-quote" id="gameQuote">"Loading quote..."</div>
-
-                    <div class="game-options" id="gameOptions">
-                        <button class="game-option" data-answer="alina">Alina</button>
-                        <button class="game-option" data-answer="ben">Ben</button>
-                    </div>
-
-                    <div class="game-controls">
-                        <button class="btn btn-secondary" id="nextQuote" style="display: none;">Next Quote</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==========================================
-             PHOTO GALLERY
-             ========================================== -->
-        <section class="section" id="gallery">
-            <div class="section-content">
-                <p class="section-subtitle">Memories</p>
-                <h2 class="section-title">Our Photos</h2>
-
-                <div class="gallery">
-                    <div class="gallery-item large fade-in">[Photo 1]</div>
-                    <div class="gallery-item fade-in">[Photo 2]</div>
-                    <div class="gallery-item fade-in">[Photo 3]</div>
-                    <div class="gallery-item fade-in">[Photo 4]</div>
-                    <div class="gallery-item fade-in">[Photo 5]</div>
-                    <div class="gallery-item large fade-in">[Photo 6]</div>
-                    <div class="gallery-item fade-in">[Photo 7]</div>
-                    <div class="gallery-item fade-in">[Photo 8]</div>
-                    <div class="gallery-item fade-in">[Photo 9]</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==========================================
-             DRESS CODE VISUALIZER
-             ========================================== -->
-        <section class="section section-alt" id="dress">
-            <div class="section-content">
-                <p class="section-subtitle">What to Wear</p>
-                <h2 class="section-title">Dress Code</h2>
-
-                <div class="dress-code fade-in">
-                    <p>Island Chic - Think light, flowy, and beach-friendly!</p>
-
-                    <div class="dress-examples">
-                        <div class="dress-example do">
-                            &#128087;
-                            <span>Linen</span>
-                        </div>
-                        <div class="dress-example do">
-                            &#128097;
-                            <span>Flowy</span>
-                        </div>
-                        <div class="dress-example do">
-                            &#127774;
-                            <span>Light colors</span>
-                        </div>
-                        <div class="dress-example dont">
-                            &#128094;
-                            <span>No heels!</span>
-                        </div>
-                    </div>
-
-                    <p class="dress-tip">Pro tip: The ceremony is on sand, so leave the stilettos at home!</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==========================================
-             WEATHER WIDGET
-             ========================================== -->
-        <section class="section" id="weather">
-            <div class="section-content">
-                <p class="section-subtitle">August in Queensland</p>
-                <h2 class="section-title">Weather Forecast</h2>
-
-                <div class="weather-widget fade-in">
-                    <div class="weather-icon">&#9728;&#65039;</div>
-                    <div class="weather-temp">24°C</div>
-                    <div class="weather-desc">Sunny & Beautiful</div>
-                    <div class="weather-note">August is Queensland's dry season - expect warm days and cool evenings. Bring a light jacket for the reception!</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==========================================
-             SPOTIFY PLAYLIST
-             ========================================== -->
-        <section class="section section-alt" id="playlist">
-            <div class="section-content">
-                <div class="playlist-card fade-in">
-                    <div class="playlist-icon">&#127911;</div>
-                    <h3>Our Wedding Playlist</h3>
-                    <p>Help us create the perfect party playlist! Add your favorite songs.</p>
-                    <button class="btn" onclick="alert('Spotify embed coming soon!')">Open Playlist</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==========================================
-             SHAKE TO REVEAL (Mobile fun)
-             ========================================== -->
-        <section class="section" id="surprise">
-            <div class="section-content">
-                <div class="shake-reveal fade-in" id="shakeReveal">
-                    <div class="shake-icon">&#128241;</div>
-                    <h3 style="font-family: var(--font-script); font-size: 1.5rem; margin: 1rem 0;">Shake Your Phone!</h3>
-                    <p style="font-size: 0.85rem; opacity: 0.9;">Or click/tap if you're on desktop</p>
-                    <div class="hidden-content">
-                        <p style="font-size: 1.1rem;">&#127881; You found a secret!</p>
-                        <p style="font-size: 0.85rem; margin-top: 0.5rem;">First drink is on us at the reception!</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==========================================
-             CONFETTI TEST
-             ========================================== -->
-        <section class="section section-alt" id="confetti-section">
-            <div class="section-content">
-                <p class="section-subtitle">Test Feature</p>
-                <h2 class="section-title">Celebration!</h2>
-
-                <div class="confetti-area fade-in" id="confettiArea">
-                    <h3 style="font-family: var(--font-script); font-size: 1.5rem; margin-bottom: 1rem;">Click for Confetti!</h3>
-                    <button class="btn btn-primary" id="confettiBtn">Celebrate!</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==========================================
-             FOOTER
-             ========================================== -->
-        <footer class="section" style="min-height: auto; padding: 2rem;">
-            <div class="section-content" style="text-align: center;">
-                <p style="font-family: var(--font-script); font-size: 1.5rem; margin-bottom: 0.5rem;">Alina & Ben</p>
-                <p style="font-size: 0.75rem; opacity: 0.5;">29.08.2026 &bull; Great Keppel Island</p>
-            </div>
-        </footer>
+        <div class="loading" style="text-align: center; padding: 4rem; font-family: system-ui;">Loading...</div>
     </div>
 
     <script>
         // ==========================================
-        // VERSION & DEBUG
+        // SECTION LOADER
         // ==========================================
-        const VERSION = 'v0.3.0';
-        let DEBUG_MODE = false;
-
-        const debugOverlay = document.getElementById('debugOverlay');
-        const debugVersion = document.getElementById('debugVersion');
-        const debugSection = document.getElementById('debugSection');
-        const debugScroll = document.getElementById('debugScroll');
-        const debugViewport = document.getElementById('debugViewport');
-        const debugContainer = document.getElementById('debugContainer');
-        const versionBadge = document.getElementById('versionBadge');
-        const pageContainer = document.getElementById('pageContainer');
-
-        debugVersion.textContent = VERSION;
-        versionBadge.textContent = VERSION;
-
-        // Calculate container width like index.html
-        function updateContainerWidth() {
-            const aspectW = 9;
-            const aspectH = 16;
-            const vw = window.innerWidth;
-            const vh = window.innerHeight;
-
-            // Fit container in viewport while maintaining aspect ratio
-            const mainWidth = Math.min(vw, vh * aspectW / aspectH);
-
-            document.documentElement.style.setProperty('--main-width', mainWidth + 'px');
-
-            if (DEBUG_MODE && debugContainer) {
-                debugContainer.textContent = Math.round(mainWidth) + 'px';
-            }
-        }
-
-        function updateDebug() {
-            if (!DEBUG_MODE) return;
-            const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100).toFixed(1);
-            debugScroll.textContent = scrollPercent + '%';
-            debugViewport.textContent = window.innerWidth + 'x' + window.innerHeight;
-            updateContainerWidth();
-        }
-
-        function toggleDebug() {
-            DEBUG_MODE = !DEBUG_MODE;
-            debugOverlay.classList.toggle('visible', DEBUG_MODE);
-            document.body.classList.toggle('debug-mode', DEBUG_MODE);
-            if (DEBUG_MODE) updateDebug();
-        }
-
-        // Toggle with 'D' key
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'd' || e.key === 'D') toggleDebug();
-        });
-
-        // Triple-tap for mobile
-        let tapCount = 0;
-        let tapTimeout = null;
-        document.addEventListener('touchend', (e) => {
-            if (e.changedTouches.length !== 1) return;
-            tapCount++;
-            if (tapCount === 3) {
-                toggleDebug();
-                tapCount = 0;
-                clearTimeout(tapTimeout);
-            } else {
-                clearTimeout(tapTimeout);
-                tapTimeout = setTimeout(() => { tapCount = 0; }, 400);
-            }
-        }, { passive: true });
-
-        // ==========================================
-        // COUNTDOWN TIMER
-        // ==========================================
-        const weddingDate = new Date('2026-08-29T16:00:00+10:00'); // 4pm AEST
-
-        function updateCountdown() {
-            const now = new Date();
-            const diff = weddingDate - now;
-
-            if (diff <= 0) {
-                document.getElementById('days').textContent = '0';
-                document.getElementById('hours').textContent = '0';
-                document.getElementById('minutes').textContent = '0';
-                document.getElementById('seconds').textContent = '0';
-                return;
-            }
-
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-            document.getElementById('days').textContent = days;
-            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-        }
-
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
-
-        // ==========================================
-        // SCROLL ANIMATIONS
-        // ==========================================
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        // Observe all fade-in elements
-        document.querySelectorAll('.fade-in, .timeline-item').forEach(el => {
-            observer.observe(el);
-        });
-
-        // ==========================================
-        // NAVIGATION
-        // ==========================================
-        const mainNav = document.getElementById('mainNav');
-        const navToggle = document.getElementById('navToggle');
-        const navMenu = document.getElementById('navMenu');
-        const navLinks = document.querySelectorAll('.nav-link');
-        const quickNavItems = document.querySelectorAll('.quick-nav-item');
-        let lastScrollY = 0;
-        let isMenuOpen = false;
-
-        // Toggle mobile menu
-        navToggle.addEventListener('click', () => {
-            isMenuOpen = !isMenuOpen;
-            navToggle.classList.toggle('active', isMenuOpen);
-            navMenu.classList.toggle('active', isMenuOpen);
-            document.body.style.overflow = isMenuOpen ? 'hidden' : '';
-        });
-
-        // Close menu when clicking a link
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                if (isMenuOpen) {
-                    isMenuOpen = false;
-                    navToggle.classList.remove('active');
-                    navMenu.classList.remove('active');
-                    document.body.style.overflow = '';
-                }
-            });
-        });
-
-        // Hide/show nav on scroll
-        let scrollTimeout;
-        window.addEventListener('scroll', () => {
-            const currentScrollY = window.scrollY;
-
-            // Add shadow when scrolled
-            mainNav.classList.toggle('scrolled', currentScrollY > 50);
-
-            lastScrollY = currentScrollY;
-        }, { passive: true });
-
-        // ==========================================
-        // SECTION TRACKING (for nav & debug)
-        // ==========================================
-        const sections = document.querySelectorAll('.section[id]');
-
-        // Map subsections to main nav sections
-        const sectionMapping = {
-            'hero': 'hero',
-            'rsvp': 'rsvp',
-            'accommodation': 'accommodation',
-            'getting-there': 'getting-there',
-            'faq': 'faq',
-            'our-story': 'our-story',
-            'story': 'our-story',
-            'funfacts': 'our-story',
-            'game': 'our-story',
-            'gallery': 'our-story',
-            'dress': 'our-story',
-            'weather': 'our-story',
-            'playlist': 'our-story',
-            'surprise': 'our-story',
-            'confetti-section': 'our-story'
-        };
-
-        const sectionObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const id = entry.target.id;
-                    const mappedSection = sectionMapping[id] || id;
-
-                    // Update debug
-                    if (DEBUG_MODE) {
-                        debugSection.textContent = id;
-                    }
-
-                    // Update nav links
-                    navLinks.forEach(link => {
-                        const href = link.getAttribute('href').slice(1);
-                        link.classList.toggle('active', href === mappedSection);
-                    });
-
-                    // Update quick nav
-                    quickNavItems.forEach(item => {
-                        const section = item.dataset.section;
-                        item.classList.toggle('active', section === mappedSection);
-                    });
-                }
-            });
-        }, { threshold: 0.3 });
-
-        sections.forEach(section => sectionObserver.observe(section));
-
-        // ==========================================
-        // FAQ ACCORDION
-        // ==========================================
-        document.querySelectorAll('.faq-question').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const item = btn.parentElement;
-                const isOpen = item.classList.contains('open');
-
-                // Close all others
-                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-
-                // Toggle current
-                if (!isOpen) {
-                    item.classList.add('open');
-                }
-            });
-        });
-
-        // ==========================================
-        // WHO SAID IT GAME
-        // ==========================================
-        const quotes = [
-            { text: "I can't believe you actually ate that!", answer: "alina" },
-            { text: "Just five more minutes of sleep...", answer: "ben" },
-            { text: "We should get a dog... and name it Potato.", answer: "alina" },
-            { text: "Is it too early for pizza?", answer: "ben" },
-            { text: "I told you we should have turned left!", answer: "alina" },
-            { text: "Let's watch just ONE more episode.", answer: "ben" },
+        const SECTIONS = [
+            'hero',
+            'rsvp',
+            'accommodation',
+            'getting-there',
+            'faq',
+            'our-story',
+            'story',
+            'funfacts',
+            'game',
+            'gallery',
+            'dress',
+            'weather',
+            'playlist',
+            'surprise',
+            'confetti',
+            'footer'
         ];
 
-        let currentQuote = 0;
-        let gameScore = 0;
-        let gameTotal = 0;
+        async function loadSections() {
+            const container = document.getElementById('pageContainer');
+            container.innerHTML = '';
 
-        const gameQuote = document.getElementById('gameQuote');
-        const gameOptions = document.getElementById('gameOptions');
-        const gameScoreEl = document.getElementById('gameScore');
-        const gameTotalEl = document.getElementById('gameTotal');
-        const nextQuoteBtn = document.getElementById('nextQuote');
-
-        function loadQuote() {
-            if (currentQuote >= quotes.length) {
-                gameQuote.textContent = `Game Over! You got ${gameScore}/${gameTotal} correct!`;
-                gameOptions.style.display = 'none';
-                nextQuoteBtn.textContent = 'Play Again';
-                nextQuoteBtn.style.display = 'block';
-                nextQuoteBtn.onclick = () => {
-                    currentQuote = 0;
-                    gameScore = 0;
-                    gameTotal = 0;
-                    gameScoreEl.textContent = '0';
-                    gameTotalEl.textContent = '0';
-                    gameOptions.style.display = 'flex';
-                    loadQuote();
-                };
-                return;
+            for (const section of SECTIONS) {
+                try {
+                    const response = await fetch(`sections/${section}.html`);
+                    if (response.ok) {
+                        const html = await response.text();
+                        container.insertAdjacentHTML('beforeend', html);
+                    }
+                } catch (e) {
+                    console.warn(`Failed to load section: ${section}`, e);
+                }
             }
 
-            gameQuote.textContent = `"${quotes[currentQuote].text}"`;
-            gameOptions.querySelectorAll('.game-option').forEach(btn => {
-                btn.classList.remove('correct', 'wrong');
-                btn.disabled = false;
-            });
-            nextQuoteBtn.style.display = 'none';
+            // Initialize all interactive features after sections are loaded
+            initializeFeatures();
         }
 
-        gameOptions.querySelectorAll('.game-option').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const answer = btn.dataset.answer;
-                const correct = quotes[currentQuote].answer;
+        function initializeFeatures() {
+            // ==========================================
+            // VERSION & DEBUG
+            // ==========================================
+            const VERSION = 'v0.4.0';
+            let DEBUG_MODE = false;
 
-                gameTotal++;
-                gameTotalEl.textContent = gameTotal;
+            const debugOverlay = document.getElementById('debugOverlay');
+            const debugVersion = document.getElementById('debugVersion');
+            const debugSection = document.getElementById('debugSection');
+            const debugScroll = document.getElementById('debugScroll');
+            const debugViewport = document.getElementById('debugViewport');
+            const debugContainer = document.getElementById('debugContainer');
+            const versionBadge = document.getElementById('versionBadge');
+            const pageContainer = document.getElementById('pageContainer');
 
-                if (answer === correct) {
-                    btn.classList.add('correct');
-                    gameScore++;
-                    gameScoreEl.textContent = gameScore;
+            debugVersion.textContent = VERSION;
+            versionBadge.textContent = VERSION;
+
+            function updateContainerWidth() {
+                const aspectW = 9;
+                const aspectH = 16;
+                const vw = window.innerWidth;
+                const vh = window.innerHeight;
+                const mainWidth = Math.min(vw, vh * aspectW / aspectH);
+                document.documentElement.style.setProperty('--main-width', mainWidth + 'px');
+                if (DEBUG_MODE && debugContainer) {
+                    debugContainer.textContent = Math.round(mainWidth) + 'px';
+                }
+            }
+
+            function updateDebug() {
+                if (!DEBUG_MODE) return;
+                const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100).toFixed(1);
+                debugScroll.textContent = scrollPercent + '%';
+                debugViewport.textContent = window.innerWidth + 'x' + window.innerHeight;
+                updateContainerWidth();
+            }
+
+            window.toggleDebug = function() {
+                DEBUG_MODE = !DEBUG_MODE;
+                debugOverlay.classList.toggle('visible', DEBUG_MODE);
+                document.body.classList.toggle('debug-mode', DEBUG_MODE);
+                if (DEBUG_MODE) updateDebug();
+            };
+
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'd' || e.key === 'D') window.toggleDebug();
+            });
+
+            let tapCount = 0;
+            let tapTimeout = null;
+            document.addEventListener('touchend', (e) => {
+                if (e.changedTouches.length !== 1) return;
+                tapCount++;
+                if (tapCount === 3) {
+                    window.toggleDebug();
+                    tapCount = 0;
+                    clearTimeout(tapTimeout);
                 } else {
-                    btn.classList.add('wrong');
-                    // Show correct answer
-                    gameOptions.querySelector(`[data-answer="${correct}"]`).classList.add('correct');
+                    clearTimeout(tapTimeout);
+                    tapTimeout = setTimeout(() => { tapCount = 0; }, 400);
                 }
+            }, { passive: true });
 
-                gameOptions.querySelectorAll('.game-option').forEach(b => b.disabled = true);
-                currentQuote++;
-                nextQuoteBtn.style.display = 'block';
-                nextQuoteBtn.onclick = loadQuote;
-            });
-        });
+            // ==========================================
+            // COUNTDOWN TIMER
+            // ==========================================
+            const weddingDate = new Date('2026-08-29T16:00:00+10:00');
 
-        loadQuote();
+            function updateCountdown() {
+                const now = new Date();
+                const diff = weddingDate - now;
+                const daysEl = document.getElementById('days');
+                const hoursEl = document.getElementById('hours');
+                const minutesEl = document.getElementById('minutes');
+                const secondsEl = document.getElementById('seconds');
 
-        // ==========================================
-        // RSVP FORM
-        // ==========================================
-        const form = document.getElementById('rsvpForm');
-        const conditionalFields = document.getElementById('conditionalFields');
-        const attendingYes = document.getElementById('attending-yes');
-        const attendingNo = document.getElementById('attending-no');
-        const successMessage = document.getElementById('successMessage');
+                if (!daysEl) return;
 
-        function updateConditionalFields() {
-            conditionalFields.classList.toggle('visible', attendingYes.checked);
-        }
-
-        attendingYes.addEventListener('change', updateConditionalFields);
-        attendingNo.addEventListener('change', updateConditionalFields);
-
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const googleFormURL = 'https://docs.google.com/forms/d/e/1FAIpQLSeEXUQYJv8zKuWFn1eND0zERz17sdyGkNXtflutpaCvvVouHQ/formResponse';
-
-            const isAttending = attendingYes.checked;
-
-            if (isAttending) {
-                let firstMissing = null;
-                const textFields = ['dietary', 'advice', 'funfact'];
-                for (const id of textFields) {
-                    const el = document.getElementById(id);
-                    if (!el.value.trim()) {
-                        el.style.borderColor = '#f44336';
-                        if (!firstMissing) firstMissing = el;
-                    } else {
-                        el.style.borderColor = '';
-                    }
-                }
-                const taxiCheck = document.querySelector('input[name="taxi"]:checked');
-                document.querySelectorAll('input[name="taxi"] + label').forEach(l => {
-                    l.style.borderColor = taxiCheck ? '' : '#f44336';
-                });
-                if (!taxiCheck && !firstMissing) {
-                    firstMissing = document.getElementById('taxi-yes').parentElement;
-                }
-                if (firstMissing) {
-                    firstMissing.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    if (firstMissing.focus) firstMissing.focus();
+                if (diff <= 0) {
+                    daysEl.textContent = '0';
+                    hoursEl.textContent = '0';
+                    minutesEl.textContent = '0';
+                    secondsEl.textContent = '0';
                     return;
                 }
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                daysEl.textContent = days;
+                hoursEl.textContent = hours.toString().padStart(2, '0');
+                minutesEl.textContent = minutes.toString().padStart(2, '0');
+                secondsEl.textContent = seconds.toString().padStart(2, '0');
             }
 
-            const taxiSelection = document.querySelector('input[name="taxi"]:checked');
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
 
-            const formData = new URLSearchParams();
-            formData.append('entry.914100677', document.getElementById('name').value);
-            formData.append('entry.10330436', document.getElementById('email').value);
-            formData.append('entry.192864424', isAttending ? 'Yes' : 'No');
-            formData.append('entry.114598700', document.getElementById('guestnames').value);
-            formData.append('entry.392379933', document.getElementById('dietary').value);
-            formData.append('entry.975655166', taxiSelection ? taxiSelection.value : '');
-            formData.append('entry.878000076', document.getElementById('song').value);
-            formData.append('entry.1143246083', document.getElementById('advice').value);
-            formData.append('entry.1106183209', document.getElementById('funfact').value);
-            formData.append('entry.2119301072', document.getElementById('otherquestion').value);
+            // ==========================================
+            // SCROLL ANIMATIONS
+            // ==========================================
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-            fetch(googleFormURL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: formData.toString()
-            }).then(() => {
-                form.style.display = 'none';
-                successMessage.classList.add('visible');
-            }).catch(() => {
-                // no-cors requests always succeed from the browser's perspective
-                form.style.display = 'none';
-                successMessage.classList.add('visible');
+            document.querySelectorAll('.fade-in, .timeline-item').forEach(el => {
+                observer.observe(el);
             });
-        });
 
-        // ==========================================
-        // SHAKE TO REVEAL
-        // ==========================================
-        const shakeReveal = document.getElementById('shakeReveal');
-        let shakeThreshold = 15;
-        let lastX = null, lastY = null, lastZ = null;
+            // ==========================================
+            // NAVIGATION
+            // ==========================================
+            const mainNav = document.getElementById('mainNav');
+            const navToggle = document.getElementById('navToggle');
+            const navMenu = document.getElementById('navMenu');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const quickNavItems = document.querySelectorAll('.quick-nav-item');
+            let isMenuOpen = false;
 
-        // Shake detection
-        if (window.DeviceMotionEvent) {
-            window.addEventListener('devicemotion', (e) => {
-                const acc = e.accelerationIncludingGravity;
-                if (!acc) return;
+            navToggle.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                navToggle.classList.toggle('active', isMenuOpen);
+                navMenu.classList.toggle('active', isMenuOpen);
+                document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+            });
 
-                if (lastX !== null) {
-                    const deltaX = Math.abs(acc.x - lastX);
-                    const deltaY = Math.abs(acc.y - lastY);
-                    const deltaZ = Math.abs(acc.z - lastZ);
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (isMenuOpen) {
+                        isMenuOpen = false;
+                        navToggle.classList.remove('active');
+                        navMenu.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            });
 
-                    if (deltaX + deltaY + deltaZ > shakeThreshold) {
-                        shakeReveal.classList.add('revealed');
+            window.addEventListener('scroll', () => {
+                mainNav.classList.toggle('scrolled', window.scrollY > 50);
+            }, { passive: true });
+
+            // ==========================================
+            // SECTION TRACKING
+            // ==========================================
+            const sections = document.querySelectorAll('.section[id]');
+            const sectionMapping = {
+                'hero': 'hero',
+                'rsvp': 'rsvp',
+                'accommodation': 'accommodation',
+                'getting-there': 'getting-there',
+                'faq': 'faq',
+                'our-story': 'our-story',
+                'story': 'our-story',
+                'funfacts': 'our-story',
+                'game': 'our-story',
+                'gallery': 'our-story',
+                'dress': 'our-story',
+                'weather': 'our-story',
+                'playlist': 'our-story',
+                'surprise': 'our-story',
+                'confetti-section': 'our-story'
+            };
+
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.id;
+                        const mappedSection = sectionMapping[id] || id;
+
+                        if (DEBUG_MODE) debugSection.textContent = id;
+
+                        navLinks.forEach(link => {
+                            const href = link.getAttribute('href').slice(1);
+                            link.classList.toggle('active', href === mappedSection);
+                        });
+
+                        quickNavItems.forEach(item => {
+                            item.classList.toggle('active', item.dataset.section === mappedSection);
+                        });
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            sections.forEach(section => sectionObserver.observe(section));
+
+            // ==========================================
+            // FAQ ACCORDION
+            // ==========================================
+            document.querySelectorAll('.faq-question').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const item = btn.parentElement;
+                    const isOpen = item.classList.contains('open');
+                    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+                    if (!isOpen) item.classList.add('open');
+                });
+            });
+
+            // ==========================================
+            // WHO SAID IT GAME
+            // ==========================================
+            const gameQuote = document.getElementById('gameQuote');
+            const gameOptions = document.getElementById('gameOptions');
+            const gameScoreEl = document.getElementById('gameScore');
+            const gameTotalEl = document.getElementById('gameTotal');
+            const nextQuoteBtn = document.getElementById('nextQuote');
+
+            if (gameQuote && gameOptions) {
+                const quotes = [
+                    { text: "I can't believe you actually ate that!", answer: "alina" },
+                    { text: "Just five more minutes of sleep...", answer: "ben" },
+                    { text: "We should get a dog... and name it Potato.", answer: "alina" },
+                    { text: "Is it too early for pizza?", answer: "ben" },
+                    { text: "I told you we should have turned left!", answer: "alina" },
+                    { text: "Let's watch just ONE more episode.", answer: "ben" },
+                ];
+
+                let currentQuote = 0;
+                let gameScore = 0;
+                let gameTotal = 0;
+
+                function loadQuote() {
+                    if (currentQuote >= quotes.length) {
+                        gameQuote.textContent = `Game Over! You got ${gameScore}/${gameTotal} correct!`;
+                        gameOptions.style.display = 'none';
+                        nextQuoteBtn.textContent = 'Play Again';
+                        nextQuoteBtn.style.display = 'block';
+                        nextQuoteBtn.onclick = () => {
+                            currentQuote = 0;
+                            gameScore = 0;
+                            gameTotal = 0;
+                            gameScoreEl.textContent = '0';
+                            gameTotalEl.textContent = '0';
+                            gameOptions.style.display = 'flex';
+                            loadQuote();
+                        };
+                        return;
+                    }
+
+                    gameQuote.textContent = `"${quotes[currentQuote].text}"`;
+                    gameOptions.querySelectorAll('.game-option').forEach(btn => {
+                        btn.classList.remove('correct', 'wrong');
+                        btn.disabled = false;
+                    });
+                    nextQuoteBtn.style.display = 'none';
+                }
+
+                gameOptions.querySelectorAll('.game-option').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const answer = btn.dataset.answer;
+                        const correct = quotes[currentQuote].answer;
+
+                        gameTotal++;
+                        gameTotalEl.textContent = gameTotal;
+
+                        if (answer === correct) {
+                            btn.classList.add('correct');
+                            gameScore++;
+                            gameScoreEl.textContent = gameScore;
+                        } else {
+                            btn.classList.add('wrong');
+                            gameOptions.querySelector(`[data-answer="${correct}"]`).classList.add('correct');
+                        }
+
+                        gameOptions.querySelectorAll('.game-option').forEach(b => b.disabled = true);
+                        currentQuote++;
+                        nextQuoteBtn.style.display = 'block';
+                        nextQuoteBtn.onclick = loadQuote;
+                    });
+                });
+
+                loadQuote();
+            }
+
+            // ==========================================
+            // RSVP FORM
+            // ==========================================
+            const form = document.getElementById('rsvpForm');
+            const conditionalFields = document.getElementById('conditionalFields');
+            const attendingYes = document.getElementById('attending-yes');
+            const attendingNo = document.getElementById('attending-no');
+            const successMessage = document.getElementById('successMessage');
+
+            if (form && attendingYes) {
+                function updateConditionalFields() {
+                    conditionalFields.classList.toggle('visible', attendingYes.checked);
+                }
+
+                attendingYes.addEventListener('change', updateConditionalFields);
+                attendingNo.addEventListener('change', updateConditionalFields);
+
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    const googleFormURL = 'https://docs.google.com/forms/d/e/1FAIpQLSeEXUQYJv8zKuWFn1eND0zERz17sdyGkNXtflutpaCvvVouHQ/formResponse';
+                    const isAttending = attendingYes.checked;
+
+                    if (isAttending) {
+                        let firstMissing = null;
+                        const textFields = ['dietary', 'advice', 'funfact'];
+                        for (const id of textFields) {
+                            const el = document.getElementById(id);
+                            if (!el.value.trim()) {
+                                el.style.borderColor = '#f44336';
+                                if (!firstMissing) firstMissing = el;
+                            } else {
+                                el.style.borderColor = '';
+                            }
+                        }
+                        const taxiCheck = document.querySelector('input[name="taxi"]:checked');
+                        document.querySelectorAll('input[name="taxi"] + label').forEach(l => {
+                            l.style.borderColor = taxiCheck ? '' : '#f44336';
+                        });
+                        if (!taxiCheck && !firstMissing) {
+                            firstMissing = document.getElementById('taxi-yes').parentElement;
+                        }
+                        if (firstMissing) {
+                            firstMissing.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            if (firstMissing.focus) firstMissing.focus();
+                            return;
+                        }
+                    }
+
+                    const taxiSelection = document.querySelector('input[name="taxi"]:checked');
+
+                    const formData = new URLSearchParams();
+                    formData.append('entry.914100677', document.getElementById('name').value);
+                    formData.append('entry.10330436', document.getElementById('email').value);
+                    formData.append('entry.192864424', isAttending ? 'Yes' : 'No');
+                    formData.append('entry.114598700', document.getElementById('guestnames').value);
+                    formData.append('entry.392379933', document.getElementById('dietary').value);
+                    formData.append('entry.975655166', taxiSelection ? taxiSelection.value : '');
+                    formData.append('entry.878000076', document.getElementById('song').value);
+                    formData.append('entry.1143246083', document.getElementById('advice').value);
+                    formData.append('entry.1106183209', document.getElementById('funfact').value);
+                    formData.append('entry.2119301072', document.getElementById('otherquestion').value);
+
+                    fetch(googleFormURL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: formData.toString()
+                    }).then(() => {
+                        form.style.display = 'none';
+                        successMessage.classList.add('visible');
+                    }).catch(() => {
+                        form.style.display = 'none';
+                        successMessage.classList.add('visible');
+                    });
+                });
+            }
+
+            // ==========================================
+            // SHAKE TO REVEAL
+            // ==========================================
+            const shakeReveal = document.getElementById('shakeReveal');
+            if (shakeReveal) {
+                let shakeThreshold = 15;
+                let lastX = null, lastY = null, lastZ = null;
+
+                if (window.DeviceMotionEvent) {
+                    window.addEventListener('devicemotion', (e) => {
+                        const acc = e.accelerationIncludingGravity;
+                        if (!acc) return;
+
+                        if (lastX !== null) {
+                            const deltaX = Math.abs(acc.x - lastX);
+                            const deltaY = Math.abs(acc.y - lastY);
+                            const deltaZ = Math.abs(acc.z - lastZ);
+
+                            if (deltaX + deltaY + deltaZ > shakeThreshold) {
+                                shakeReveal.classList.add('revealed');
+                            }
+                        }
+
+                        lastX = acc.x;
+                        lastY = acc.y;
+                        lastZ = acc.z;
+                    });
+                }
+
+                shakeReveal.addEventListener('click', () => {
+                    shakeReveal.classList.add('revealed');
+                });
+            }
+
+            // ==========================================
+            // CONFETTI
+            // ==========================================
+            const confettiBtn = document.getElementById('confettiBtn');
+            const confettiArea = document.getElementById('confettiArea');
+
+            if (confettiBtn && confettiArea) {
+                function createConfetti() {
+                    const colors = ['#cc5496', '#e87fb9', '#ffd700', '#87CEEB', '#ff6b6b', '#4CAF50'];
+
+                    for (let i = 0; i < 50; i++) {
+                        const confetti = document.createElement('div');
+                        confetti.className = 'confetti';
+                        confetti.style.left = Math.random() * 100 + '%';
+                        confetti.style.top = '-10px';
+                        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                        confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                        confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+
+                        confettiArea.appendChild(confetti);
+
+                        const animation = confetti.animate([
+                            { transform: `translateY(0) rotate(0deg)`, opacity: 1 },
+                            { transform: `translateY(${confettiArea.offsetHeight + 50}px) rotate(${720 + Math.random() * 360}deg)`, opacity: 0 }
+                        ], {
+                            duration: 2000 + Math.random() * 1000,
+                            easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                        });
+
+                        animation.onfinish = () => confetti.remove();
                     }
                 }
 
-                lastX = acc.x;
-                lastY = acc.y;
-                lastZ = acc.z;
-            });
-        }
+                confettiBtn.addEventListener('click', createConfetti);
+            }
 
-        // Click fallback
-        shakeReveal.addEventListener('click', () => {
-            shakeReveal.classList.add('revealed');
-        });
+            // ==========================================
+            // PARALLAX EFFECT
+            // ==========================================
+            const parallaxElements = document.querySelectorAll('.parallax-element');
 
-        // ==========================================
-        // CONFETTI
-        // ==========================================
-        const confettiBtn = document.getElementById('confettiBtn');
-        const confettiArea = document.getElementById('confettiArea');
-
-        function createConfetti() {
-            const colors = ['#cc5496', '#e87fb9', '#ffd700', '#87CEEB', '#ff6b6b', '#4CAF50'];
-
-            for (let i = 0; i < 50; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + '%';
-                confetti.style.top = '-10px';
-                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
-                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-
-                confettiArea.appendChild(confetti);
-
-                // Animate
-                const animation = confetti.animate([
-                    { transform: `translateY(0) rotate(0deg)`, opacity: 1 },
-                    { transform: `translateY(${confettiArea.offsetHeight + 50}px) rotate(${720 + Math.random() * 360}deg)`, opacity: 0 }
-                ], {
-                    duration: 2000 + Math.random() * 1000,
-                    easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+            window.addEventListener('scroll', () => {
+                const scrollY = window.scrollY;
+                parallaxElements.forEach((el, i) => {
+                    const speed = 0.1 + (i * 0.05);
+                    el.style.transform = `translateY(${scrollY * speed}px)`;
                 });
 
-                animation.onfinish = () => confetti.remove();
-            }
+                if (DEBUG_MODE) updateDebug();
+            }, { passive: true });
+
+            // ==========================================
+            // LIGHTBOX
+            // ==========================================
+            const lightbox = document.getElementById('lightbox');
+            const lightboxContent = document.getElementById('lightboxContent');
+
+            document.querySelectorAll('.gallery-item, .timeline-photo').forEach(item => {
+                item.addEventListener('click', () => {
+                    lightboxContent.innerHTML = `<p style="font-size: 1.2rem;">&#128247; Photo viewer coming soon!</p><p style="margin-top: 0.5rem; opacity: 0.7;">Click anywhere to close</p>`;
+                    lightbox.classList.add('active');
+                });
+            });
+
+            lightbox.addEventListener('click', () => {
+                lightbox.classList.remove('active');
+            });
+
+            // ==========================================
+            // RESIZE HANDLER
+            // ==========================================
+            window.addEventListener('resize', () => {
+                updateContainerWidth();
+                if (DEBUG_MODE) updateDebug();
+            }, { passive: true });
+
+            updateContainerWidth();
+            updateDebug();
         }
 
-        confettiBtn.addEventListener('click', createConfetti);
-
-        // ==========================================
-        // PARALLAX EFFECT
-        // ==========================================
-        const parallaxElements = document.querySelectorAll('.parallax-element');
-
-        window.addEventListener('scroll', () => {
-            const scrollY = window.scrollY;
-            parallaxElements.forEach((el, i) => {
-                const speed = 0.1 + (i * 0.05);
-                el.style.transform = `translateY(${scrollY * speed}px)`;
-            });
-
-            if (DEBUG_MODE) updateDebug();
-        }, { passive: true });
-
-        // ==========================================
-        // LIGHTBOX
-        // ==========================================
-        const lightbox = document.getElementById('lightbox');
-        const lightboxContent = document.getElementById('lightboxContent');
-
-        document.querySelectorAll('.gallery-item, .timeline-photo').forEach(item => {
-            item.addEventListener('click', () => {
-                lightboxContent.innerHTML = `<p style="font-size: 1.2rem;">&#128247; Photo viewer coming soon!</p><p style="margin-top: 0.5rem; opacity: 0.7;">Click anywhere to close</p>`;
-                lightbox.classList.add('active');
-            });
-        });
-
-        lightbox.addEventListener('click', () => {
-            lightbox.classList.remove('active');
-        });
-
-        // ==========================================
-        // RESIZE HANDLER
-        // ==========================================
-        window.addEventListener('resize', () => {
-            updateContainerWidth();
-            if (DEBUG_MODE) updateDebug();
-        }, { passive: true });
-
-        // Initial setup
-        updateContainerWidth();
-        updateDebug();
+        // Load sections when page is ready
+        loadSections();
     </script>
 </body>
 </html>
