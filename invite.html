@@ -175,7 +175,11 @@
             };
 
             window.addEventListener('keydown', (e) => {
-                if (e.key === 'd' || e.key === 'D') window.toggleDebug();
+                // Ctrl+Shift+D to toggle debug (won't trigger when typing)
+                if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'd' || e.key === 'D')) {
+                    e.preventDefault();
+                    window.toggleDebug();
+                }
             });
 
             let tapCount = 0;
