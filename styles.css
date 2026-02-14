@@ -1161,6 +1161,14 @@
             color: var(--color-accent);
         }
 
+        .nav-countdown {
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            color: var(--color-accent);
+            margin-left: auto;
+            margin-right: 1rem;
+        }
+
         /* Hamburger button */
         .nav-toggle {
             display: flex;
@@ -1479,4 +1487,80 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+        }
+
+        /* ==========================================
+           ACCOMMODATION MAP
+           ========================================== */
+        .accommodation-map-container {
+            position: relative;
+            margin: 2rem auto 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .accommodation-map-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .accommodation-map-img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .map-zoom-hint {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.6));
+            color: white;
+            text-align: center;
+            padding: 1.5rem 1rem 0.75rem;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .accommodation-map-container:hover .map-zoom-hint {
+            opacity: 1;
+        }
+
+        /* Accommodation Map Lightbox */
+        .accommodation-lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            cursor: pointer;
+        }
+
+        .accommodation-lightbox.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .accommodation-lightbox-img {
+            max-width: 95%;
+            max-height: 95%;
+            object-fit: contain;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .accommodation-lightbox.active .accommodation-lightbox-img {
+            transform: scale(1);
         }

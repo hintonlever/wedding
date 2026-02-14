@@ -39,6 +39,7 @@
         <div class="nav-container">
             <!-- This the default section -->
             <a href="#rsvp" class="nav-logo">A <span>&</span> B</a>
+            <span class="nav-countdown" id="navDaysToGo"></span>
             <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
                 <span></span>
             </button>
@@ -47,7 +48,7 @@
                 <a href="#getting-there" class="nav-link"><span class="nav-link-icon">&#9992;&#65039;</span>Getting There</a>
                 <a href="#accommodation" class="nav-link"><span class="nav-link-icon">&#127968;</span>Accommodation</a>
                 <a href="#faq" class="nav-link"><span class="nav-link-icon">&#10067;</span>Questions</a>
-                <a href="#our-story" class="nav-link"><span class="nav-link-icon">&#128149;</span>Our Story</a>
+                <a href="#timeline" class="nav-link"><span class="nav-link-icon">&#128149;</span>Our Story</a>
             </div>
         </div>
     </nav>
@@ -70,7 +71,7 @@
             <span class="quick-nav-icon">&#10067;</span>
             FAQ
         </a>
-        <a href="#our-story" class="quick-nav-item" data-section="our-story">
+        <a href="#timeline" class="quick-nav-item" data-section="our-story">
             <span class="quick-nav-icon">&#128149;</span>
             Story
         </a>
@@ -96,8 +97,7 @@
             'getting-there',
             'accommodation',
             'faq',
-            'our-story',
-            'story',
+            'timeline',
             'funfacts',
             'game',
             'gallery',
@@ -205,34 +205,24 @@
             function updateCountdown() {
                 const now = new Date();
                 const diff = weddingDate - now;
-                const daysEl = document.getElementById('days');
-                const hoursEl = document.getElementById('hours');
-                const minutesEl = document.getElementById('minutes');
-                const secondsEl = document.getElementById('seconds');
+                const navDaysEl = document.getElementById('navDaysToGo');
+                const footerDaysEl = document.getElementById('days');
 
-                if (!daysEl) return;
+                const days = diff <= 0 ? 0 : Math.floor(diff / (1000 * 60 * 60 * 24));
 
-                if (diff <= 0) {
-                    daysEl.textContent = '0';
-                    hoursEl.textContent = '0';
-                    minutesEl.textContent = '0';
-                    secondsEl.textContent = '0';
-                    return;
+                // Update nav banner countdown
+                if (navDaysEl) {
+                    navDaysEl.textContent = days + ' days to go';
                 }
 
-                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-                daysEl.textContent = days;
-                hoursEl.textContent = hours.toString().padStart(2, '0');
-                minutesEl.textContent = minutes.toString().padStart(2, '0');
-                secondsEl.textContent = seconds.toString().padStart(2, '0');
+                // Update footer countdown (days only)
+                if (footerDaysEl) {
+                    footerDaysEl.textContent = days;
+                }
             }
 
             updateCountdown();
-            setInterval(updateCountdown, 1000);
+            setInterval(updateCountdown, 60000); // Update every minute (days don't change often)
 
             // ==========================================
             // SCROLL ANIMATIONS
@@ -290,15 +280,9 @@
                 'getting-there': 'getting-there',
                 'accommodation': 'accommodation',
                 'faq': 'faq',
-                'our-story': 'our-story',
-                'story': 'our-story',
-                'funfacts': 'our-story',
-                'game': 'our-story',
+                'timeline': 'our-story',
                 'gallery': 'our-story',
-                'dress': 'our-story',
-                'playlist': 'our-story',
-                'surprise': 'our-story',
-                'confetti-section': 'our-story'
+                'surprise': 'our-story'
             };
 
             const sectionObserver = new IntersectionObserver((entries) => {
