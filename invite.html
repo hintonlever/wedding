@@ -44,6 +44,7 @@
                 <span></span>
             </button>
             <div class="nav-menu" id="navMenu">
+                <a href="#wedding" class="nav-link"><span class="nav-link-icon">&#128141;</span>Wedding</a>
                 <a href="#rsvp" class="nav-link"><span class="nav-link-icon">&#128140;</span>RSVP</a>
                 <a href="#getting-there" class="nav-link"><span class="nav-link-icon">&#9992;&#65039;</span>Getting There</a>
                 <a href="#accommodation" class="nav-link"><span class="nav-link-icon">&#127968;</span>Accommodation</a>
@@ -55,6 +56,10 @@
 
     <!-- Quick nav for mobile (bottom bar) -->
     <nav class="quick-nav" id="quickNav">
+        <a href="#wedding" class="quick-nav-item" data-section="wedding">
+            <span class="quick-nav-icon">&#128141;</span>
+            Wedding
+        </a>
         <a href="#rsvp" class="quick-nav-item" data-section="rsvp">
             <span class="quick-nav-icon">&#128140;</span>
             RSVP
@@ -93,6 +98,7 @@
         // SECTION LOADER
         // ==========================================
         const SECTIONS = [
+            'wedding',
             'rsvp',
             'getting-there',
             'accommodation',
