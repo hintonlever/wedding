@@ -592,16 +592,53 @@
             // ==========================================
             const lightbox = document.getElementById('lightbox');
             const lightboxContent = document.getElementById('lightboxContent');
+            const lightboxClose = document.querySelector('.lightbox-close');
 
-            document.querySelectorAll('.gallery-item, .timeline-photo').forEach(item => {
-                item.addEventListener('click', () => {
-                    lightboxContent.innerHTML = `<p style="font-size: 1.2rem;">&#128247; Photo viewer coming soon!</p><p style="margin-top: 0.5rem; opacity: 0.7;">Click anywhere to close</p>`;
-                    lightbox.classList.add('active');
+            function closeLightbox() {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            function openLightbox(imgSrc, imgAlt) {
+                if (imgSrc) {
+                    lightboxContent.innerHTML = `<img src="${imgSrc}" alt="${imgAlt || ''}">`;
+                } else {
+                    lightboxContent.innerHTML = `<p style="font-size: 1.2rem;">Photo coming soon!</p><p style="margin-top: 0.5rem; opacity: 0.7;">Click anywhere to close</p>`;
+                }
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            // Attach click handlers to timeline photos
+            document.querySelectorAll('.timeline-photo').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const img = item.querySelector('img');
+                    if (img) {
+                        openLightbox(img.src, img.alt);
+                    } else {
+                        openLightbox(null, null);
+                    }
                 });
             });
 
-            lightbox.addEventListener('click', () => {
-                lightbox.classList.remove('active');
+            // Close on background click (not on image)
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox || e.target === lightboxClose) {
+                    closeLightbox();
+                }
+            });
+
+            // Close on X button click
+            if (lightboxClose) {
+                lightboxClose.addEventListener('click', closeLightbox);
+            }
+
+            // Close lightbox with Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                    closeLightbox();
+                }
             });
 
             // ==========================================
