@@ -622,6 +622,17 @@
                 });
             });
 
+            // Attach click handlers to gallery photos
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const img = item.querySelector('img');
+                    if (img) {
+                        openLightbox(img.src, img.alt);
+                    }
+                });
+            });
+
             // Close on background click (not on image)
             lightbox.addEventListener('click', (e) => {
                 if (e.target === lightbox || e.target === lightboxClose) {
