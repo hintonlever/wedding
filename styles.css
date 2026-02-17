@@ -208,16 +208,18 @@
            ========================================== */
         .timeline {
             position: relative;
-            padding: 2rem 0;
+            padding: 2rem 0 5rem;
+            overflow: hidden;
         }
 
         .timeline::before {
             content: '';
             position: absolute;
+            top: 0;
             left: 50%;
             transform: translateX(-50%);
             width: 2px;
-            height: 100%;
+            height: calc(100% - 5rem);
             background: var(--color-border);
         }
 
