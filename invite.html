@@ -187,21 +187,6 @@
                 }
             });
 
-            let tapCount = 0;
-            let tapTimeout = null;
-            document.addEventListener('touchend', (e) => {
-                if (e.changedTouches.length !== 1) return;
-                tapCount++;
-                if (tapCount === 3) {
-                    window.toggleDebug();
-                    tapCount = 0;
-                    clearTimeout(tapTimeout);
-                } else {
-                    clearTimeout(tapTimeout);
-                    tapTimeout = setTimeout(() => { tapCount = 0; }, 400);
-                }
-            }, { passive: true });
-
             // ==========================================
             // COUNTDOWN TIMER
             // ==========================================
