@@ -178,6 +178,22 @@
             object-fit: cover;
         }
 
+        .location-banner {
+            width: 100%;
+            max-width: 100%;
+            margin: 2rem 0 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        .location-banner img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
         /* Countdown */
         .countdown {
             display: flex;
@@ -477,6 +493,7 @@
         }
 
         .gallery-item {
+            position: relative;
             aspect-ratio: 1;
             background: var(--color-border);
             border-radius: 8px;
@@ -489,6 +506,19 @@
             font-size: 0.65rem;
             color: var(--color-text);
             opacity: 0.5;
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0.4rem 0.6rem;
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.7);
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.4));
+            pointer-events: none;
+            letter-spacing: 0.02em;
         }
 
         .gallery-item:hover {
