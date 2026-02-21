@@ -275,8 +275,33 @@
                 });
             });
 
+            // Auto-hide navigation on scroll
+            let lastScrollY = window.scrollY;
+            let scrollThreshold = 10;
+
             window.addEventListener('scroll', () => {
-                mainNav.classList.toggle('scrolled', window.scrollY > 50);
+                const currentScrollY = window.scrollY;
+
+                // Add shadow when scrolled
+                mainNav.classList.toggle('scrolled', currentScrollY > 50);
+
+                // Auto-hide logic
+                if (currentScrollY < 100) {
+                    // Always show nav at the top
+                    mainNav.classList.remove('hidden');
+                } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                    // Scrolling down - hide nav
+                    if (Math.abs(currentScrollY - lastScrollY) > scrollThreshold) {
+                        mainNav.classList.add('hidden');
+                    }
+                } else if (currentScrollY < lastScrollY) {
+                    // Scrolling up - show nav
+                    if (Math.abs(currentScrollY - lastScrollY) > scrollThreshold) {
+                        mainNav.classList.remove('hidden');
+                    }
+                }
+
+                lastScrollY = currentScrollY;
             }, { passive: true });
 
             // ==========================================

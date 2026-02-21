@@ -1041,9 +1041,9 @@
         }
 
         .success-message h2 {
-            font-family: var(--font-script);
+            /* font-family: var(--font-script);
             font-size: 2.5rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1rem; */
             color: var(--color-accent);
         }
 
@@ -1178,7 +1178,16 @@
             }
 
             .hero-section {
-                padding-top: 8rem;
+                padding-top: 6rem;
+            }
+
+            /* Compact top navigation on mobile */
+            .nav-container {
+                padding: 0.5rem 1rem;
+            }
+
+            .nav-logo {
+                font-size: 1.25rem;
             }
 
             .timeline::before {
@@ -1438,7 +1447,7 @@
             scroll-margin-top: 70px;
         }
 
-        /* Quick nav pills (bottom of screen on mobile) */
+        /* Quick nav pills (bottom of screen on mobile) - HIDDEN */
         .quick-nav {
             position: fixed;
             bottom: 0;
@@ -1447,7 +1456,7 @@
             background: var(--color-background);
             box-shadow: 0 -2px 20px rgba(0,0,0,0.1);
             z-index: 100;
-            display: flex;
+            display: none; /* Hidden to save screen space */
             justify-content: space-around;
             padding: 0.5rem;
             padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
@@ -1483,10 +1492,10 @@
             }
         }
 
-        /* Add bottom padding for quick nav on mobile */
+        /* Reduced bottom padding (quick-nav removed) */
         @media (max-width: 767px) {
             footer.section {
-                padding-bottom: 5rem;
+                padding-bottom: 2rem;
             }
         }
 
