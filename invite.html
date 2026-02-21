@@ -31,9 +31,6 @@
         <div><span class="label">Container:</span> <span id="debugContainer">0x0</span></div>
     </div>
 
-    <!-- Version badge (always visible) -->
-    <div class="version-badge" id="versionBadge">v0.4.0</div>
-
     <!-- Main Navigation -->
     <nav class="main-nav" id="mainNav">
         <div class="nav-container">
@@ -146,11 +143,9 @@
             const debugScroll = document.getElementById('debugScroll');
             const debugViewport = document.getElementById('debugViewport');
             const debugContainer = document.getElementById('debugContainer');
-            const versionBadge = document.getElementById('versionBadge');
             const pageContainer = document.getElementById('pageContainer');
 
             debugVersion.textContent = VERSION;
-            versionBadge.textContent = VERSION;
 
             function updateContainerWidth() {
                 const aspectW = 9;
