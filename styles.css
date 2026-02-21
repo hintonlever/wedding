@@ -1312,6 +1312,10 @@
                 min-width: 60px;
             }
 
+            .location-banner {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
             .fun-facts {
                 grid-template-columns: 1fr;
             }
