@@ -129,13 +129,15 @@
             font-size: 0.85rem;
             letter-spacing: 0.3em;
             text-transform: uppercase;
+            text-align: center;
             margin: 1.5rem 0 0.5rem;
         }
 
         .hero-time {
             font-size: 0.8rem;
             letter-spacing: 0.2em;
-            margin: 0 0 0.5rem;
+            text-align: center;
+            margin: 0 0 1.5rem;
         }
 
         .hero-countdown.countdown {
@@ -158,8 +160,9 @@
         .hero-location {
             font-size: 0.85rem;
             letter-spacing: 0.2em;
+            text-align: center;
             color: var(--color-accent);
-            margin: 0;
+            margin: 0 0 0.5rem;
         }
 
         .hero-photo {
@@ -179,20 +182,26 @@
         }
 
         .location-banner {
-            position: relative;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
             width: 100%;
             max-width: 100%;
-            margin: 0 0 2rem;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-            min-height: 300px;
+            margin: 0 0 1.5rem;
         }
 
-        .location-banner img {
+        .location-banner-item {
+            position: relative;
+            aspect-ratio: 1;
+            background: var(--color-border);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .location-banner-item img {
             width: 100%;
-            height: auto;
-            min-height: 300px;
+            height: 100%;
             display: block;
             object-fit: cover;
         }
@@ -202,7 +211,7 @@
             top: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 100%);
+            background: none;
             padding: 1.5rem 1.5rem 3rem;
             text-align: center;
         }
@@ -210,17 +219,18 @@
         .location-banner-title .section-title {
             color: white;
             font-weight: 300;
-            text-shadow: none;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
             margin: 0;
         }
 
         .location-banner-overlay {
             position: absolute;
-            bottom: 0;
+            top: 50%;
             left: 0;
             right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
-            padding: 2rem 1.5rem 1.5rem;
+            transform: translateY(-50%);
+            background: none;
+            padding: 2rem 1.5rem;
             text-align: center;
         }
 
@@ -228,7 +238,7 @@
         .location-banner-overlay .hero-location,
         .location-banner-overlay .hero-time {
             color: white;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
             margin: 0.25rem 0;
         }
 
