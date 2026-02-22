@@ -1,0 +1,23 @@
+description,name,email,attending,guestnames,dietary,taxi,song,advice,funfact,otherquestion,expect
+Valid accept - all fields,Valid User,valid@test.com,Yes,Valid User,None,Yes,Test Song,Be kind,Fun fact,None,accept
+Valid accept - optional empty,Minimal Accept,minimal@test.com,Yes,,Vegetarian,No,,Good advice,A fun fact,,accept
+Valid decline,Decline User,decline@test.com,No,,,,,,,,accept
+Decline with extras,Decline Plus,declineplus@test.com,No,Some Guest,Vegan,Yes,Song,Advice,Fact,Question,accept
+Missing name,,noname@test.com,Yes,Guest,None,No,Song,Advice,Fact,,reject
+Missing email,No Email,,Yes,Guest,None,No,Song,Advice,Fact,,reject
+Invalid email - no @,Bad Email,not-an-email,Yes,Guest,None,No,Song,Advice,Fact,,reject
+Invalid email - no domain,Bad Email2,test@,Yes,Guest,None,No,Song,Advice,Fact,,reject
+Invalid email - spaces,Bad Email3,test @test.com,Yes,Guest,None,No,Song,Advice,Fact,,reject
+Missing attending,No RSVP,norsvp@test.com,,,,,,,,,reject
+Empty submission,,,,,,,,,,, reject
+Only name,Just Name,,,,,,,,,,reject
+Only email,,only@email.com,,,,,,,,,reject
+Name and email only,Half Done,half@test.com,,,,,,,,,reject
+Accept - missing dietary,No Diet,nodiet@test.com,Yes,Guest,,Yes,Song,Advice,Fact,,reject
+Accept - missing advice,No Advice,noadvice@test.com,Yes,Guest,None,No,Song,,Fact,,reject
+Accept - missing funfact,No Fact,nofact@test.com,Yes,Guest,None,Yes,Song,Advice,,,reject
+Accept - missing taxi,No Taxi,notaxi@test.com,Yes,Guest,None,,Song,Advice,Fact,,reject
+Accept - missing all conditional,No Cond,nocond@test.com,Yes,,,,,,,, reject
+Accept - whitespace dietary,WS Diet,wsdiet@test.com,Yes,Guest,   ,Yes,Song,Advice,Fact,,reject
+Accept - whitespace advice,WS Advice,wsadvice@test.com,Yes,Guest,None,No,Song,   ,Fact,,reject
+Accept - whitespace funfact,WS Fact,wsfact@test.com,Yes,Guest,None,Yes,Song,Advice,   ,,reject
