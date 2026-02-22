@@ -604,9 +604,10 @@
                 document.body.style.overflow = '';
             }
 
-            function openLightbox(imgSrc, imgAlt) {
+            function openLightbox(imgSrc, imgAlt, caption) {
                 if (imgSrc) {
-                    lightboxContent.innerHTML = `<img src="${imgSrc}" alt="${imgAlt || ''}">`;
+                    const captionHtml = caption ? `<p class="lightbox-caption">${caption}</p>` : '';
+                    lightboxContent.innerHTML = `<img src="${imgSrc}" alt="${imgAlt || ''}">${captionHtml}`;
                 } else {
                     lightboxContent.innerHTML = `<p style="font-size: 1.2rem;">Photo coming soon!</p><p style="margin-top: 0.5rem; opacity: 0.7;">Click anywhere to close</p>`;
                 }
@@ -633,7 +634,8 @@
                     e.stopPropagation();
                     const img = item.querySelector('img');
                     if (img) {
-                        openLightbox(img.src, img.alt);
+                        const caption = item.querySelector('.gallery-caption');
+                        openLightbox(img.src, img.alt, caption ? caption.textContent : '');
                     }
                 });
             });
