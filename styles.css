@@ -948,9 +948,11 @@
         }
 
         .faq-question {
+            -webkit-appearance: none;
+            appearance: none;
             width: 100%;
             padding: 1.25rem 1.5rem;
-            background: none;
+            background: white;
             border: none;
             color: inherit;
             text-align: left;
