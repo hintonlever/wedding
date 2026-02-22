@@ -80,6 +80,10 @@
             /* third number is the maximum size */
             text-align: center;
             margin-bottom: 1.5rem;
+            color: var(--color-accent);
+        }
+
+        .hero-section .section-title {
             color: var(--color-text);
         }
 
@@ -1699,18 +1703,11 @@
             color: var(--color-names, #21131d);
         }
 
-        .legend-number {
+        .legend-icon {
             width: 24px;
             height: 24px;
-            background: var(--color-seal, #cc5496);
-            border-radius: 50%;
-            color: white;
-            font-size: 0.8rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             flex-shrink: 0;
+            object-fit: contain;
         }
 
         /* ==========================================
