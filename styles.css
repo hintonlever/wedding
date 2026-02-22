@@ -952,6 +952,7 @@
             padding: 1.25rem 1.5rem;
             background: none;
             border: none;
+            color: inherit;
             text-align: left;
             font-family: var(--font-sans);
             font-size: 0.95rem;
