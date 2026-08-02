@@ -24,23 +24,35 @@
     <link rel="stylesheet" href="styles.css">
 
     <style>
-        /* Standalone page - no nav, so centre the single section in the viewport */
-        body {
-            min-height: 100vh;
-            min-height: 100svh;
-            align-items: center;
+        /* Progress bar - pinned to the top so it survives the long scroll */
+        .game-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(33, 19, 29, 0.08);
+            z-index: 100;
+        }
+
+        .game-progress-fill {
+            height: 100%;
+            width: 0;
+            background: var(--color-accent);
+            transition: width 0.25s ease;
         }
 
         .game-section {
-            min-height: 100vh;
-            min-height: 100svh;
-            justify-content: center;
-            padding: 3rem 1.5rem;
+            padding: 3rem 1.5rem 4rem;
         }
 
         .game-section .section-content {
-            max-width: 420px;
+            max-width: 460px;
+        }
+
+        .game-intro {
             text-align: center;
+            margin-bottom: 2rem;
         }
 
         .game-thongs {
@@ -49,61 +61,374 @@
             margin-bottom: 1.25rem;
         }
 
-        .game-section .section-text {
-            margin-bottom: 2rem;
+        /* ==========================================
+           QUESTION ROW - question on the left, pill on the right, so the
+           whole set stays as short a scroll as possible
+           ========================================== */
+        #questionList {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
         }
 
-        /* Thumb-sized tap target - every visitor arrives from a QR code on a phone */
-        .game-button {
+        .game-question {
+            flex-direction: row;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .game-question + .game-question {
+            border-top: 1px solid rgba(212, 196, 181, 0.5);
+            padding-top: 0.6rem;
+        }
+
+        .game-question .form-label {
+            flex: 1;
+            min-width: 0;
+            font-size: 0.85rem;
+            letter-spacing: 0.01em;
+            text-transform: none;
+            line-height: 1.4;
+            display: flex;
+            gap: 0.5rem;
+            align-items: baseline;
+        }
+
+        .game-qnum {
+            font-family: var(--font-script);
+            font-size: 1rem;
+            color: var(--color-accent);
+            flex-shrink: 0;
+        }
+
+        /* Terracotta for Ben's half of the pill. Not in styles.css - the site
+           has no orange - so it's defined here. Chosen to sit at the same
+           contrast against white as the accent pink, so neither half of the
+           pill outweighs the other. */
+        :root {
+            --color-orange: #c9622e;
+        }
+
+        /* The pill - one rounded control split into two coloured halves.
+           Alina takes the accent pink, Ben the terracotta. */
+        .pill {
+            display: flex;
+            width: 148px;
+            flex-shrink: 0;
+            border-radius: 999px;
+            overflow: hidden;
+            border: 1px solid var(--color-border);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .pill-half {
+            flex: 1;
+            position: relative;
+        }
+
+        .pill-half input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        /* Still a comfortable thumb target at 44px - every visitor arrives
+           from a QR code on a phone */
+        .pill-half label {
             display: flex;
             align-items: center;
             justify-content: center;
+            min-height: 44px;
+            padding: 0.4rem 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        /* Resting state - the light shade, so the two halves read as
+           different colours before anything is picked */
+        .pill-alina label {
+            background: var(--pill-pink-light);
+            color: var(--color-text);
+        }
+
+        .pill-ben label {
+            background: var(--pill-orange-light);
+            color: var(--color-text);
+        }
+
+        /* Chosen state - the half floods with the dark shade */
+        .pill-alina input:checked + label {
+            background: var(--pill-pink-dark);
+            font-weight: 400;
+        }
+
+        .pill-ben input:checked + label {
+            background: var(--pill-orange-dark);
+            font-weight: 400;
+        }
+
+        /* Once a choice is made, fade the road not taken */
+        .pill:has(input:checked) input:not(:checked) + label {
+            opacity: 0.45;
+        }
+
+        /* Highlight anything left blank on submit */
+        .game-question.missing .pill {
+            border-color: #f44336;
+            box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.12);
+        }
+
+        .game-submit {
             width: 100%;
             min-height: 64px;
-            text-decoration: none;
-            text-align: center;
+            margin-top: 0.5rem;
         }
 
         .game-note {
             font-size: 0.8rem;
-            letter-spacing: 0.05em;
+            text-align: center;
             margin-top: 1.25rem;
             opacity: 0.7;
+        }
+
+        .game-error {
+            display: none;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #f44336;
+            margin-top: 1rem;
+        }
+
+        .game-error.visible {
+            display: block;
         }
     </style>
 </head>
 <body>
+    <div class="game-progress"><div class="game-progress-fill" id="progressFill"></div></div>
+
     <div class="page-container">
         <section class="section section-alt game-section" id="game">
             <div class="section-content">
 
-                <p class="game-thongs">&#129721;</p>
+                <div class="game-intro">
+                    <p class="game-thongs">&#129721;</p>
+                    <p class="section-subtitle">The Shoe Game</p>
+                    <h1 class="section-title">Think you know us?</h1>
+                    <p class="section-text">
+                        Later tonight Alina and Ben will sit back to back and answer these
+                        questions about each other. Have a guess at how <em>they'd</em> answer
+                        &mdash; not what you think the answer should be &mdash; and we'll see
+                        how well you know them.
+                    </p>
+                </div>
 
-                <p class="section-subtitle">The Shoe Game</p>
-                <h1 class="section-title">Think you know us?</h1>
+                <form class="rsvp-form" id="gameForm">
+                    <div class="form-group">
+                        <label class="form-label" for="name">Your Name<span class="required">*</span></label>
+                        <input type="text" class="form-input" id="name" name="name" required placeholder="So we know whose guesses these are">
+                    </div>
 
-                <p class="section-text">
-                    Later tonight Alina and Ben will sit back to back and answer some questions
-                    about each other. Have a guess at how <em>they'd</em> answer &mdash; not what
-                    you think the answer should be &mdash; and we'll see how well you know them.
-                </p>
+                    <!-- Question rows are rendered here from the QUESTIONS array below -->
+                    <div id="questionList"></div>
 
-                <!-- ==========================================
-                     GOOGLE FORM URL - if the form is ever rebuilt, this is the
-                     only line that needs changing. Nothing else on this page
-                     depends on it.
-                     ========================================== -->
-                <a
-                    class="btn btn-primary game-button"
-                    href="https://forms.gle/7t8BV8ivRrxhgaB1A"
-                    target="_blank"
-                    rel="noopener"
-                >Take a guess</a>
+                    <div class="form-group">
+                        <label class="form-label" for="fiveyears">Where will Alina and Ben be in five years?<span class="required">*</span></label>
+                        <textarea class="form-textarea" id="fiveyears" placeholder="Be as unhinged as you like."></textarea>
+                    </div>
 
-                <p class="game-note">Guesses close at the end of canap&eacute;s.</p>
+                    <button type="submit" class="btn btn-primary game-submit">Lock in my guesses</button>
+                    <p class="game-error" id="gameError">Some answers are still blank &mdash; scroll up and finish them off.</p>
+                    <p class="game-note">Guesses close at the end of canap&eacute;s.</p>
+                </form>
+
+                <div class="success-message" id="successMessage">
+                    <p class="game-thongs">&#129721;</p>
+                    <h2 class="section-title">Locked in</h2>
+                    <p class="section-text">No takebacks. We'll reveal how everyone guessed later tonight.</p>
+                </div>
 
             </div>
         </section>
     </div>
+
+    <script>
+        // ==========================================
+        // THE QUESTIONS
+        //
+        // Edit the `text` values freely - this is the only place the wording
+        // lives. Do NOT change the `entry` IDs: each one is the matching field
+        // in the Google Form, and the responses spreadsheet columns are keyed
+        // to them. The Google Form's own titles stay as Q1-Q15 (guests never
+        // see them), so the spreadsheet columns are numbered, not worded.
+        //
+        // Order is deliberate: open with ones guests will likely get wrong,
+        // middle stretch of domestic habits, a Keppel run for people who
+        // travelled, and close on two warm ones.
+        // ==========================================
+        const QUESTIONS = [
+            { entry: 'entry.208743616',  text: 'Who takes longer to get ready?' },
+            { entry: 'entry.964953635',  text: 'Who is the better cook?' },
+            { entry: 'entry.240189864',  text: 'Who is more likely to talk to a stranger at the bar?' },
+            { entry: 'entry.1012323602', text: 'Who is the messier one?' },
+            { entry: 'entry.1710412175', text: 'Who hits snooze more?' },
+            { entry: 'entry.847359921',  text: 'Who is more likely to lose their phone?' },
+            { entry: 'entry.1024076362', text: 'Who controls the remote?' },
+            { entry: 'entry.635635597',  text: 'Who is the better driver?' },
+            { entry: 'entry.2050152564', text: 'Who is more competitive?' },
+            { entry: 'entry.572383692',  text: 'Who apologises first after an argument?' },
+            { entry: 'entry.1150717080', text: 'Who was more stressed about the boat transfers?' },
+            { entry: 'entry.1302051552', text: 'Who packed more for the island?' },
+            { entry: 'entry.1249775407', text: 'Who is more likely to get sunburnt this weekend?' },
+            { entry: 'entry.909798587',  text: 'Who fell in love first?' },
+            { entry: 'entry.1354773249', text: 'Who is more excited about today?' }
+        ];
+
+        // Reserve questions for Tegan to use live - deliberately NOT in the form,
+        // so there are no guest percentages to reveal for these:
+        //   - Who is more likely to be late?
+        //   - Who spends more money online?
+        //   - Who is more likely to embarrass the other in public?
+        //   - Who gives better advice?
+        //   - Who will be the better parent?
+
+        const NAME_ENTRY = 'entry.1180448803';
+        const FIVE_YEARS_ENTRY = 'entry.739281791';
+        const FORM_ENDPOINT = 'https://docs.google.com/forms/d/e/1FAIpQLSe4tHJzK4Bp43g6t0CVKuQeW9mU7XKtdpFhh8k7tlFWq8X-hw/formResponse';
+
+        // ==========================================
+        // RENDER
+        // ==========================================
+        const questionList = document.getElementById('questionList');
+
+        QUESTIONS.forEach((q, i) => {
+            const n = i + 1;
+            const group = document.createElement('div');
+            group.className = 'form-group game-question';
+            group.dataset.entry = q.entry;
+            group.innerHTML = `
+                <label class="form-label">
+                    <span class="game-qnum">${n}</span>
+                    <span>${q.text}<span class="required">*</span></span>
+                </label>
+                <div class="pill">
+                    <div class="pill-half pill-alina">
+                        <input type="radio" id="q${n}-alina" name="${q.entry}" value="Alina">
+                        <label for="q${n}-alina">Alina</label>
+                    </div>
+                    <div class="pill-half pill-ben">
+                        <input type="radio" id="q${n}-ben" name="${q.entry}" value="Ben">
+                        <label for="q${n}-ben">Ben</label>
+                    </div>
+                </div>
+            `;
+            questionList.appendChild(group);
+        });
+
+        // ==========================================
+        // PROGRESS - name + 15 questions + five years = 17
+        // ==========================================
+        const progressFill = document.getElementById('progressFill');
+        const nameInput = document.getElementById('name');
+        const fiveYears = document.getElementById('fiveyears');
+        const TOTAL_ANSWERS = QUESTIONS.length + 2;
+
+        function updateProgress() {
+            const answered = QUESTIONS.filter(q => document.querySelector(`input[name="${q.entry}"]:checked`)).length;
+            const done = answered
+                + (nameInput.value.trim() ? 1 : 0)
+                + (fiveYears.value.trim() ? 1 : 0);
+            progressFill.style.width = (done / TOTAL_ANSWERS * 100) + '%';
+        }
+
+        document.getElementById('gameForm').addEventListener('change', () => {
+            // Clear the red highlight as soon as a blank question gets answered
+            document.querySelectorAll('.game-question.missing').forEach(g => {
+                if (document.querySelector(`input[name="${g.dataset.entry}"]:checked`)) {
+                    g.classList.remove('missing');
+                }
+            });
+            updateProgress();
+        });
+
+        [nameInput, fiveYears].forEach(el => {
+            el.addEventListener('input', () => {
+                if (el.value.trim()) el.style.borderColor = '';
+                updateProgress();
+            });
+        });
+
+        // ==========================================
+        // SUBMIT
+        // Posted straight into the Google Form backend, same pattern as the
+        // RSVP section. no-cors means we never see the response, so treat the
+        // request completing at all as success.
+        // ==========================================
+        const form = document.getElementById('gameForm');
+        const successMessage = document.getElementById('successMessage');
+        const gameError = document.getElementById('gameError');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            let firstMissing = null;
+
+            if (!nameInput.value.trim()) {
+                nameInput.style.borderColor = '#f44336';
+                firstMissing = nameInput;
+            }
+
+            QUESTIONS.forEach(q => {
+                const group = document.querySelector(`.game-question[data-entry="${q.entry}"]`);
+                const answered = document.querySelector(`input[name="${q.entry}"]:checked`);
+                group.classList.toggle('missing', !answered);
+                if (!answered && !firstMissing) firstMissing = group;
+            });
+
+            if (!fiveYears.value.trim()) {
+                fiveYears.style.borderColor = '#f44336';
+                if (!firstMissing) firstMissing = fiveYears;
+            }
+
+            if (firstMissing) {
+                gameError.classList.add('visible');
+                firstMissing.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                if (firstMissing.focus) firstMissing.focus();
+                return;
+            }
+
+            gameError.classList.remove('visible');
+
+            const formData = new URLSearchParams();
+            formData.append(NAME_ENTRY, nameInput.value.trim());
+            QUESTIONS.forEach(q => {
+                formData.append(q.entry, document.querySelector(`input[name="${q.entry}"]:checked`).value);
+            });
+            formData.append(FIVE_YEARS_ENTRY, fiveYears.value.trim());
+
+            const done = () => {
+                form.style.display = 'none';
+                successMessage.classList.add('visible');
+                progressFill.style.width = '100%';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            fetch(FORM_ENDPOINT, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData.toString()
+            }).then(done).catch(done);
+        });
+
+        updateProgress();
+    </script>
 </body>
 </html>
