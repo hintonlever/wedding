@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>The Shoe Game | Alina &amp; Ben</title>
+
+    <!-- Keep this page out of search results - it's for the QR code on the menus only -->
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- iOS/Safari compatibility -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Alina &amp; Ben">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="theme-color" content="#fef9f6">
+
+    <link rel="icon" href="resources/favicon.svg" type="image/svg+xml">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500&family=Roboto+Flex:wght@200;300;400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        /* Standalone page - no nav, so centre the single section in the viewport */
+        body {
+            min-height: 100vh;
+            min-height: 100svh;
+            align-items: center;
+        }
+
+        .game-section {
+            min-height: 100vh;
+            min-height: 100svh;
+            justify-content: center;
+            padding: 3rem 1.5rem;
+        }
+
+        .game-section .section-content {
+            max-width: 420px;
+            text-align: center;
+        }
+
+        .game-thongs {
+            font-size: 2.5rem;
+            line-height: 1;
+            margin-bottom: 1.25rem;
+        }
+
+        .game-section .section-text {
+            margin-bottom: 2rem;
+        }
+
+        /* Thumb-sized tap target - every visitor arrives from a QR code on a phone */
+        .game-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 64px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .game-note {
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            margin-top: 1.25rem;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <section class="section section-alt game-section" id="game">
+            <div class="section-content">
+
+                <p class="game-thongs">&#129721;</p>
+
+                <p class="section-subtitle">The Shoe Game</p>
+                <h1 class="section-title">Think you know us?</h1>
+
+                <p class="section-text">
+                    Later tonight Alina and Ben will sit back to back and answer some questions
+                    about each other. Have a guess at how <em>they'd</em> answer &mdash; not what
+                    you think the answer should be &mdash; and we'll see how well you know them.
+                </p>
+
+                <!-- ==========================================
+                     GOOGLE FORM URL - if the form is ever rebuilt, this is the
+                     only line that needs changing. Nothing else on this page
+                     depends on it.
+                     ========================================== -->
+                <a
+                    class="btn btn-primary game-button"
+                    href="https://forms.gle/7t8BV8ivRrxhgaB1A"
+                    target="_blank"
+                    rel="noopener"
+                >Take a guess</a>
+
+                <p class="game-note">Guesses close at the end of canap&eacute;s.</p>
+
+            </div>
+        </section>
+    </div>
+</body>
+</html>
