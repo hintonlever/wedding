@@ -101,16 +101,18 @@
             flex-shrink: 0;
         }
 
-        /* Terracotta for Ben's half of the pill. Not in styles.css - the site
-           has no orange - so it's defined here. Chosen to sit at the same
-           contrast against white as the accent pink, so neither half of the
-           pill outweighs the other. */
+        /* Pill palette - each half runs on one hue: the light shade and the
+           dark shade swap places between the resting and chosen states, so
+           the text is always in the same colour family as its half. */
         :root {
-            --color-orange: #c9622e;
+            --pill-pink-light: #f8d6da;
+            --pill-pink-dark: #e33c75;
+            --pill-orange-light: #fdded0;
+            --pill-orange-dark: #f26c4f;
         }
 
         /* The pill - one rounded control split into two coloured halves.
-           Alina takes the accent pink, Ben the terracotta. */
+           Alina takes the pink, Ben the orange. */
         .pill {
             display: flex;
             width: 148px;
@@ -151,26 +153,27 @@
             user-select: none;
         }
 
-        /* Resting state - the light shade, so the two halves read as
-           different colours before anything is picked */
+        /* Resting state - light background, dark text of the same hue */
         .pill-alina label {
             background: var(--pill-pink-light);
-            color: var(--color-text);
+            color: var(--pill-pink-dark);
         }
 
         .pill-ben label {
             background: var(--pill-orange-light);
-            color: var(--color-text);
+            color: var(--pill-orange-dark);
         }
 
-        /* Chosen state - the half floods with the dark shade */
+        /* Chosen state - the two shades swap over */
         .pill-alina input:checked + label {
             background: var(--pill-pink-dark);
+            color: var(--pill-pink-light);
             font-weight: 400;
         }
 
         .pill-ben input:checked + label {
             background: var(--pill-orange-dark);
+            color: var(--pill-orange-light);
             font-weight: 400;
         }
 
