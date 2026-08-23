@@ -263,29 +263,28 @@
         // Edit the `text` values freely - this is the only place the wording
         // lives. Do NOT change the `entry` IDs: each one is the matching field
         // in the Google Form, and the responses spreadsheet columns are keyed
-        // to them. The Google Form's own titles stay as Q1-Q15 (guests never
+        // to them. The Google Form's own titles stay as Q1-Q16 (guests never
         // see them), so the spreadsheet columns are numbered, not worded.
         //
-        // Order is deliberate: open with ones guests will likely get wrong,
-        // middle stretch of domestic habits, a Keppel run for people who
-        // travelled, and close on two warm ones.
+        // Order below is fixed as supplied - do not reshuffle.
         // ==========================================
         const QUESTIONS = [
-            { entry: 'entry.208743616',  text: 'Who takes longer to get ready?' },
-            { entry: 'entry.964953635',  text: 'Who is the better cook?' },
-            { entry: 'entry.240189864',  text: 'Who is more likely to talk to a stranger at the bar?' },
-            { entry: 'entry.1012323602', text: 'Who is the messier one?' },
-            { entry: 'entry.1710412175', text: 'Who hits snooze more?' },
-            { entry: 'entry.847359921',  text: 'Who is more likely to lose their phone?' },
-            { entry: 'entry.1024076362', text: 'Who controls the remote?' },
-            { entry: 'entry.635635597',  text: 'Who is the better driver?' },
-            { entry: 'entry.2050152564', text: 'Who is more competitive?' },
-            { entry: 'entry.572383692',  text: 'Who apologises first after an argument?' },
-            { entry: 'entry.1150717080', text: 'Who was more stressed about the boat transfers?' },
-            { entry: 'entry.1302051552', text: 'Who packed more for the island?' },
-            { entry: 'entry.1249775407', text: 'Who is more likely to get sunburnt this weekend?' },
-            { entry: 'entry.909798587',  text: 'Who fell in love first?' },
-            { entry: 'entry.1354773249', text: 'Who is more excited about today?' }
+            { entry: 'entry.208743616',  text: 'Who is the better cook?' },
+            { entry: 'entry.964953635',  text: 'Who is better at drawing?' },
+            { entry: 'entry.240189864',  text: 'Who is more likely to talk to a stranger?' },
+            { entry: 'entry.1012323602', text: 'Who is more likely to create a spreadsheet for holiday planning?' },
+            { entry: 'entry.1710412175', text: 'Whose spreadsheet is better though?' },
+            { entry: 'entry.847359921',  text: 'Who is more likely to get hangry?' },
+            { entry: 'entry.1024076362', text: 'Who deals with the cockroaches?' },
+            { entry: 'entry.635635597',  text: 'Who makes the best cups of tea?' },
+            { entry: 'entry.2050152564', text: 'Who is most likely to lick the frying pan?' },
+            { entry: 'entry.572383692',  text: 'Who is the biggest rat?' },
+            { entry: 'entry.1150717080', text: 'Who is more likely to talk to a dog before its owner?' },
+            { entry: 'entry.1302051552', text: 'Who would be more likely to name a pet something completely unhinged?' },
+            { entry: 'entry.1249775407', text: 'Who would survive longer if you were both turned into pigeons?' },
+            { entry: 'entry.909798587',  text: 'Who would win in a fight against a Keppel goat?' },
+            { entry: 'entry.1354773249', text: 'Who said "I love you" first?' },
+            { entry: 'entry.775217257',  text: 'Who likes cake more?' }
         ];
 
         // Reserve questions for Tegan to use live - deliberately NOT in the form,
@@ -330,7 +329,7 @@
         });
 
         // ==========================================
-        // PROGRESS - name + 15 questions + five years = 17
+        // PROGRESS - name + 16 questions + five years = 18
         // ==========================================
         const progressFill = document.getElementById('progressFill');
         const nameInput = document.getElementById('name');
